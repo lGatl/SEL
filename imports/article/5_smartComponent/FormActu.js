@@ -2,7 +2,7 @@ import React, { Component }	from "react";
 import { bindActionCreators }	from "redux";
 import { connect } from "react-redux";
 
-import { articleAct } from "../../article/2_action/article_action";
+import { ACTIONS } from "../../article/2_action/article_action";
 
 import { Form } from "semantic-ui-react";
 
@@ -66,8 +66,8 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
-		articleControle: 	articleAct.controle,
-		articleAdd: 			articleAct.add
+		articleControle: 	ACTIONS.Article.controle,
+		articleAdd: 			ACTIONS.Article.add
 	}, dispatch );
 }
 

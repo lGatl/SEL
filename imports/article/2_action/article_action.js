@@ -1,119 +1,118 @@
 import { COLLECTIONS } from "../../methodes/methodes";
-console.log(COLLECTIONS)
-const _ARTICLE   = "_ARTICLE";
-const ADD 			= "ADD" + _ARTICLE;
-const GET			= "GET" + _ARTICLE;
-const GET1 			= "GET1" + _ARTICLE;
-const RM 				= "RM" + _ARTICLE;
-const UP 				= "UP" + _ARTICLE;
-const CONTROLE 	= "CONTROLE" + _ARTICLE;
 
-export const ARTICLE = {
-	ADD,
-	RM,
-	GET,
-	GET1,
-	UP,	
-	CONTROLE
-};
+const CONSTANTE = {};
+const ACTION = {};
 
-function add(obj, cbk=()=>{}){
-	let p = new Promise( ( resolve, reject ) => {
-		Meteor.call("addArticle", obj ,(err,res)=>{
+COLLECTIONS.forEach((COLLECTION)=>{
+
+	CONSTANTE[ COLLECTION ] ={ 
+		ADD : "ADD",
+		GET : "GET",
+		GET1 : "GET1",
+		RM : "RM",
+		UP : "UP",
+		CONTROLE : "CONTROLE"
+	};
+
+	function add(obj, cbk=()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("add" + COLLECTION, obj ,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk( res );
+					resolve( { ...obj, _id:res } );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].ADD,
+			payload: 	p
+		};
+	}
+	function get(cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",(err,res)=>{
+				if(err){
+					reject( err );
+				}else{
+					cbk( res );
+					resolve( res );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET,
+			payload: 	p
+		};
+	}
+	function get1(obj, cbk = () => {}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("get" + COLLECTION,obj,(err,res)=>{
 			if(err){
-				reject(err);
-			}else{
-
-				cbk( res );
-				resolve( { ...obj, _id:res } );
-
-			}
+					reject(err);
+				}else{
+					cbk(res);
+					resolve(res);
+				}
+			});
 		});
-	});
-	return {
-		type: 		ADD,
-		payload: 	p
-	};
-}
-function get(cbk = ()=>{}){
-	let p = new Promise( ( resolve, reject ) =>{
-		Meteor.call("getArticles",(err,res)=>{
-			if(err){
-				reject( err );
-			}else{
-				cbk( res );
-				resolve( res );
-			}
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET1,
+			payload: 	p
+		};
+	}
+	function rm(obj, cbk =()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("rm" + COLLECTION, obj ,(err)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk();
+					resolve( obj );
+				}
+			});
 		});
-	});
-	return {
-		type: 		GET,
-		payload: 	p
-	};
-}
-function get1(obj, cbk = () => {}){
-	let p = new Promise( ( resolve, reject ) => {
-		Meteor.call("getArticle",obj,(err,res)=>{
-		if(err){
-				reject(err);
-			}else{
-				cbk(res);
-				resolve(res);
-			}
+		return {
+			type: 		CONSTANTES[ COLLECTION ].RM,
+			payload: 	p
+		};
+
+	}
+	function up(obj, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("up" + COLLECTION,obj,(err)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk(res);
+					resolve(res);
+				}
+			});
 		});
-	});
-	return {
-		type: 		GET1,
-		payload: 	p
-	};
-}
-function rm(obj, cbk =()=>{}){
-	let p = new Promise( ( resolve, reject ) => {
-		Meteor.call("rmArticle", obj ,(err)=>{
-			if(err){
-				reject(err);
-			}else{
-				cbk();
-				resolve( obj );
-			}
-		});
-	});
-	return {
-		type: 		RM,
-		payload: 	p
+		return {
+			type: 		CONSTANTES[ COLLECTION ].UP,
+			payload: 	p
+		};
+	}
+	//=========================================================
+	function controle(val){
+		return {
+			type: 		CONSTANTES[ COLLECTION ].CONTROLE,
+			payload: 	val
+		};
+	}
+
+	ACTION[COLLECTION] = {
+		add,
+		rm,
+		get,
+		get1,
+		up,	
+		controle
 	};
 
-}
-function up(obj, cbk = ()=>{}){
-	let p = new Promise( ( resolve, reject ) => {
-		Meteor.call("upArticle",obj,(err)=>{
-			if(err){
-				reject(err);
-			}else{
-				cbk(res);
-				resolve(res);
-			}
-		});
-	});
-	return {
-		type: 		UP,
-		payload: 	p
-	};
-}
-//=========================================================
-function controle(val){
+});
+export const CONSTANTES = CONSTANTE;
+export const ACTIONS = ACTION;
 
-	return {
-		type: 		CONTROLE,
-		payload: 	val
-	};
-}
-
-export const articleAct = {
-	add,
-	rm,
-	get,
-	get1,
-	up,	
-	controle
-};
