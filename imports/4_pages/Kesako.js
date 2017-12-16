@@ -8,7 +8,7 @@ export default class Kesako extends Component {
 		return (
 
 			<div className="">
-				<ContenuKesako></ContenuKesako>
+				<ContenuKesako/>
 
 			</div>
 		);

@@ -16,8 +16,15 @@ const menus =  [
 		icon: null,
 	},
 	{
-		title: 'Actualités',
-		url: '/actualites',
+		title: 'Actualité',
+		url: '/actualite',
+		role: null,
+		group: null,
+		icon: null,
+	},
+	{
+		title: 'Annonce',
+		url: '/annonce',
 		role: null,
 		group: null,
 		icon: null,
@@ -38,7 +45,7 @@ const menus =  [
 	},
 	{
 		title: 'Creer Un Compte',
-		url: '/compte',
+		url: '/creer_un_compte',
 		role: null,
 		group: null,
 		icon: null,
@@ -52,14 +59,14 @@ const menus =  [
 	},	
 	{
 		title: 'Les Selistes',
-		url: '/lesSelistes',
+		url: '/les_selistes',
 		role: null,
 		group: null,
 		icon: null,
 	},
 	{
 		title: 'Mon Compte',
-		url: '/monCompte',
+		url: '/mon_compte',
 		role: null,
 		group: null,
 		icon: null,

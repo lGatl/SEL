@@ -1,8 +1,8 @@
 
-const NOM 			= "_ANNONCE"
+const NOM 			= "_ANNONCE";
 const ADD 			= "ADD"		+ NOM;
-const GET 			= "GET"			+ NOM;
-const GET1 			= "GET1"		+ NOM;
+const GET 			= "GET"		+ NOM;
+const GET1 			= "GET1"	+ NOM;
 const RM 			= "RM"			+ NOM;
 const UP 			= "UP"			+ NOM;
 
