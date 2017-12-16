@@ -1,5 +1,5 @@
 
-import { CONSTANTES } from "../2_action/article_action";
+import { CONSTANTES } from "../../actions/actions";
 
 const DEFAULTS = {
 	articles: [],

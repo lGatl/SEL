@@ -2,7 +2,7 @@ import React, { Component }	from "react";
 import { bindActionCreators }	from "redux";
 import { connect } from "react-redux";
 
-import { ACTIONS } from "../../article/2_action/article_action";
+import { ACTIONS } from "../../actions/actions";
 
 import { Form } from "semantic-ui-react";
 

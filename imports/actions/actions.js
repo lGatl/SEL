@@ -1,4 +1,4 @@
-import { COLLECTIONS } from "../../methodes/methodes";
+import { COLLECTIONS } from "../methodes/methodes";
 
 const CONSTANTE = {};
 const ACTION = {};

@@ -2,7 +2,7 @@ import React, { Component }	from "react";
 import { bindActionCreators }	from "redux";
 import { connect } from "react-redux";
 
-import { ACTIONS } from "../../article/2_action/article_action";
+import { ACTIONS } from "../../actions/actions";
 
 import { Segment, Grid } from "semantic-ui-react";
 
@@ -25,7 +25,7 @@ class Actualites extends Component {
 					<Grid.Column width = {14}>
 						{ art.titre } <br/> <br/> { art.description }
 					</Grid.Column>
-					<Grid.Column width = {2} onClick={ this.articleRm.bind( this, art._id ) }>
+					<Grid.Column width = {2} onClick = { this.articleRm.bind( this, art._id ) }>
 						Supprimer
 					</Grid.Column>
 				</Grid> 
