@@ -11,9 +11,16 @@ import { Form } from "semantic-ui-react";
 
 class FormActu extends Component {
 
+	componentWillMount(){
+		this.props.articleControle({ 
+			titre: "",
+			description: ""
+			
+		});
+	}
 	change(e,{ value, name }){
 
-		this.props.articleControle({[name]:value});
+		this.props.articleControle({ [name]:value });
 	}
 	articleAdd(){
 		this.props.articleAdd(
@@ -22,31 +29,36 @@ class FormActu extends Component {
 				description: this.props.description
 			}
 		);
+		this.props.articleControle({ 
+			titre: "",
+			description: ""
+		});
 	}
 
 	render() {
-		
-
+		const TITRE = !(this.props.titre == undefined) ? <Form.Input
+			label = 'Titre'
+			name = 'titre'
+			value = { this.props.titre }
+			onChange = { this.change.bind( this ) } 
+		/> : "";
+		const DESCRIPTION = !(this.props.description == undefined) ? <Form.TextArea
+			label = 'Description'
+			name = 'description'
+			value = { this.props.description }
+			onChange = { this.change.bind( this ) }
+		/>:"";
 		return (
 			<Form>
-				<Form.Input
-					label = 'Titre'
-					name = 'titre'
-					value = { this.props.titre }
-					onChange = { this.change.bind( this ) } 
-				>
+				
+				{ TITRE }
+				{ DESCRIPTION }
+				
+				
 					
-				</Form.Input>
-				<Form.TextArea
-					label = 'Description'
-					name = 'description'
-					value = { this.props.description }
-					onChange = { this.change.bind( this ) }
-				>
-					
-				</Form.TextArea>
+
 				<Form.Button
-				onClick = { this.articleAdd.bind( this ) }
+					onClick = { this.articleAdd.bind( this ) }
 				>
 				Sauvegarder l'article
 				</Form.Button>

@@ -6,12 +6,12 @@ const ACTION = {};
 COLLECTIONS.forEach((COLLECTION)=>{
 
 	CONSTANTE[ COLLECTION ] ={ 
-		ADD : "ADD",
-		GET : "GET",
-		GET1 : "GET1",
-		RM : "RM",
-		UP : "UP",
-		CONTROLE : "CONTROLE"
+		ADD : COLLECTION+"_ADD",
+		GET : COLLECTION+"_GET",
+		GET1 : COLLECTION+ "_GET1",
+		RM : COLLECTION+"_RM",
+		UP : COLLECTION+"_UP",
+		CONTROLE : COLLECTION+"_CONTROLE",
 	};
 
 	function add(obj, cbk=()=>{}){
@@ -102,6 +102,12 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	val
 		};
 	}
+	function controleInit(val){
+		return {
+			type: 		CONSTANTES[ COLLECTION ].CONTROLE_INIT,
+			payload: 	val
+		};
+	}
 
 	ACTION[COLLECTION] = {
 		add,
@@ -109,7 +115,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		get,
 		get1,
 		up,	
-		controle
+		controle,
 	};
 
 });

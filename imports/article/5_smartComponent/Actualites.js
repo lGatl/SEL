@@ -42,7 +42,7 @@ class Actualites extends Component {
 function mapStateToProps( state ){
 	return (
 		{
-			articles: state.article.articles
+			articles: state.article.les
 		}
 	);
 }

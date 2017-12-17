@@ -1,40 +1,44 @@
 
 import { CONSTANTES } from "../../actions/actions";
+import { COLLECTIONS } from "../../methodes/methodes";
 
-const DEFAULTS = {
-	articles: [],
-	article: {},
-	titre: "",
-	description: ""
-};
-
-export default function (  state = DEFAULTS, action ) {
-	
-	
-	switch ( action.type ) {
-
-	case  CONSTANTES.Article.ADD:
-		let articles = [ ...state.articles ];
-		articles.push( action.payload );
-		return { ...state, articles, titre: "", description: "" };
-		break;
-	case CONSTANTES.Article.GET:
-		return { ...state, articles: action.payload };
-		break;
-	case CONSTANTES.Article.GET1:
-		return { ...state, article: action.payload };
-		break;
-	case CONSTANTES.Article.RM:
-		let articlesr = [ ...state.articles ];
-
-		articlesr.splice(articlesr.indexOf(articlesr.find((art)=>art._id == action.payload._id)),1);
-		return { ...state, articles: articlesr };
-		break;
-	case CONSTANTES.Article.CONTROLE:
-
-		return { ...state, ...action.payload };
-		break;
+var REDUCER = {};
+COLLECTIONS.forEach((COLLECTION)=>
+{
+	const DEFAULTS = {
+		les: [],
+		le: {},
 		
-	}
-	return state;
-}
+	};
+
+	REDUCER[COLLECTION.toLowerCase()] = function (  state = DEFAULTS, action ) {
+		var les = [ ...state.les ] ;
+		var controle = { ...state.controle };
+		switch ( action.type ) {	
+		case  CONSTANTES[COLLECTION].ADD:
+			les.push( action.payload );
+			return { ...state, les };
+			break;
+		case CONSTANTES[COLLECTION].GET:
+			return { ...state, les: action.payload };
+			break;
+		case CONSTANTES[COLLECTION].GET1:
+			return { ...state, le: action.payload };
+			break;
+		case CONSTANTES[COLLECTION].RM:
+			les.splice(les.indexOf(les.find((art)=>art._id == action.payload._id)),1);
+			return { ...state, les };
+			break;
+		case CONSTANTES[COLLECTION].CONTROLE:
+			return { ...state, ...action.payload };
+			break;
+
+			
+		}
+		return state;
+	};
+
+});
+
+export const REDUCERS = REDUCER;
+
