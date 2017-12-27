@@ -4,7 +4,7 @@ import { Grid } from "semantic-ui-react";
 
 import Titre from "../_common/4_dumbComponent/Titre";
 import FormActu from "../article/5_smartComponent/FormActu";
-import Actualites from "../article/5_smartComponent/Actualites";
+import SmartActualites from "../article/5_smartComponent/SmartActualites";
 
 export default class Actualite extends Component {
 
@@ -13,7 +13,7 @@ export default class Actualite extends Component {
 		return (
 			<div>
 				<Titre> Actualites </Titre>
-				<Actualites/>
+				<SmartActualites/>
 				<FormActu/>
 			</div>
 		);

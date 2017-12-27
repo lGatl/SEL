@@ -9,10 +9,10 @@ import { Form } from "semantic-ui-react";
 
 
 
-class FormActu extends Component {
+class FormAnnone extends Component {
 
 	componentWillMount(){
-		this.props.actualiteControle({ 
+		this.props.annonceControle({ 
 			titre: "",
 			description: ""
 			
@@ -20,16 +20,16 @@ class FormActu extends Component {
 	}
 	change(e,{ value, name }){
 
-		this.props.actualiteControle({ [name]:value });
+		this.props.annonceControle({ [name]:value });
 	}
-	actualiteAdd(){
-		this.props.actualiteAdd(
+	annonceAdd(){
+		this.props.annonceAdd(
 			{
 				titre: this.props.titre,
 				description: this.props.description
 			}
 		);
-		this.props.actualiteControle({ 
+		this.props.annonceControle({ 
 			titre: "",
 			description: ""
 		});
@@ -58,9 +58,9 @@ class FormActu extends Component {
 					
 
 				<Form.Button
-					onClick = { this.actualiteAdd.bind( this ) }
+					onClick = { this.annonceAdd.bind( this ) }
 				>
-				Sauvegarder l'actualite
+				Sauvegarder l'annonce
 				</Form.Button>
 			</Form>
 		);
@@ -70,17 +70,17 @@ class FormActu extends Component {
 function mapStateToProps( state ){
 	return (
 		{
-			titre: state.actualite.titre,
-			description: state.actualite.description
+			titre: state.annonce.titre,
+			description: state.annonce.description
 		}
 	);
 }
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
-		actualiteControle: 	ACTIONS.Actualite.controle,
-		actualiteAdd: 			ACTIONS.Actualite.add
+		annonceControle: 	ACTIONS.Annonce.controle,
+		annonceAdd: 			ACTIONS.Annonce.add
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( FormActu );
+export default connect( mapStateToProps, mapDispatchToProps )( FormAnnone );

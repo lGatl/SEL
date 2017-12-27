@@ -1,8 +1,8 @@
 import SimpleSchema from 'simpl-schema';
-export const COLLECTIONS = ["Article","Annonce"];
+export const COLLECTIONS = ["Actualite","Annonce"];
 
 const SCHEMA ={
-	Article : new SimpleSchema({
+	Actualite : new SimpleSchema({
 		titre: { type: String },
 		description: { type: String },
 	}),

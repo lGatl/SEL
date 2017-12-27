@@ -1,4 +1,4 @@
-import { COLLECTIONS } from "../methodes/methodes";
+import { COLLECTIONS } from "../5_methodes/methodes";
 
 const CONSTANTE = {};
 const ACTION = {};
@@ -49,7 +49,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 	function get1(obj, cbk = () => {}){
 		let p = new Promise( ( resolve, reject ) => {
 			Meteor.call("get" + COLLECTION,obj,(err,res)=>{
-			if(err){
+				if(err){
 					reject(err);
 				}else{
 					cbk(res);
@@ -99,12 +99,6 @@ COLLECTIONS.forEach((COLLECTION)=>{
 	function controle(val){
 		return {
 			type: 		CONSTANTES[ COLLECTION ].CONTROLE,
-			payload: 	val
-		};
-	}
-	function controleInit(val){
-		return {
-			type: 		CONSTANTES[ COLLECTION ].CONTROLE_INIT,
 			payload: 	val
 		};
 	}

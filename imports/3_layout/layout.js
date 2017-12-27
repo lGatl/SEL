@@ -4,7 +4,7 @@ import { composeWithDevTools } 			from "redux-devtools-extension";
 import { createStore, applyMiddleware } 	from "redux";
 import ReduxPromise 						from "redux-promise";
 
-import reducers from "../5_reducers";
+import reducers from "../7_reducers";
 
 import Menu from "../_common/5_smartComponent/Menu";
 import Footer from "../_common/4_dumbComponent/Footer";
@@ -13,34 +13,29 @@ import Footer from "../_common/4_dumbComponent/Footer";
 /*import 'react-s-alert/dist/s-alert-default.css';*/
 var store={};
 
+const composeEnhancers = composeWithDevTools({});
+
+store = createStore(reducers,composeEnhancers(
+	applyMiddleware(ReduxPromise)
+));
 
 
-	const composeEnhancers = composeWithDevTools({});
-
-
-	store = createStore(reducers,composeEnhancers(
-		applyMiddleware(ReduxPromise)
-	));
-
-
- export const Layout = ({ content }) => {
+export const Layout = ({ content }) => {
 
 	return(
 		<Provider store={store}>
-			 <div className="main-layout">
+			<div className="main-layout">
 
-			<div className="bodyLay">
-				<Menu></Menu>
+				<div className="bodyLay">
+					<Menu></Menu>
 
-				<div id="content">
-					{content}
+					<div id="content">
+						{content}
+					</div>
 				</div>
+				<Footer></Footer>
 
 			</div>
-			<Footer></Footer>
-
-			 </div>
 		</Provider>
- );
-
-}
+	);
+};
