@@ -35,11 +35,12 @@ COLLECTIONS.forEach((COLLECTION)=>
 			break;
 			
 		}
-		return state;
+		return COLLECTION == "Users" ?
+			{...state, ...REDUCER_users_add(state,action) } :
+			state;
 	};
 
 });
-const user = REDUCER['ser'];
-REDUCER['user']=function(){return{...user(),...REDUCER_users_add()}}
+
 export const REDUCERS = REDUCER;
 
