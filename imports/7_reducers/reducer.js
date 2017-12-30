@@ -2,6 +2,8 @@
 import { CONSTANTES } from "../6_actions/actions";
 import { COLLECTIONS } from "../5_methodes/methodes";
 
+import { REDUCER_users_add } from "../user/3_reducer/user_reducer";
+
 var REDUCER = {};
 COLLECTIONS.forEach((COLLECTION)=>
 {
@@ -13,7 +15,6 @@ COLLECTIONS.forEach((COLLECTION)=>
 
 	REDUCER[COLLECTION.toLowerCase()] = function (  state = DEFAULTS, action ) {
 		var all = [ ...state.all ] ;
-		var controle = { ...state.controle };
 		switch ( action.type ) {	
 		case  CONSTANTES[COLLECTION].ADD:
 			all.push( action.payload );
@@ -32,10 +33,11 @@ COLLECTIONS.forEach((COLLECTION)=>
 		case CONSTANTES[COLLECTION].CONTROLE:
 			return { ...state, ...action.payload };
 			break;
-
 			
 		}
-		return state;
+		return COLLECTION == "Users" ?
+			{...state, ...REDUCER_users_add(state,action) } :
+			state;
 	};
 
 });

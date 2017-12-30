@@ -19,8 +19,10 @@ shell-server@0.2.4            # Server-side component of the `meteor shell` comm
 
 kadira:flow-router
 service-configuration@1.0.11
-accounts-ui@1.1.9
+accounts-ui
 semantic:ui-icon
 alanning:roles
 aldeed:collection2-core@2.0.0
 aldeed:simple-schema
+accounts-base
+accounts-password

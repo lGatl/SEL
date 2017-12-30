@@ -6,14 +6,11 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { Form } from "semantic-ui-react";
 
-
-
-
-class FormulaireDInscription extends Component {
-//Initialisation
+class FormulaireConnexion extends Component {
+	//Initialisation
 	componentWillMount(){
 		console.log(Meteor.userId());
-		this.props.usersGet({});
+		this.props.userslogIn();
 		this.props.usersControle({ 
 			email: "",
 			password: ""
@@ -26,11 +23,11 @@ class FormulaireDInscription extends Component {
 		this.props.usersControle({ [name]:value });
 	}
 	//Action
-	usersCreeCompte(){
-		this.props.usersCreeCompte(
+	usersLogIn(){
+		this.props.usersLogIn(
 			{
-				email : this.props.email,
-				username : this.props.email,
+				email: this.props.email,
+				username: this.props.email,
 				password: this.props.password 
 			}
 		);
@@ -63,7 +60,7 @@ class FormulaireDInscription extends Component {
 				{ this.eMail() }
 				{ this.password() }
 				<Form.Button
-					onClick = { this.usersCreeCompte.bind( this ) }
+					onClick = { this.usersLogIn.bind( this ) }
 				>
 				S'inscrire
 				</Form.Button>
@@ -83,10 +80,9 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
-		usersGet: 					ACTIONS.Users.get,
-		usersControle: 			ACTIONS.Users.controle,
-		usersCreeCompte: 		ACTIONS.Users.creeCompte
+		usersControle: 	ACTIONS.Users.controle,
+		usersLogIn: 		ACTIONS.Users.logIn
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( FormulaireDInscription );
+export default connect( mapStateToProps, mapDispatchToProps )( FormulaireConnexion );

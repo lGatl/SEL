@@ -12,7 +12,7 @@ import ExtraitActu from "../4_dumbComponent/ExtraitActu";
 class Actualites extends Component {
 	//=========INITIALISATION
 	componentWillMount(){
-		this.props.actualiteGet();
+		this.props.actualiteGet({});
 	}
 	//=========ACTIONS
 	actualiteRm( id ){

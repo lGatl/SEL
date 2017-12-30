@@ -18,10 +18,12 @@ class FormAnnone extends Component {
 			
 		});
 	}
+	//Controle
 	change(e,{ value, name }){
 
 		this.props.annonceControle({ [name]:value });
 	}
+	//Action
 	annonceAdd(){
 		this.props.annonceAdd(
 			{
@@ -34,28 +36,30 @@ class FormAnnone extends Component {
 			description: ""
 		});
 	}
-
-	render() {
-		const TITRE = !(this.props.titre == undefined) ? <Form.Input
+		//Preparation du rendu
+	titre(){
+		return !(this.props.titre == undefined) ? <Form.Input
 			label = 'Titre'
 			name = 'titre'
 			value = { this.props.titre }
 			onChange = { this.change.bind( this ) } 
 		/> : "";
-		const DESCRIPTION = !(this.props.description == undefined) ? <Form.TextArea
+	}
+	description(){
+		return !(this.props.description == undefined) ? <Form.TextArea
 			label = 'Description'
 			name = 'description'
 			value = { this.props.description }
 			onChange = { this.change.bind( this ) }
 		/>:"";
+	}
+	render() {
+
 		return (
 			<Form>
 				
-				{ TITRE }
-				{ DESCRIPTION }
-				
-				
-					
+				{ this.titre() }
+				{ this.description() }
 
 				<Form.Button
 					onClick = { this.annonceAdd.bind( this ) }

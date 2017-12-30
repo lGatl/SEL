@@ -12,7 +12,7 @@ import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 class Annonces extends Component {
 	//=========INITIALISATION
 	componentWillMount(){
-		this.props.annonceGet();
+		this.props.annonceGet({});
 	}
 	//=========ACTIONS
 	annonceRm( id ){

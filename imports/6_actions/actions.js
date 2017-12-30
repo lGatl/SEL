@@ -1,5 +1,7 @@
 import { COLLECTIONS } from "../5_methodes/methodes";
 
+import { CONSTANTE_Users, ACTION_Users } from "../user/2_action/user_action";
+
 const CONSTANTE = {};
 const ACTION = {};
 
@@ -30,13 +32,16 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p
 		};
 	}
-	function get(cbk = ()=>{}){
+	function get(obj, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) =>{
-			Meteor.call("get" + COLLECTION+"s",(err,res)=>{
+			Meteor.call("get" + COLLECTION+"s",obj,(err,res)=>{
 				if(err){
+					//console.log(err)
 					reject( err );
 				}else{
+					//console.log(res)
 					cbk( res );
+					
 					resolve( res );
 				}
 			});
@@ -113,6 +118,13 @@ COLLECTIONS.forEach((COLLECTION)=>{
 	};
 
 });
-export const CONSTANTES = CONSTANTE;
-export const ACTIONS = ACTION;
+
+
+
+export const CONSTANTES = { ...CONSTANTE, 
+	Users:{ ...CONSTANTE.Users, ...CONSTANTE_Users } 
+};
+export const ACTIONS = { ...ACTION,
+	Users:{ ...ACTION.Users, ...ACTION_Users }
+};
 

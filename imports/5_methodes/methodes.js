@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-export const COLLECTIONS = ["Actualite","Annonce"];
+export const COLLECTIONS = ["Users","Actualite","Annonce"];
 
 const SCHEMA ={
 	Actualite : new SimpleSchema({
@@ -14,14 +14,14 @@ const SCHEMA ={
 
 COLLECTIONS.forEach((COLLECTION) =>{
 	var BD = {};
-	BD[COLLECTION] = new Mongo.Collection(COLLECTION.toLowerCase());
+	COLLECTION.toLowerCase() == "users" ? BD[COLLECTION] = Meteor[COLLECTION.toLowerCase()] : BD[COLLECTION] = new Mongo.Collection(COLLECTION.toLowerCase());
 		
 	Meteor.methods({
 		[ "add" + COLLECTION ]:(obj)=>{ 
 			return BD[COLLECTION].insert(obj); // retourne l'id du nouvel objet
 		},
-		[ "get" + COLLECTION+"s" ]:()=>{
-			return BD[COLLECTION].find().fetch(); // retourne un tableau d'objets trouvés
+		[ "get" + COLLECTION+"s" ]:(obj)=>{
+			return BD[COLLECTION].find(obj).fetch(); // retourne un tableau d'objets trouvés
 		},
 		[ "get1" + COLLECTION ]: (obj)=>{
 			return BD[COLLECTION].findOne(obj); // retourne l'objet trouvé
@@ -33,10 +33,10 @@ COLLECTIONS.forEach((COLLECTION) =>{
 			return BD[COLLECTION].update({_id:obj._id},{$set:obj}); //retourne l'id de l'objet updaté => res.insertedId
 		},
 		[ "ups"+COLLECTION ]:(obj)=>{		
-			 return BD[COLLECTION].upsert({_id:obj._id},{$set:obj}); //retourne l'id de l'objet upserté => res.insertedId
+			return BD[COLLECTION].upsert({_id:obj._id},{$set:obj}); //retourne l'id de l'objet upserté => res.insertedId
 		}
 	});
 
-	BD[COLLECTION].attachSchema(SCHEMA[COLLECTION]);
+	SCHEMA[COLLECTION]?BD[COLLECTION].attachSchema(SCHEMA[COLLECTION]):"";
 
 });
