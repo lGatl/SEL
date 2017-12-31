@@ -2,11 +2,10 @@
 import { combineReducers } from "redux";
 
 import { REDUCERS } from "./reducer";
-
-import user from "../user/3_reducer/user_reducer";
+import  MenuREDUCER from "./menu_reducer";
 
 const ROOT_REDUCER = combineReducers({
 	...REDUCERS,
-	user
+	menu: MenuREDUCER,
 });
 export default ROOT_REDUCER;

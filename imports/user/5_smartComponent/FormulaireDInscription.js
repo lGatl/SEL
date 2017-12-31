@@ -12,8 +12,6 @@ import { Form } from "semantic-ui-react";
 class FormulaireDInscription extends Component {
 //Initialisation
 	componentWillMount(){
-		console.log(Meteor.userId());
-		this.props.usersGet({});
 		this.props.usersControle({ 
 			email: "",
 			password: ""
@@ -83,7 +81,6 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
-		usersGet: 					ACTIONS.Users.get,
 		usersControle: 			ACTIONS.Users.controle,
 		usersCreeCompte: 		ACTIONS.Users.creeCompte
 	}, dispatch );

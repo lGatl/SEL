@@ -9,8 +9,7 @@ import { Form } from "semantic-ui-react";
 class FormulaireConnexion extends Component {
 	//Initialisation
 	componentWillMount(){
-		console.log(Meteor.userId());
-		this.props.userslogIn();
+		
 		this.props.usersControle({ 
 			email: "",
 			password: ""
@@ -24,13 +23,7 @@ class FormulaireConnexion extends Component {
 	}
 	//Action
 	usersLogIn(){
-		this.props.usersLogIn(
-			{
-				email: this.props.email,
-				username: this.props.email,
-				password: this.props.password 
-			}
-		);
+		this.props.usersLogIn( this.props.email, this.props.password, ()=>{this.props.usersGetActiveUser();} );
 		this.props.usersControle({ 
 			email: "",
 			password: ""
@@ -62,7 +55,7 @@ class FormulaireConnexion extends Component {
 				<Form.Button
 					onClick = { this.usersLogIn.bind( this ) }
 				>
-				S'inscrire
+				Se Connecter
 				</Form.Button>
 			</Form>
 		);
@@ -81,7 +74,8 @@ function mapStateToProps( state ){
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
 		usersControle: 	ACTIONS.Users.controle,
-		usersLogIn: 		ACTIONS.Users.logIn
+		usersLogIn: 		ACTIONS.Users.logIn,
+		usersGetActiveUser:	ACTIONS.Users.getActiveUser,
 	}, dispatch );
 }
 

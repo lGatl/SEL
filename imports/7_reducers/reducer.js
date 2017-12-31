@@ -5,8 +5,7 @@ import { COLLECTIONS } from "../5_methodes/methodes";
 import { REDUCER_users_add } from "../user/3_reducer/user_reducer";
 
 var REDUCER = {};
-COLLECTIONS.forEach((COLLECTION)=>
-{
+COLLECTIONS.forEach((COLLECTION)=>{
 	const DEFAULTS = {
 		all: [],
 		one: {},
@@ -36,7 +35,7 @@ COLLECTIONS.forEach((COLLECTION)=>
 			
 		}
 		return COLLECTION == "Users" ?
-			{...state, ...REDUCER_users_add(state,action) } :
+			{...state, ...REDUCER_users_add(state, action) } :
 			state;
 	};
 

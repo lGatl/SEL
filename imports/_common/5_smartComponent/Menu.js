@@ -3,7 +3,8 @@ import React, { Component }	from 'react';
 import { bindActionCreators }	from 'redux';
 import { connect } 				from 'react-redux';
 
-/*import { activeItemMenu } from '../actions/menu_actions';*/
+import { ACTIONS } from "../../6_actions/actions";
+
 
 import { Menu, Grid, Image } from 'semantic-ui-react';
 
@@ -44,13 +45,6 @@ const menus =  [
 		icon: null,
 	},
 	{
-		title: 'Creer Un Compte',
-		url: '/creer_un_compte',
-		role: null,
-		group: null,
-		icon: null,
-	},
-	{
 		title: 'Kesako',
 		url: '/kesako',
 		role: null,
@@ -70,6 +64,13 @@ const menus =  [
 		role: null,
 		group: null,
 		icon: null,
+	},
+	{
+		title: 'Logout',
+		url: '/logout',
+		role: null,
+		group: null,
+		icon: null,
 	}
 
 ];
@@ -78,14 +79,22 @@ const menus =  [
 class Menus extends Component {
 
 	
+	activeMenu(title,url){
+		if(title == "Logout"){
+			this.props.logOut();
 
+
+		}else{
+			this.props.activeMenu(title);
+			FlowRouter.go(url);
+		}
+	}
 	ITEMS(){
 		return menus.map(({title, url}, i)=> {
 			return(
 				<Menu.Item
 					className={this.props.active_menu == title ? 'item active' : 'item'}
-					href={ url }
-					onClick={()=>{}/*this.props.activeItemMenu.bind(this, title)*/}
+					onClick={this.activeMenu.bind(this,title,url)}
 					key = { i }>
 					{ title }
 				</Menu.Item>
@@ -112,14 +121,16 @@ class Menus extends Component {
 function mapStateToProps(state){
 	return (
 		{
-
+			active_menu: state.menu.active_menu
 		}
 	);
 }
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
-	
+		activeMenu: ACTIONS.Menu.activeMenu,
+		getActiveUser: ACTIONS.Users.getActiveUser,
+		logOut: ACTIONS.Users.logOut
 	}, dispatch );
 }
 

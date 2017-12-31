@@ -8,7 +8,6 @@ import Actualite from '../4_pages/Actualite';
 import Annonce from '../4_pages/Annonce';
 import Connexion from '../4_pages/Connexion';
 import Contact from '../4_pages/Contact';
-import CreerUnCompte from '../4_pages/CreerUnCompte';
 import Kesako from '../4_pages/Kesako';
 import LesSelistes from '../4_pages/LesSelistes';
 import MonCompte from '../4_pages/MonCompte';
@@ -45,13 +44,6 @@ FlowRouter.route( '/contact', {
 	name: 'contact',
 	action: function() {
 		mount(Layout, { content: <Contact /> });
-		 window.scrollTo(0, 0);
-	}
-});
-FlowRouter.route( '/creer_un_compte', {
-	name: 'Creer Un Compte',
-	action: function() {
-		mount(Layout, { content: <CreerUnCompte /> });
 		 window.scrollTo(0, 0);
 	}
 });

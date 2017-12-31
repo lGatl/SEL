@@ -3,9 +3,10 @@
 import React,{ Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getActiveUser, checkLogged } 	from '../../User/actions/user_actions';
-import FormulaireConnexion from './FormulaireConnexion';
 
+import { ACTIONS } from "../../6_actions/actions";
+import Connexion from '../../4_pages/Connexion';
+import { Segment } from "semantic-ui-react";
 
 
 
@@ -14,13 +15,13 @@ class IsLogged extends Component{
 	componentWillMount(){
 		this.props.getActiveUser();
 	}
-
+	aAfficher(){
+		return this.props.active_user && this.props.active_user._id ? this.props.children : <div> <Segment> Vous n'etes pas connecté </Segment> <Connexion /> </div>;
+	}
 	render(){
-		const A_AFFICHER = this.props.active_user ?
-			this.props.children : <FormulaireConnexion />;
 					
 		return(	
-			<div>{A_AFFICHER}</div>
+			<div>{this.aAfficher()}</div>
 		);
 	}
 }
@@ -28,7 +29,7 @@ class IsLogged extends Component{
 function mapStateToProps( state ){
 	return (
 		{
-			active_user: 	state.user.active_user
+			active_user: 	state.users.active_user
 		}
 	);
 
@@ -36,7 +37,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
-		getActiveUser
+		getActiveUser: ACTIONS.Users.getActiveUser
 	}, dispatch );
 }
 

@@ -9,6 +9,7 @@ import reducers from "../7_reducers";
 import Menu from "../_common/5_smartComponent/Menu";
 import Footer from "../_common/4_dumbComponent/Footer";
 
+
 /*import Alert from 'react-s-alert';*/
 /*import 'react-s-alert/dist/s-alert-default.css';*/
 var store={};
@@ -30,7 +31,9 @@ export const Layout = ({ content }) => {
 					<Menu></Menu>
 
 					<div id="content">
+					
 						{content}
+					
 					</div>
 				</div>
 				<Footer></Footer>
