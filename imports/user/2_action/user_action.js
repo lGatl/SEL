@@ -52,7 +52,7 @@ function logOut( cbk = ()=>{}){
 }
 
 export function getActiveUser( cbk = ()=>{} ){ /*on recupere des infos sur l'user actif, renseigné donc en partie par github*/
-	console.log("action");
+
 	let p = new Promise( ( resolve, reject ) => {
 		Meteor.call(
 			"get1Users", Meteor.userId(), 
@@ -61,7 +61,7 @@ export function getActiveUser( cbk = ()=>{} ){ /*on recupere des infos sur l'use
 					console.log(err);
 					reject( err );
 				}else{
-					console.log(res);
+					
 					cbk(res);
 					resolve( res );/*on renvoi la reponse, elle finira dans active_user*/
 

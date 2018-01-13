@@ -33,13 +33,6 @@ FlowRouter.route( '/annonce', {
 		 window.scrollTo(0, 0);
 	}
 });
-FlowRouter.route( '/connexion', {
-	name: 'connexion',
-	action: function() {
-		mount(Layout, { content: <Connexion /> });
-		 window.scrollTo(0, 0);
-	}
-});
 FlowRouter.route( '/contact', {
 	name: 'contact',
 	action: function() {
