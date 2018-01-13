@@ -31,6 +31,13 @@ const menus =  [
 		icon: null,
 	},
 	{
+		title: 'Connexion',
+		url: '/connexion',
+		role: null,
+		group: null,
+		icon: null,
+	},
+	{
 		title: 'Contact',
 		url: '/contact',
 		role: null,

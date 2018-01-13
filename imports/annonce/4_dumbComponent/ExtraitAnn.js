@@ -3,6 +3,8 @@ import { Segment, Grid } from 'semantic-ui-react';
 
 export default class ExtraitAnn extends Component {
 
+
+
 	render(){
 		const { _id, titre, description, onClick } = this.props;
 		return(
