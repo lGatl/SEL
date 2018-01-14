@@ -5,7 +5,6 @@ import { connect } 				from 'react-redux';
 
 import { ACTIONS } from "../../6_actions/actions";
 
-
 import { Menu, Grid, Image } from 'semantic-ui-react';
 
 const menus =  [
@@ -89,31 +88,27 @@ class Menus extends Component {
 			FlowRouter.go(url);
 		}
 	}
-	ITEMS(){
-		return menus.map(({title, url}, i)=> {
-			return(
-				<Menu.Item
-					className={this.props.active_menu == title ? 'item active' : 'item'}
-					onClick={this.activeMenu.bind(this,title,url)}
-					key = { i }>
-					{ title }
-				</Menu.Item>
-			);
-		});
-	}
-
 
 	render() {
-		A_AFFICHER =	
-		<Menu inverted color = 	'red'>
-			
-			{ this.ITEMS() }
-		</Menu>
-				
 		/*La constante prepare le style des items (de types meteo ou non)*/
 		return (
 			<div>
-				{ A_AFFICHER }
+				{ 
+					<Menu inverted color = 	'red'>
+						{ 
+							menus.map(({title, url}, i)=> {
+								if(!(title=="Logout")||(this.props.active_user&&this.props.active_user._id)){
+									return	<Menu.Item
+										className={this.props.active_menu == title ? 'item active' : 'item'}
+										onClick={this.activeMenu.bind(this,title,url)}
+										key = { i }>
+										{ title }
+									</Menu.Item>;
+								}
+							})
+						}
+					</Menu>
+				}
 			</div> );
 	}
 }
@@ -121,7 +116,8 @@ class Menus extends Component {
 function mapStateToProps(state){
 	return (
 		{
-			active_menu: state.menu.active_menu
+			active_menu: state.menu.active_menu,
+			active_user: state.users.active_user
 		}
 	);
 }

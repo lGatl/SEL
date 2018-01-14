@@ -5,23 +5,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
-import Connexion from '../../4_pages/Connexion';
-import { Segment } from "semantic-ui-react";
 
 
 
-class IsLogged extends Component{
 
-	// componentWillMount(){
-	// 	this.props.getActiveUser();
-	// }
-	aAfficher(){
-		return this.props.active_user && this.props.active_user._id ? this.props.children : <div> <Segment> Vous n'etes pas connecté </Segment> <Connexion /> </div>;
+class InitState extends Component{
+
+	componentWillMount(){
+		this.props.getActiveUser();
 	}
+	
 	render(){
-					
 		return(	
-			<div>{this.aAfficher()}</div>
+			<div></div>
 		);
 	}
 }
@@ -41,4 +37,4 @@ function mapDispatchToProps(dispatch){
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( IsLogged );
+export default connect( mapStateToProps, mapDispatchToProps )( InitState );

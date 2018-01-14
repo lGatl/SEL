@@ -8,6 +8,7 @@ import reducers from "../7_reducers";
 
 import Menu from "../_common/5_smartComponent/Menu";
 import Footer from "../_common/4_dumbComponent/Footer";
+import InitState from "../_common/5_smartComponent/InitState";
 
 
 /*import Alert from 'react-s-alert';*/
@@ -25,8 +26,9 @@ export const Layout = ({ content }) => {
 
 	return(
 		<Provider store={store}>
+			
 			<div className="main-layout">
-
+				<InitState/>
 				<div className="bodyLay">
 					<Menu></Menu>
 
