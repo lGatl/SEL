@@ -1,12 +1,9 @@
 import React, {Component} from "react";
-import { Segment } from "semantic-ui-react";
-
-
 
 export default class Titre extends Component {
 	render(){
 		return (
-			<Segment basic >
+			<div>
 				<h1 style = {{ 
 					textAlign:"center" 
 				}}>
@@ -14,7 +11,7 @@ export default class Titre extends Component {
 				</h1>
 				<hr/>
 				<br/>
-			</Segment>
+			</div>
 		);
 	}
 }

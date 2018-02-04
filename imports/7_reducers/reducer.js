@@ -9,6 +9,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 	const DEFAULTS = {
 		all: [],
 		one: {},
+		controle:{}
 		
 	};
 
@@ -30,7 +31,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			return { ...state, all };
 			break;
 		case CONSTANTES[COLLECTION].CONTROLE:
-			return { ...state, ...action.payload };
+			return { ...state, controle:{...state.controle,...action.payload} };
 			break;
 			
 		}

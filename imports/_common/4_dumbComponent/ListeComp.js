@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment } from "../../_common/4_dumbComponent/gat_ui_react";
 
 export default class ListeComp extends Component {
 

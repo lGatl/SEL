@@ -4,17 +4,20 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Form } from "semantic-ui-react";
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
 
 class FormulaireConnexion extends Component {
 	//Initialisation
-	componentWillMount(){
-		
-		this.props.usersControle({ 
+
+	init(){
+		return { 
 			email: "",
 			password: ""
-			
-		});
+		};
+	}
+	componentWillMount(){
+		
+		this.props.usersControle(this.init());
 	}
 	//Controle
 	change(e,{ value, name }){
@@ -23,41 +26,35 @@ class FormulaireConnexion extends Component {
 	}
 	//Action
 	usersLogIn(){
-		this.props.usersLogIn( this.props.email, this.props.password, ()=>{this.props.usersGetActiveUser();} );
-		this.props.usersControle({ 
-			email: "",
-			password: ""
-		});
+		let {email, password} = this.props.users_controle;
+		this.props.usersLogIn( email, password, ()=>{this.props.usersGetActiveUser();} );
+		this.props.usersControle(this.init());
 	}
 	//Preparation du rendu
-	eMail(){
-		return !(this.props.email == undefined) ? <Form.Input
-			label = 'E mail'
-			name = 'email'
-			value = { this.props.email }
-			onChange = { this.change.bind( this ) } 
-		/> : "";
-	}
-	password(){
-		return !(this.props.password == undefined) ? <Form.Input
-			label = 'Mot de passe'
-			name = 'password'
-			value = { this.props.password }
-			onChange = { this.change.bind( this ) }
-		/>:"";
-	}
-	render() {
 	
+	render() {
+		let {email, password} = this.props.users_controle;
+		
 		return (
-			<Form>
-				{ this.eMail() }
-				{ this.password() }
-				<Form.Button
+			<form>
+				<Input
+					label = 'E mail'
+					name = 'email'
+					value = { email||"" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<Input
+					label = 'Mot de passe'
+					name = 'password'
+					value = { password||"" }
+					onChange = { this.change.bind( this ) }
+				/>
+				<Button
 					onClick = { this.usersLogIn.bind( this ) }
 				>
 				Se Connecter
-				</Form.Button>
-			</Form>
+				</Button>
+			</form>
 		);
 	}
 }
@@ -65,8 +62,7 @@ class FormulaireConnexion extends Component {
 function mapStateToProps( state ){
 	return (
 		{
-			email: state.users.email,
-			password: state.users.password
+			users_controle: state.users.controle
 		}
 	);
 }

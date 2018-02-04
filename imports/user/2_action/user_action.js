@@ -61,7 +61,7 @@ export function getActiveUser( cbk = ()=>{} ){ /*on recupere des infos sur l'use
 					console.log(err);
 					reject( err );
 				}else{
-					console.log(res);
+					// console.log(res);
 					cbk(res);
 					resolve( res );/*on renvoi la reponse, elle finira dans active_user*/
 

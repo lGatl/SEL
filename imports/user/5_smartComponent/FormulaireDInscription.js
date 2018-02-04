@@ -4,19 +4,35 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Form } from "semantic-ui-react";
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
 
 
 
 
 class FormulaireDInscription extends Component {
 //Initialisation
-	componentWillMount(){
-		this.props.usersControle({ 
+	constructor(){
+		super();
+		this.roles=[
+			{ key: 'in', value: 'in', text: 'inscrit' },
+			{ key: 'se', value: 'se', text: 'seliste' },
+			{ key: 'mo', value: 'mo', text: 'moderateur' },
+			{ key: 'ad', value: 'ad', text: 'admin' }
+		];
+	}
+	init(){
+		return {
 			email: "",
-			password: ""
-			
-		});
+			password: "",
+			nom: "",
+			prenom: "",
+			telephone:"",
+			adresse:"",
+			date_val_resp:""
+		};
+	}
+	componentWillMount(){
+		this.props.usersControle(this.init());
 	}
 	//Controle
 	change(e,{ value, name }){
@@ -25,47 +41,63 @@ class FormulaireDInscription extends Component {
 	}
 	//Action
 	usersCreeCompte(){
-		this.props.usersCreeCompte(
-			{
-				email : this.props.email,
-				username : this.props.email,
-				password: this.props.password 
-			}
-		);
-		this.props.usersControle({ 
-			email: "",
-			password: ""
-		});
+		console.log(this.props.controle);
+		this.props.usersControle(this.init());
 	}
 	//Preparation du rendu
-	eMail(){
-		return !(this.props.email == undefined) ? <Form.Input
-			label = 'E mail'
-			name = 'email'
-			value = { this.props.email }
-			onChange = { this.change.bind( this ) } 
-		/> : "";
-	}
-	password(){
-		return !(this.props.password == undefined) ? <Form.Input
-			label = 'Mot de passe'
-			name = 'password'
-			value = { this.props.password }
-			onChange = { this.change.bind( this ) }
-		/>:"";
-	}
+
 	render() {
-	
+		let {email,password,nom,prenom,telephone,adresse,date_val_resp} = this.props.controle;
 		return (
-			<Form>
-				{ this.eMail() }
-				{ this.password() }
-				<Form.Button
+			<form>
+				<Input
+					label = 'E mail'
+					name = 'email'
+					value = { email || "" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<Input
+					label = 'Mot de passe'
+					name = 'password'
+					value = { password || "" }
+					onChange = { this.change.bind( this ) }
+				/>
+				<Input
+					label = 'Nom'
+					name = 'nom'
+					value = { nom || "" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<Input
+					label = 'Prenom'
+					name = 'prenom'
+					value = { prenom || "" }
+					onChange = { this.change.bind( this ) }
+				/>
+				<Input
+					label = 'Telephone'
+					name = 'telephone'
+					value = { telephone || "" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<TextArea
+					label = 'Adresse'
+					name = 'adresse'
+					value = { adresse || "" }
+					onChange = { this.change.bind( this ) }
+				/>
+				<Input
+					label = 'Date de validité de votre responsabilité civil'
+					name = 'date_val_resp'
+					value = { date_val_resp || "" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<Button
 					onClick = { this.usersCreeCompte.bind( this ) }
 				>
 				S'inscrire
-				</Form.Button>
-			</Form>
+				</Button>
+			</form>
 		);
 	}
 }
@@ -73,8 +105,7 @@ class FormulaireDInscription extends Component {
 function mapStateToProps( state ){
 	return (
 		{
-			email: state.users.email,
-			password: state.users.password
+			controle: state.users.controle
 		}
 	);
 }

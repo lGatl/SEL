@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Form } from "semantic-ui-react";
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
 
 
 
@@ -12,11 +12,14 @@ import { Form } from "semantic-ui-react";
 class FormActu extends Component {
 
 	componentWillMount(){
-		this.props.actualiteControle({ 
+		this.props.actualiteControle(this.init());
+	}
+	init(){
+		return{ 
 			titre: "",
 			description: ""
 			
-		});
+		};
 	}
 	//Controle
 	change(e,{ value, name }){
@@ -25,47 +28,43 @@ class FormActu extends Component {
 	}
 	//Action
 	actualiteAdd(){
+		let {titre, description} = this.props.actualite_controle;
+
 		this.props.actualiteAdd(
 			{
-				titre: this.props.titre,
-				description: this.props.description
+				titre,
+				description
 			}
 		);
-		this.props.actualiteControle({ 
-			titre: "",
-			description: ""
-		});
+		this.props.actualiteControle(this.init());
 	}
 	//Preparation du rendu
-	titre(){
-		return !(this.props.titre == undefined) ? <Form.Input
-			label = 'Titre'
-			name = 'titre'
-			value = { this.props.titre }
-			onChange = { this.change.bind( this ) } 
-		/> : "";
-	}
-	description(){
-		return !(this.props.description == undefined) ? <Form.TextArea
-			label = 'Description'
-			name = 'description'
-			value = { this.props.description }
-			onChange = { this.change.bind( this ) }
-		/>:"";
-	}
+	
 	render(){
+		let {titre, description} = this.props.actualite_controle;
+
 		return (
-			<Form>
+			<form>
 				
-				{ this.titre() }
-				{ this.description() }
+				<Input
+					label = 'Titre'
+					name = 'titre'
+					value = { titre||"" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<TextArea
+					label = 'Description'
+					name = 'description'
+					value = { description||"" }
+					onChange = { this.change.bind( this ) }
+				/>
 				
-				<Form.Button
+				<Button
 					onClick = { this.actualiteAdd.bind( this ) }
 				>
 				Sauvegarder l'actualite
-				</Form.Button>
-			</Form>
+				</Button>
+			</form>
 		);
 	}
 }
@@ -73,8 +72,7 @@ class FormActu extends Component {
 function mapStateToProps( state ){
 	return (
 		{
-			titre: state.actualite.titre,
-			description: state.actualite.description
+			actualite_controle: state.actualite.controle
 		}
 	);
 }

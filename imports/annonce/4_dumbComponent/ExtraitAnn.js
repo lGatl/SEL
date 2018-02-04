@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Segment, Grid } from 'semantic-ui-react';
+import { Segment,Button } from "../../_common/4_dumbComponent/gat_ui_react";
 
 export default class ExtraitAnn extends Component {
 
@@ -9,15 +9,15 @@ export default class ExtraitAnn extends Component {
 		const { _id, titre, description, onClick } = this.props;
 		return(
 
-			<Segment> 
-				<Grid>
-					<Grid.Column width = {14}>
-						{ titre } <br/> <br/> { description }
-					</Grid.Column>
-					<Grid.Column width = {2} onClick = { onClick.bind( this, _id ) }>
-						Supprimer
-					</Grid.Column>
-				</Grid> 
+			<Segment row> 
+				<div style={{flex:1}}>
+					{ titre } <br/> <br/> { description }
+				</div>
+				<div>
+					<Button width = {2} onClick = { onClick.bind( this, _id ) }>
+					Supprimer
+					</Button>
+				</div>
 			</Segment>
 
 		);

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Segment, Grid } from "semantic-ui-react";
 import ListeComp from "../../_common/4_dumbComponent/ListeComp";
 import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Button, Form } from "semantic-ui-react";
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
 import Titre from "../4_dumbComponent/Titre.js";
 
 export default class FormContact extends Component {
@@ -23,51 +23,49 @@ export default class FormContact extends Component {
 
 	render(){
 		return(
-			<Form id="contact">
+			<form id="contact">
 				<br/>
 				<Titre>FORMULAIRE DE CONTACT</Titre>
 				<br/>
-				<Form.Input
+				<Input
 					label="Nom"
 					name="nom"
 					placeholder="Nom"
 					onChange={this.change.bind(this)}
 					value={this.state.nom}
 				/>
-				<Form.Input
+				<Input
 					label="Prénom"
 					name="prenom"
 					placeholder="Prénom"
 					onChange={this.change.bind(this)}
 					value={this.state.prenom}
 				/>
-				<Form.Input
+				<Input
 					label="Email"
 					name="mail"
 					placeholder="exemple@exemple.com"
 					onChange={this.change.bind(this)}
 					value={this.state.mail}
 				/>
-				<Form.Input
+				<Input
 					label="Téléphone"
 					name="tel"
 					placeholder="Téléphone"
 					onChange={this.change.bind(this)}
 					value={this.state.tel}
 				/>
-				<Form.TextArea
+				<TextArea
 					name="sujet"
 					label="Objet de votre message"
 					placeholder="Objet de votre message"
-					rows="1"
 					onChange={this.change.bind(this)}
 					value={this.state.sujet}
 				/>
-				<Form.TextArea
+				<TextArea
 					name="message"
 					label="Votre message"
 					placeholder="Votre message"
-					rows="3"
 					onChange={this.change.bind(this)}
 					value={this.state.message}
 				/>
@@ -84,7 +82,7 @@ export default class FormContact extends Component {
 					"%0A" +"Message : " +
 					this.state.message
 				}>Envoyer</Button>
-			</Form>
+			</form>
 		)
 	}
 }

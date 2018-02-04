@@ -4,19 +4,19 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Form } from "semantic-ui-react";
-
-
-
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
 
 class FormAnnone extends Component {
 
 	componentWillMount(){
-		this.props.annonceControle({ 
+		this.props.annonceControle(this.init());
+	}
+	init(){
+		return{ 
 			titre: "",
 			description: ""
 			
-		});
+		};
 	}
 	//Controle
 	change(e,{ value, name }){
@@ -25,48 +25,41 @@ class FormAnnone extends Component {
 	}
 	//Action
 	annonceAdd(){
+		let {titre, description} = this.props.annonce_controle;
 		this.props.annonceAdd(
 			{
-				titre: this.props.titre,
-				description: this.props.description
+				titre,
+				description
 			}
 		);
-		this.props.annonceControle({ 
-			titre: "",
-			description: ""
-		});
+		this.props.annonceControle(this.init());
 	}
-		//Preparation du rendu
-	titre(){
-		return !(this.props.titre == undefined) ? <Form.Input
-			label = 'Titre'
-			name = 'titre'
-			value = { this.props.titre }
-			onChange = { this.change.bind( this ) } 
-		/> : "";
-	}
-	description(){
-		return !(this.props.description == undefined) ? <Form.TextArea
-			label = 'Description'
-			name = 'description'
-			value = { this.props.description }
-			onChange = { this.change.bind( this ) }
-		/>:"";
-	}
+	//Preparation du rendu
+	
 	render() {
-
+		let {titre, description} = this.props.annonce_controle;
 		return (
-			<Form>
+			<form style={{}}>
 				
-				{ this.titre() }
-				{ this.description() }
+				<Input
+					label = 'Titre'
+					name = 'titre'
+					value = { titre||"" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<TextArea
+					label = 'Description'
+					name = 'description'
+					value = { description||"" }
+					onChange = { this.change.bind( this ) }
+				/>
 
-				<Form.Button
+				<Button
 					onClick = { this.annonceAdd.bind( this ) }
 				>
 				Sauvegarder l'annonce
-				</Form.Button>
-			</Form>
+				</Button>
+			</form>
 		);
 	}
 }
@@ -74,8 +67,7 @@ class FormAnnone extends Component {
 function mapStateToProps( state ){
 	return (
 		{
-			titre: state.annonce.titre,
-			description: state.annonce.description
+			annonce_controle: state.annonce.controle
 		}
 	);
 }
