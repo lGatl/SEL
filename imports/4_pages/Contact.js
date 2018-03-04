@@ -1,10 +1,18 @@
 import React, {Component} from "react";
+
+import { bindActionCreators }	from 'redux';
+import { connect } from 'react-redux';
+
+import { ACTIONS } from "../6_actions/actions";
+
+import { Segment } from "../_common/4_dumbComponent/_gat_ui_react";
+
 import FormContact from "../_common/4_dumbComponent/FormContact.js";
 import CoordonneesHoraires from "../_common/4_dumbComponent/CoordonneesHoraires.js";
 
-import { Grid,Segment } from "semantic-ui-react";
 
-export default class Contact extends Component {
+
+class Contact extends Component {
 	constructor(){
 		super();
 		this.infos={
@@ -20,23 +28,36 @@ export default class Contact extends Component {
 			details:["Mardi de 13h30 à 16h30 et le Vendredi de 10 h à 12h."]
 		};
 	}
+
+	componentWillMount(){
+		this.props.activeMenu("Contact");
+	}
+
 	render(){
 		return (
 			<div>
-				<Segment.Group horizontal>
 					<Segment><CoordonneesHoraires contenu={this.infos}></CoordonneesHoraires></Segment>
 					<Segment><CoordonneesHoraires contenu={this.horaires}></CoordonneesHoraires></Segment>
-				</Segment.Group>
-				<Grid>
-					<Grid.Column mobile={16} tablet={16} computer={2} only="computer"></Grid.Column>
-					<Grid.Column mobile={16} tablet={16} computer={12}>
+				
 						<FormContact></FormContact>
-					</Grid.Column>
-					<Grid.Column mobile={16} tablet={16} computer={2} only="computer"></Grid.Column>
-				</Grid>
 
 			</div>
 		);
 	}
 }
 
+function mapStateToProps(state){
+	return (
+		{
+			
+		}
+	);
+}
+
+function mapDispatchToProps( dispatch ){
+	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+	}, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( Contact );

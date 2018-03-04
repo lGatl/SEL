@@ -3,16 +3,6 @@
 html, body,#react-root{
 height: 100%!important;
 }
-.main-layout{
-	display: flex !important;
-	min-height: 100vh!important;
-	flex-direction: column!important;
-}
 
-footer {
-	flex: none!important;
-}
-.bodyLay{
-	flex: 1!important;
-}
+
 

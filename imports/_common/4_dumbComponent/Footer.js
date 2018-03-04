@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react'
-import { Segment } from 'semantic-ui-react'		//j'importe l'outil Segment de sementic-ui-react
+import { Segment } from "../../_common/4_dumbComponent/_gat_ui_react";	//j'importe l'outil Segment de sementic-ui-react
 
 //je cree le composent "Footer" qui est en fait une classe javascript
 //On dit a cette classe d'heriter, donc de prendre toutes les fonctionnalitées de Component

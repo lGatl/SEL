@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 import Titre from "../4_dumbComponent/Titre.js";
 
 export default class FormContact extends Component {

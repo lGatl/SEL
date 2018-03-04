@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
-import ContenuKesako from '../_common/4_dumbComponent/ContenuKesako'
 
-export default class Kesako extends Component {
+import { bindActionCreators }	from 'redux';
+import { connect } from 'react-redux';
+
+import { ACTIONS } from "../6_actions/actions";
+
+import ContenuKesako from '../_common/4_dumbComponent/ContenuKesako';
+
+class Kesako extends Component {
 	componentWillMount(){
+		this.props.activeMenu("Kesako");
 	}
+
+
 	render(){
 		return (
 
@@ -14,3 +23,19 @@ export default class Kesako extends Component {
 		);
 	}
 }
+
+function mapStateToProps(state){
+	return (
+		{
+			
+		}
+	);
+}
+
+function mapDispatchToProps( dispatch ){
+	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+	}, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( Kesako );

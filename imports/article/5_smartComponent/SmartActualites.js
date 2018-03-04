@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Segment} from "semantic-ui-react";
+import { Segment} from "../../_common/4_dumbComponent/_gat_ui_react";
 import ListeComp from "../../_common/4_dumbComponent/ListeComp";
 import ExtraitActu from "../4_dumbComponent/ExtraitActu";
 

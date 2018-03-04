@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Segment,Button } from "../../_common/4_dumbComponent/gat_ui_react";
+import { Segment,Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 export default class ExtraitAnn extends Component {
 
@@ -22,4 +22,4 @@ export default class ExtraitAnn extends Component {
 
 		);
 	}
-}
+};;;;

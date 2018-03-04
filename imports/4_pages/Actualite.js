@@ -1,12 +1,22 @@
 import React, {Component} from "react";
 
-import { Grid } from "semantic-ui-react";
+import { bindActionCreators }	from 'redux';
+import { connect } from 'react-redux';
 
-import Titre from "../_common/4_dumbComponent/Titre";
+import { ACTIONS } from "../6_actions/actions";
+
+import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
+
+
+
 import FormActu from "../article/5_smartComponent/FormActu";
 import SmartActualites from "../article/5_smartComponent/SmartActualites";
 
-export default class Actualite extends Component {
+class Actualite extends Component {
+
+	componentWillMount(){
+		this.props.activeMenu("Actualité");
+	}
 
 	render(){
 
@@ -21,3 +31,18 @@ export default class Actualite extends Component {
 }
 
 
+function mapStateToProps(state){
+	return (
+		{
+			
+		}
+	);
+}
+
+function mapDispatchToProps( dispatch ){
+	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+	}, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( Actualite );

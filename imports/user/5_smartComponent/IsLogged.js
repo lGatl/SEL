@@ -4,9 +4,10 @@ import React,{ Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
+import { Segment, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+
 import { ACTIONS } from "../../6_actions/actions";
-import Connexion from '../../4_pages/Connexion';
-import { Segment } from "semantic-ui-react";
+
 
 
 
@@ -15,8 +16,11 @@ class IsLogged extends Component{
 	// componentWillMount(){
 	// 	this.props.getActiveUser();
 	// }
+	pageConnexion(){
+		FlowRouter.go('/Connexion');
+	}
 	aAfficher(){
-		return this.props.active_user && this.props.active_user._id ? this.props.children : <div> <Segment> Vous n'etes pas connecté </Segment> <Connexion /> </div>;
+		return this.props.active_user && this.props.active_user._id ? this.props.children : <div> <Segment> Vous n'etes pas connecté </Segment> <Button onClick={this.pageConnexion.bind(this)}> Page de connexion</Button> </div>;
 	}
 	render(){
 					

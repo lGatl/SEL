@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Input, TextArea, Button } from "../../_common/4_dumbComponent/gat_ui_react";
+import { Input, TextArea, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 
 
@@ -43,6 +43,7 @@ class FormulaireDInscription extends Component {
 	usersCreeCompte(){
 		console.log(this.props.controle);
 		this.props.usersControle(this.init());
+		FlowRouter.go("/mon_compte/informations");
 	}
 	//Preparation du rendu
 

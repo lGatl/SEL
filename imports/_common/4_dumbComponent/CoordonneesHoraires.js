@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Segment, Header } from 'semantic-ui-react'
+import { Segment} from "../../_common/4_dumbComponent/_gat_ui_react";
 
 export default class CoordonneesHoraires extends Component {
 
@@ -10,7 +10,7 @@ export default class CoordonneesHoraires extends Component {
 		return(
 
 			    <Segment textAlign="center" basic>
-			    	<Header as='h2'>{this.props.contenu.titre}</Header>
+			    	<Segment as='h2'>{this.props.contenu.titre}</Segment>
 			    	<p >
 				{this.props.contenu.details.map((detail,i) => <span key={detail,i}>{detail} <br/></span>)}
 				</p>

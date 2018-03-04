@@ -1,14 +1,24 @@
 import SimpleSchema from 'simpl-schema';
-export const COLLECTIONS = ["Users","Actualite","Annonce"];
+export const COLLECTIONS = ["Users","Actualite","Annonce","Categorie"];
+
+var DateS = {
+	type: Date,
+	autoValue: () => new Date(Date.now()),
+	optional: true
+};
 
 const SCHEMA ={
 	Actualite : new SimpleSchema({
 		titre: { type: String },
 		description: { type: String },
+		date: DateS
 	}),
 	Annonce : new SimpleSchema({
 		titre: { type: String },
+		type: { type:String },
+		user_id: { type:String },
 		description: { type: String },
+		date: DateS
 	})
 };
 

@@ -1,22 +1,44 @@
 import React, {Component} from "react";
 
-import { Grid } from "semantic-ui-react";
+import { bindActionCreators }	from 'redux';
+import { connect } from 'react-redux';
 
-import Titre from "../_common/4_dumbComponent/Titre";
-import SmartAnnonce from "../annonce/5_smartComponent/SmartAnnonce";
+import { ACTIONS } from "../6_actions/actions";
+
+import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
+
+import ListeAnnonce from "../annonce/5_smartComponent/ListeAnnonce";
 import FormAnnonce from "../annonce/5_smartComponent/FormAnnonce";
-export default class Annonce extends Component {
+class Annonce extends Component {
+
+	componentWillMount(){
+		this.props.activeMenu("Annonce");
+	}
 
 	render(){
 
 		return (
 			<div>
 				<Titre> Annonce </Titre>
-				<SmartAnnonce/>
-				<FormAnnonce/>
+				<ListeAnnonce/>
 			</div>
 		);
 	}
 }
 
 
+function mapStateToProps(state){
+	return (
+		{
+			
+		}
+	);
+}
+
+function mapDispatchToProps( dispatch ){
+	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+	}, dispatch );
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )( Annonce );

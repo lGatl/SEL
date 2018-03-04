@@ -17,10 +17,10 @@ export default class Segment extends Component {
 		};
 	}
 	render(){
-			let {s_segment} = this.style();
-			let {style} = this.props;
+		let {s_segment} = this.style();
+		let {style} = this.props;
 		return (
-			<div style={{...s_segment, ...style}}>
+			<div onClick={this.props.onClick?this.props.onClick.bind(this):()=>{}} style={{...s_segment, ...style}}>
 				{this.props.children}
 			</div>
 		);
