@@ -5,6 +5,8 @@ import {Layout, LayoutMonCompte} from "../3_layout/layout";
 
 import MonCompte from "../4_pages/MonCompte";
 import FormCategorie from "../categorie/5_smartComponent/FormCategorie";
+import FormActu from "../actualite/5_smartComponent/FormActu";
+import GererAnnonces from "../annonce/5_smartComponent/GererAnnonces";
 
 
 var adminRoutes = FlowRouter.group({
@@ -28,14 +30,14 @@ adminRoutes.route("/", {
 adminRoutes.route("/annonce", {
 	name: "admin",
 	action(){
-		mount(LayoutMonCompte, {content: <MonCompte />});
+		mount(LayoutMonCompte, {content: <GererAnnonces />});
 		window.scrollTo(0, 0);
 	},
 });
 adminRoutes.route("/actualite", {
 	name: "admin",
 	action(){
-		mount(LayoutMonCompte, {content: <MonCompte />});
+		mount(LayoutMonCompte, {content: <FormActu />});
 		window.scrollTo(0, 0);
 	},
 });

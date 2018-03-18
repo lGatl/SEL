@@ -4,6 +4,7 @@ import {mount} from "react-mounter";
 import {Layout, LayoutMonCompte} from "../3_layout/layout";
 
 import MonCompte from "../4_pages/MonCompte";
+import MesInformations from "../user/5_smartComponent/MesInformations";
 import FormAnnonce from "../annonce/5_smartComponent/FormAnnonce";
 import ListeAnnonce from "../annonce/5_smartComponent/ListeAnnonce";
 import ListeProposition from "../proposition/5_smartComponent/ListeProposition";
@@ -23,7 +24,7 @@ var mon_compteRoutes = FlowRouter.group({
 mon_compteRoutes.route( "/informations", {
 	name: "mon_compte",
 	action: function() {
-		mount(LayoutMonCompte, { content: <MonCompte type = "informations"/> });
+		mount(LayoutMonCompte, { content: <MesInformations/> });
 		window.scrollTo(0, 0);
 	}
 });

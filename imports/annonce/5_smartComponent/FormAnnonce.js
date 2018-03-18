@@ -10,6 +10,7 @@ class FormAnnone extends Component {
 
 	componentWillMount(){
 		this.props.annonceControle(this.init());
+		this.props.categorieGet({publier:true});
 	}
 	init(){
 		return{ 
@@ -17,9 +18,10 @@ class FormAnnone extends Component {
 			description: "",
 			categorie: "",
 			date_de_fin:"",
-			e_mail:false,
+			email:false,
 			telephone:false,
 			adresse:false,
+			image:"/images/1.jpg"
 			
 		};
 	}
@@ -30,13 +32,20 @@ class FormAnnone extends Component {
 	}
 	//Action
 	annonceAdd(){
-		let {titre, description} = this.props.annonce_controle;
+		let {titre, description, categorie, email, telephone, adresse, date_de_fin} = this.props.annonce_controle;
 		this.props.annonceAdd(
 			{
 				titre,
 				description,
+				etat:"en_attente",
+				date:Date.now(),
 				type: this.props.type,
-				user_id:this.props.active_user._id
+				user_id:this.props.active_user._id,
+				categorie,
+				email,
+				telephone,
+				adresse,
+				date_de_fin
 
 			}
 		);
@@ -44,7 +53,7 @@ class FormAnnone extends Component {
 	}
 	//Preparation du rendu
 	render() {
-		let { titre, description, categorie, date_de_fin, e_mail, adresse, telephone } = this.props.annonce_controle;
+		let { titre, description, categorie, date_de_fin, email, adresse, telephone } = this.props.annonce_controle;
 		return (
 			<form style={{}}>
 				<Titre>Deposer une {this.props.type}</Titre>
@@ -53,12 +62,8 @@ class FormAnnone extends Component {
 					placeholder = 'Categorie'
 					name = 'categorie'
 					onChange = { this.change.bind ( this ) } 
-					options = { [
-						{ value: 'lien', text: 'lien' },
-						{ value: 'lien2', text: 'lien2' },
-						{ value: 'lien3', text: 'lien3' }
-					] }
-					value = { categorie||"" }
+					options = { this.props.categories.map(cat=>{return{value:cat._id,text:cat.titre};}) }
+					value = { this.props.categories.find(cat=>cat._id==categorie)?this.props.categories.find(cat=>cat._id==categorie).titre:"" }
 				/>
 				<Input
 					label = 'Titre'
@@ -76,9 +81,9 @@ class FormAnnone extends Component {
 				/>
 				<div>Informations de contact</div>
 				<Checkbox
-					label = 'e-mail'
-					name = 'e_mail'
-					checked = { e_mail||"" }
+					label = 'email'
+					name = 'email'
+					checked = { email||"" }
 					onChange = { this.change.bind( this ) }
 				/>
 				<Checkbox
@@ -115,7 +120,8 @@ function mapStateToProps( state ){
 	return (
 		{
 			active_user: state.users.active_user,
-			annonce_controle: state.annonce.controle
+			annonce_controle: state.annonce.controle,
+			categories: state.categorie.all
 		}
 	);
 }
@@ -127,6 +133,7 @@ function mapDispatchToProps( dispatch ){
 
 		annonceControle: 	ACTIONS.Annonce.controle,
 		annonceAdd: 			ACTIONS.Annonce.add,
+		categorieGet: 			ACTIONS.Categorie.get,
 	}, dispatch );
 }
 

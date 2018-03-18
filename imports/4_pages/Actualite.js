@@ -7,10 +7,7 @@ import { ACTIONS } from "../6_actions/actions";
 
 import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
 
-
-
-import FormActu from "../article/5_smartComponent/FormActu";
-import SmartActualites from "../article/5_smartComponent/SmartActualites";
+import SmartActualites from "../actualite/5_smartComponent/SmartActualites";
 
 class Actualite extends Component {
 
@@ -24,7 +21,6 @@ class Actualite extends Component {
 			<div>
 				<Titre> Actualites </Titre>
 				<SmartActualites/>
-				<FormActu/>
 			</div>
 		);
 	}

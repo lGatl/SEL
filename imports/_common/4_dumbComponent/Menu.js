@@ -9,6 +9,7 @@ export default class Menu extends Component {
 		return{
 			s_container:{
 				display:"flex",
+				overflow:"hidden",
 				flexDirection:this.props.row ? "row" : "column",
 				border: "1px solid rgba(150,150,150,0.5)",
 				alignItems:"strecth",

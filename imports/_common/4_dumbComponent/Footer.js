@@ -22,18 +22,13 @@ export default class Footer extends Component {
 
 
 			<footer>
-				 <Segment inverted color='red' basic >
-				 	<p className="tailletext2">
-					 	Système d'Echange Local de la Croix Rouge de Damvillers, 6 rue des Remparts 55150 DAMVILLERS
+				<Segment inverted color='red' basic >
+						<p>
+							Système d'Echange Local de la Croix Rouge de Damvillers, 6 rue des Remparts 55150 DAMVILLERS
 
-					 	<br/><br/>
-					 	<a href="http://www.meuse.fr" target="_blank"> <img className="logo" src='/images/Logo-meuse.png' /> </a>
-					 	<a href="http://ml-nordmeusien.fr/" target="_blank"> <img className="logo" src='/images/lMLNM.jpg' /> </a>
-  						<a href="http://www.croix-rouge.fr" target="_blank"> <img className="logo" src='/images/croixrouge.jpg' /> </a>
+						</p>
 
-				 	</p>
-
-  				</Segment>
+				</Segment>
 			</footer>
 
 		);

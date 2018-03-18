@@ -7,8 +7,6 @@ export default class Segment extends Component {
 			s_segment:{
 				display:"flex",
 				flexDirection:this.props.row?"row":"column",
-				padding:5,
-				margin:5,
 				borderRadius:5,
 				fontSize:20,
 				border: "1px solid rgba(150,150,150,0.5)",

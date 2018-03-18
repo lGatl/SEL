@@ -41,9 +41,22 @@ class FormulaireDInscription extends Component {
 	}
 	//Action
 	usersCreeCompte(){
-		console.log(this.props.controle);
-		this.props.usersControle(this.init());
+		let {email,password,nom,prenom,telephone,adresse,date_val_resp} = this.props.controle;
+		this.props.usersCreeCompte({
+			email,
+			username:email,
+			password,
+			profile:{
+				nom,
+				prenom,
+				telephone,
+				adresse,
+				date_val_resp
+			}}, ()=>{
+				this.props.usersControle(this.init());
 		FlowRouter.go("/mon_compte/informations");
+			});
+		
 	}
 	//Preparation du rendu
 

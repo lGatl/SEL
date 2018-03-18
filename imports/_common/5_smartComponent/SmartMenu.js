@@ -7,9 +7,7 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { Menu } from "../../_common/4_dumbComponent/_gat_ui_react";
 
-import { Grid, Image } from "semantic-ui-react";
-
-class Menus extends Component {
+class SmartMenu extends Component {
 
 	menus(){return[
 		{
@@ -75,24 +73,22 @@ class Menus extends Component {
 	render() {
 		/*La constante prepare le style des items (de types meteo ou non)*/
 		return (
-			<div>
+			
+			<Menu row style = {{color:"white", backgroundColor:"red" }}>
 				{ 
-					<Menu row style = {{color:"white", backgroundColor:"red"}}>
-						{ 
-							this.menus().map(({title, url, display}, i)=> {
-								if(display){
-									return	<Menu.Item
-										active={this.props.active_menu == title }
-										onClick={this.activeMenu.bind(this,title,url)}
-										key = { i }>
-										{ title }
-									</Menu.Item>;
-								}
-							})
+					this.menus().map(({title, url, display}, i)=> {
+						if(display){
+							return	<Menu.Item
+								active={this.props.active_menu == title }
+								onClick={this.activeMenu.bind(this,title,url)}
+								key = { i }>
+								{ title }
+							</Menu.Item>;
 						}
-					</Menu>
+					})
 				}
-			</div> );
+			</Menu>
+		);
 	}
 }
 
@@ -112,4 +108,4 @@ function mapDispatchToProps( dispatch ){
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( Menus );
+export default connect( mapStateToProps, mapDispatchToProps )( SmartMenu );

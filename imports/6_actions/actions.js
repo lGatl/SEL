@@ -12,8 +12,11 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		ADD : COLLECTION+"_ADD",
 		GET : COLLECTION+"_GET",
 		GET1 : COLLECTION+ "_GET1",
+		COUNT : COLLECTION+"_COUNT",
 		RM : COLLECTION+"_RM",
 		UP : COLLECTION+"_UP",
+		UPM : COLLECTION+"_UPM",
+		UPS : COLLECTION+"_UPS",
 		CONTROLE : COLLECTION+"_CONTROLE",
 	};
 
@@ -30,10 +33,10 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		});
 		return {
 			type: 		CONSTANTES[ COLLECTION ].ADD,
-			payload: 	p
+			payload: 	p,
 		};
 	}
-	function get(obj, cbk = ()=>{}){
+	function get(obj, state, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) =>{
 			Meteor.call("get" + COLLECTION+"s",obj,(err,res)=>{
 				if(err){
@@ -43,34 +46,53 @@ COLLECTIONS.forEach((COLLECTION)=>{
 					//console.log(res)
 					cbk( res );
 					
-					resolve( res );
+					resolve( { val:res, state} );
 				}
 			});
 		});
 		return {
 			type: 		CONSTANTES[ COLLECTION ].GET,
-			payload: 	p
+			payload: 	p,
 		};
 	}
-	function get1(obj, cbk = () => {}){
+	function get1(obj, state, cbk = () => {}){
 		let p = new Promise( ( resolve, reject ) => {
 			Meteor.call("get" + COLLECTION,obj,(err,res)=>{
 				if(err){
 					reject(err);
 				}else{
-					cbk(res);
-					resolve(res);
+					cbk( res );
+					resolve( { val:res, state} );
 				}
 			});
 		});
 		return {
 			type: 		CONSTANTES[ COLLECTION ].GET1,
-			payload: 	p
+			payload: 	p,
+		};
+	}
+	function count(obj, state, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("count" + COLLECTION+"s",obj,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].COUNT,
+			payload: 	p,
 		};
 	}
 	function rm(obj, cbk =()=>{}){
 		let p = new Promise( ( resolve, reject ) => {
-			Meteor.call("rm" + COLLECTION, obj ,(err)=>{
+			Meteor.call("rm" + COLLECTION, obj ,(err,res)=>{
 				if(err){
 					reject(err);
 				}else{
@@ -81,24 +103,56 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		});
 		return {
 			type: 		CONSTANTES[ COLLECTION ].RM,
-			payload: 	p
+			payload: 	p,
 		};
-
 	}
-	function up(obj, cbk = ()=>{}){
+	function up(reco,modif, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) => {
-			Meteor.call("up" + COLLECTION,obj,(err)=>{
+			Meteor.call("up" + COLLECTION,reco,modif,(err,res)=>{
 				if(err){
 					reject(err);
 				}else{
-					cbk(res);
-					resolve(res);
+
+					cbk( res );
+					resolve( {...modif,_id:res} );
 				}
 			});
 		});
 		return {
 			type: 		CONSTANTES[ COLLECTION ].UP,
-			payload: 	p
+			payload: 	p,
+		};
+	}
+	function upm(obj, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("upm" + COLLECTION,obj,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk( res );
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].UPM,
+			payload: 	p,
+		};
+	}
+	function ups(obj, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("up" + COLLECTION,obj,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk( res );
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].UP,
+			payload: 	p,
 		};
 	}
 	//=========================================================
@@ -114,7 +168,10 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		rm,
 		get,
 		get1,
-		up,	
+		count,
+		up,
+		upm,
+		ups,	
 		controle,
 	};
 

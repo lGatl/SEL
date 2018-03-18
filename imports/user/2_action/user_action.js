@@ -13,6 +13,7 @@ function creeCompte(user, cbk = ()=>{}){
 	let p = new Promise( ( resolve, reject ) =>{
 		Accounts.createUser(user, (err)=>{
 			if(err){ console.log(err); }else{
+				cbk()
 				resolve(user);
 			}
 		});
@@ -52,7 +53,7 @@ function logOut( cbk = ()=>{}){
 }
 
 export function getActiveUser( cbk = ()=>{} ){ /*on recupere des infos sur l'user actif, renseigné donc en partie par github*/
-	console.log("action");
+	//console.log("action");
 	let p = new Promise( ( resolve, reject ) => {
 		Meteor.call(
 			"get1Users", Meteor.userId(), 
@@ -74,6 +75,7 @@ export function getActiveUser( cbk = ()=>{} ){ /*on recupere des infos sur l'use
 		payload: 	p
 	};
 }
+
 export const ACTION_Users = { 
 	creeCompte,
 	logIn,

@@ -6,7 +6,10 @@ import ReduxPromise 						from "redux-promise";
 
 import reducers from "../7_reducers";
 
+import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
+
 import SmartMenu from "../_common/5_smartComponent/SmartMenu";
+import SmartMenuAnnonce from "../_common/5_smartComponent/SmartMenuAnnonce";
 import SmartMenuMonCompte from "../_common/5_smartComponent/SmartMenuMonCompte";
 import Footer from "../_common/4_dumbComponent/Footer";
 import InitState from "../_common/5_smartComponent/InitState";
@@ -45,6 +48,33 @@ export const Layout = ({ content }) => {
 		</Provider>
 	);
 };
+export const LayoutAnnonce = ({ content }) => {
+
+	return(
+		<Provider store={store}>	
+			<div style={{
+				display: "flex",
+				minHeight: "100vh",
+				flexDirection: "column"
+			}}>
+				<InitState/>
+				<div style={{display:"flex", flexDirection: "column", flex:1}}>
+					<SmartMenu/>
+					<Titre>Annonces</Titre>
+					<div style={{display:"flex", marginTop:20, marginLeft:20}}>		
+						
+						<SmartMenuAnnonce/>
+					</div>
+					<div style={{display: "flex", flexDirection: "column", flex:4, minWidth:550}}>
+						{content}
+					</div>
+				</div>
+				<Footer style = {{flex:"none"}}/>
+
+			</div>
+		</Provider>
+	);
+};
 
 export const LayoutMonCompte = ({ content }) => {
 
@@ -62,7 +92,7 @@ export const LayoutMonCompte = ({ content }) => {
 						<div style={{display: "flex", flex:1, minWidth:145}}>
 							<SmartMenuMonCompte/>
 						</div>
-						<div style={{display: "flex", flexDirection: "column", flex:4, minWidth:550}}>
+						<div style={{display: "flex", flexDirection: "column", flex:4, minWidth:550, margin:10}}>
 							{content}
 						</div>
 						

@@ -1,24 +1,25 @@
 import SimpleSchema from 'simpl-schema';
 export const COLLECTIONS = ["Users","Actualite","Annonce","Categorie"];
 
-var DateS = {
-	type: Date,
-	autoValue: () => new Date(Date.now()),
-	optional: true
-};
-
 const SCHEMA ={
 	Actualite : new SimpleSchema({
 		titre: { type: String },
 		description: { type: String },
-		date: DateS
+		publier:{ type:Boolean },
+		date: { type: Date }
 	}),
 	Annonce : new SimpleSchema({
 		titre: { type: String },
 		type: { type:String },
+		etat: { type:String },
 		user_id: { type:String },
 		description: { type: String },
-		date: DateS
+		categorie:{ type:String },
+		date_de_fin:{type:String},
+		email:{type:Boolean},
+		telephone:{type:Boolean},
+		adresse:{type:Boolean},
+		date: {type: Date}
 	})
 };
 
@@ -36,15 +37,22 @@ COLLECTIONS.forEach((COLLECTION) =>{
 		[ "get1" + COLLECTION ]: (obj)=>{
 			return BD[COLLECTION].findOne(obj); // retourne l'objet trouvé
 		},
+		[ "count" + COLLECTION+"s" ]:(obj)=>{
+			return BD[COLLECTION].find(obj).count(); // retourne le compte d'éléments qui correspond à la condition de find
+		},
 		[ "rm" + COLLECTION ]:(obj)=>{
 			return BD[COLLECTION].remove(obj); // retourne 1 si l'objet à été supprimé
 		},
-		[ "up" + COLLECTION ]:(obj)=>{		
-			return BD[COLLECTION].update({_id:obj._id},{$set:obj}); //retourne l'id de l'objet updaté => res.insertedId
+		[ "up" + COLLECTION ]:(reco,modif)=>{		
+			let succed = BD[COLLECTION].update(reco,{$set:modif}); //retourne l'id de l'objet updaté => res.insertedId
+			return succed == 1 ? BD[COLLECTION].findOne(reco)._id:false;
+		},
+		[ "upm" + COLLECTION ]:(obj)=>{		
+			return BD[COLLECTION].update(obj,{multi:true}); //retourne l'id de l'objet updaté => res.insertedId
 		},
 		[ "ups"+COLLECTION ]:(obj)=>{		
-			return BD[COLLECTION].upsert({_id:obj._id},{$set:obj}); //retourne l'id de l'objet upserté => res.insertedId
-		}
+			return BD[COLLECTION].upsert(obj); //retourne l'id de l'objet upserté => res.insertedId
+		},
 	});
 
 	SCHEMA[COLLECTION]?BD[COLLECTION].attachSchema(SCHEMA[COLLECTION]):"";

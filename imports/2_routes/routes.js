@@ -1,7 +1,7 @@
 import React from "react";
 import {mount} from "react-mounter";
 
-import {Layout, LayoutMonCompte} from "../3_layout/layout";
+import {Layout, LayoutAnnonce} from "../3_layout/layout";
 
 import Accueil from "../4_pages/Accueil";
 import Actualite from "../4_pages/Actualite";
@@ -30,21 +30,21 @@ FlowRouter.route( "/actualite", {
 FlowRouter.route( "/annonce", {
 	name: "annonce",
 	action: function() {
-		mount(Layout, { content: <ListeAnnonce /> });
+		mount(LayoutAnnonce, { content: <ListeAnnonce /> });
 		 window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/offre", {
 	name: "annonce",
 	action: function() {
-		mount(Layout, { content: <ListeAnnonce type = "offre"/> });
+		mount(LayoutAnnonce, { content: <ListeAnnonce type = "offre"/> });
 		 window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/demande", {
 	name: "annonce",
 	action: function() {
-		mount(Layout, { content: <ListeAnnonce type = "demande" /> });
+		mount(LayoutAnnonce, { content: <ListeAnnonce type = "demande" /> });
 		 window.scrollTo(0, 0);
 	}
 });

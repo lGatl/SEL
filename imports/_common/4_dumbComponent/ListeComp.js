@@ -6,12 +6,11 @@ export default class ListeComp extends Component {
 
 
 	render(){
-		const LISTE = this.props.donnees.map(( donn )=> donn);
 		return(
 
-			<Segment>
-				{LISTE}
-			</Segment>
+			<div>
+				{this.props.donnees}
+			</div>
 
 		);
 	}

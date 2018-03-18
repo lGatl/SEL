@@ -37,7 +37,7 @@ export default class Item extends Component {
 		let {style} = this.props;
 		return (
 			
-			<a style={s_item} href="#" onMouseOver = { this.onMouseOver.bind(this) } onMouseOut={ this.onMouseOut.bind(this) } onClick = {this.props.onClick?this.props.onClick.bind(this):()=>{}} >
+			<a style={{...s_item, ...style}} href="#" onMouseOver = { this.onMouseOver.bind(this) } onMouseOut={ this.onMouseOut.bind(this) } onClick = {this.props.onClick?this.props.onClick.bind(this):()=>{}} >
 				{this.props.children}
 			</a>
 
