@@ -7,6 +7,7 @@ import MonCompte from "../4_pages/MonCompte";
 import FormCategorie from "../categorie/5_smartComponent/FormCategorie";
 import FormActu from "../actualite/5_smartComponent/FormActu";
 import GererAnnonces from "../annonce/5_smartComponent/GererAnnonces";
+import GererComptes from "../user/5_smartComponent/GererComptes";
 
 
 var adminRoutes = FlowRouter.group({
@@ -23,7 +24,7 @@ var adminRoutes = FlowRouter.group({
 adminRoutes.route("/", {
 	name: "admin",
 	action(){
-		mount(LayoutMonCompte, {content: <MonCompte />});
+		mount(LayoutMonCompte, {content: <GererComptes />});
 		window.scrollTo(0, 0);
 	},
 });

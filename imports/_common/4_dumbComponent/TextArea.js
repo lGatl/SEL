@@ -30,7 +30,7 @@ export default class TextArea extends Component {
 		let {label, name, value, placeholder} = this.props;
 		let {s_container, s_label, s_textarea} = this.style();
 		return (
-			<div style={s_container}>
+			<div style={{...s_container,...this.props.style}}>
 				<label style={s_label}>{label}</label>
 				<textarea 
 					placeholder={placeholder}

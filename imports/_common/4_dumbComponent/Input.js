@@ -32,15 +32,15 @@ export default class Input extends Component {
 		let {label, name, value, placeholder} = this.props;
 		let {s_container, s_label, s_input} = this.style();
 		return (
-			<div style={s_container}>
+			<div style={{...s_container,...this.props.style}}>
 				<label style={s_label}>{label}</label>
-					<input 
-						placeholder={placeholder}
-						name={name}
-						value={value}
-						onChange={this.change.bind(this)}
-						style={s_input}
-					/>
+				<input 
+					placeholder={placeholder}
+					name={name}
+					value={value}
+					onChange={this.change.bind(this)}
+					style={s_input}
+				/>
 				
 			</div>
 		);

@@ -13,6 +13,8 @@ import LesSelistes from "../4_pages/LesSelistes";
 import MonCompte from "../4_pages/MonCompte";
 import SmartDev from "../_common/5_smartComponent/SmartDev";
 
+
+
 FlowRouter.route( "/", {
 	name: "home",
 	action: function() {
@@ -86,5 +88,7 @@ FlowRouter.route( "/dev", {
 		 window.scrollTo(0, 0);
 	}
 });
+
+
 
 

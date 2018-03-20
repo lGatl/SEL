@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Titre, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
@@ -17,28 +17,30 @@ class MesInformations extends Component{
 	componentWillMount(){
 		
 	}
-	
+	editer(){
+		FlowRouter.go("/user/"+this.props.active_user._id+"/edit")
+	}
 	render(){
 		if(this.props.active_user){
-		let { emails, profile } = this.props.active_user;
-		
-		return(	
-			<div>
-				<Titre>Mes informations</Titre>
-				<CardUser
-					nom = { profile?profile.nom:"" }
-					prenom = { profile?profile.prenom:"" }
-					note = {5}
-					categories = {['cuisine','menage']}
-					email = {emails&&emails.length>0?emails[0].address:""}
-					telephone = {profile?profile.telephone:""}
-					adresse = { profile?profile.adresse:"" }
-
-				/>
-				<Titre>Mes Seugnettes</Titre>
-			</div>
-		);
-	}return (<div>wait</div>)
+			let { emails, profile } = this.props.active_user;
+			
+			return(	
+				<div>
+					<Titre>Mes informations</Titre>
+					<CardUser
+						nom = { profile?profile.nom:"" }
+						prenom = { profile?profile.prenom:"" }
+						note = {5}
+						categories = {['cuisine','menage']}
+						email = {emails&&emails.length>0?emails[0].address:""}
+						telephone = {profile?profile.telephone:""}
+						adresse = { profile?profile.adresse:"" }
+					/>
+					<Button onClick={this.editer.bind(this)}>Editer</Button>
+					<Titre>Mes Seugnettes</Titre>
+				</div>
+			);
+		}return (<div>wait</div>);
 	}
 }
 
