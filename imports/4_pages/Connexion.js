@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { ACTIONS } from "../6_actions/actions";
 
-import { Segment } from "../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Button } from "../_common/4_dumbComponent/_gat_ui_react";
 
 import FormulaireConnexion from "../user/5_smartComponent/FormulaireConnexion";
 import FormulaireDInscription from '../user/5_smartComponent/FormulaireDInscription';
@@ -37,8 +37,8 @@ class Connexion extends Component {
 		return (
 			<div>
 				<div style = {{display:"flex"}}>
-					<Segment onClick = {this.cree.bind(this, false)}>Connexion</Segment>
-					<Segment onClick = {this.cree.bind(this, true)}>Creer un compte</Segment>
+					<Button onClick = {this.cree.bind(this, false)}>Connexion</Button>
+					<Button onClick = {this.cree.bind(this, true)}>Creer un compte</Button>
 				</div>
 
 		

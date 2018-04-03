@@ -17,7 +17,7 @@ export default class CardUser extends Component {
 			<Segment style={{overflow:"hidden"}}>
 				<div style={{display:"flex",flexDirection:"column"}}>
 					<div style={{display:"flex"}}>
-						<div alt="user image" style={{width:80, height:80, background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover", margin:10}}></div>
+						<div style={{width:80, height:80, background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover", margin:10}}></div>
 						<div style={{display:"flex", flex:1,flexDirection:"column"}}> 
 							<div style={{display:"flex", }}>
 								<span style={{margin:5}}>{prenom}</span>

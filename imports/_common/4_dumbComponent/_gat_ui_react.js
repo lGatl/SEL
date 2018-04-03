@@ -9,5 +9,6 @@ import Item from "./Item";
 import Dropdown from "./Dropdown";
 import Checkbox from "./Checkbox";
 import Tableau from "./Tableau";
+import Calendrier from "./Calendrier";
 
-export { Input, TextArea, Button, Form, Segment, Titre, Menu, Item, Dropdown, Checkbox, Tableau  };
+export { Input, TextArea, Button, Form, Segment, Titre, Menu, Item, Dropdown, Checkbox, Tableau, Calendrier  };

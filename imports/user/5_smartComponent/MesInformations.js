@@ -35,6 +35,7 @@ class MesInformations extends Component{
 						email = {emails&&emails.length>0?emails[0].address:""}
 						telephone = {profile?profile.telephone:""}
 						adresse = { profile?profile.adresse:"" }
+						date_val_resp={ profile?profile.date_val_resp:"" }
 					/>
 					<Button onClick={this.editer.bind(this)}>Editer</Button>
 					<Titre>Mes Seugnettes</Titre>

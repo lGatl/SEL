@@ -13,7 +13,7 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class GererAnnonces extends Component {
 
 	componentWillMount(){
-		this.props.annonceGet({},null,res=>{
+		this.props.annonceGet({},null,null,res=>{
 			this.props.usersGet({_id:{$in:res.map(annonce=>annonce.user_id)}});
 			this.props.categorieGet({_id:{$in:res.map(annonce=>annonce.categorie)}});
 			res.map(annonce=>{

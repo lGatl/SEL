@@ -10,7 +10,7 @@ class FormCategorie extends Component {
 
 	componentWillMount(){
 		this.props.categorieControle(this.init());
-		this.props.categorieGet({},null,res=>{
+		this.props.categorieGet({},null,null,res=>{
 			res.map(categorie=>{
 				this.annonceCount(categorie._id);
 			});
@@ -81,7 +81,7 @@ class FormCategorie extends Component {
 		
 		return (
 			<div>
-			<Titre>Gerer les categories</Titre>
+				<Titre>Gerer les categories</Titre>
 				<form>
 					
 					<Input

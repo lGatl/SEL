@@ -12,6 +12,7 @@ import Kesako from "../4_pages/Kesako";
 import LesSelistes from "../4_pages/LesSelistes";
 import MonCompte from "../4_pages/MonCompte";
 import SmartDev from "../_common/5_smartComponent/SmartDev";
+import AnnonceDetaillee from "../annonce/5_smartComponent/AnnonceDetaillee";
 
 
 
@@ -47,6 +48,13 @@ FlowRouter.route( "/annonce/demande", {
 	name: "annonce",
 	action: function() {
 		mount(LayoutAnnonce, { content: <ListeAnnonce type = "demande" /> });
+		 window.scrollTo(0, 0);
+	}
+});
+FlowRouter.route( "/annonce/:_id", {
+	name: "annonce",
+	action: function(params) {
+		mount(Layout, { content: <AnnonceDetaillee _id={params._id}/> });
 		 window.scrollTo(0, 0);
 	}
 });

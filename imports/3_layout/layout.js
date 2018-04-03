@@ -13,6 +13,7 @@ import SmartMenuAnnonce from "../_common/5_smartComponent/SmartMenuAnnonce";
 import SmartMenuMonCompte from "../_common/5_smartComponent/SmartMenuMonCompte";
 import Footer from "../_common/4_dumbComponent/Footer";
 import InitState from "../_common/5_smartComponent/InitState";
+import LastArticles from "../_common/5_smartComponent/LastArticles";
 
 
 /*import Alert from 'react-s-alert';*/
@@ -38,8 +39,21 @@ export const Layout = ({ content }) => {
 				<InitState/>
 				<div style={{flex:1}}>
 					<SmartMenu/>
-					<div>		
-						{content}
+					<div style={{display: "flex", flex:1, minWidth:145, maxWidth: 1280, marginLeft: "auto"}}>
+						<div style={{
+							flex:4,
+							display: "flex",
+							flexDirection: "column"
+						}}>		
+							{content}
+						</div>
+						<div style={{
+							display: "flex",
+							flexDirection: "column",
+							flex:1
+						}}>		
+							<LastArticles/>
+						</div>
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>

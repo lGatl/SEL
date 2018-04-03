@@ -92,10 +92,10 @@ function mapDispatchToProps( dispatch ){
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		activeMenuAnnonce: ACTIONS.Menu.activeMenuAnnonce,
 
-		annonceGet: 			ACTIONS.Annonce.get,
-		annonceRm: 				ACTIONS.Annonce.rm,
+		annonceGet: ACTIONS.Annonce.get,
+		annonceRm: ACTIONS.Annonce.rm,
 
-		categorieGet: 		ACTIONS.Categorie.get,
+		categorieGet: ACTIONS.Categorie.get,
 	}, dispatch );
 }
 

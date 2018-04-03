@@ -11,7 +11,7 @@ class FormActu extends Component {
 
 	componentWillMount(){
 		this.props.actualiteControle(this.init());
-		this.props.actualiteGet({},null,res=>{
+		this.props.actualiteGet({},null,null,res=>{
 			this.props.actualiteControle({actions:res.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})});
 		});
 	}

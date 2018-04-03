@@ -12,7 +12,7 @@ class FormUsers extends Component {
 
 	componentWillMount(){
 		this.props.usersControle(this.init());
-		this.props.usersGet({},null,res=>{});
+		this.props.usersGet({},null,null,res=>{});
 	}
 	init(){
 		return{ 
@@ -85,7 +85,6 @@ class FormUsers extends Component {
 						donnees={[
 							{thead:[["Login","ID","Action"]]},
 							{tbody:this.props.userss.reduce((total,user)=>{
-								console.log(user);
 								return user.username.indexOf(filtre)>=0?
 									[...total,[user.username, user._id,<Button onClick={this.goEdit.bind(this, user._id)}>Editer</Button>]]:total;
 							},[])

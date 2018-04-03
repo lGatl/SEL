@@ -21,10 +21,11 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			return { ...state, all };
 			break;
 		case CONSTANTES[COLLECTION].GET:
-			return action.payload.state?{ ...state, all:{...state.count,[action.payload.state]:action.payload.val}}:{ ...state, all: action.payload.val };
+			return action.payload.state?{ ...state, [action.payload.state]:action.payload.val}:{ ...state, all: action.payload.val };
 			break;
 		case CONSTANTES[COLLECTION].GET1:
-			return action.payload.state?{ ...state, all:{...state.count,[action.payload.state]:action.payload.val}}:{ ...state, all: action.payload.val };
+
+			return action.payload.state?{ ...state, [action.payload.state]:action.payload.val}:{ ...state, one: action.payload.val };
 			break;
 		case CONSTANTES[COLLECTION].COUNT:
 			return action.payload.state?{ ...state, count:{...state.count,[action.payload.state]:action.payload.val}}:{ ...state, count: action.payload.val };

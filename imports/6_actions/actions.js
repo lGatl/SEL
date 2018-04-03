@@ -36,9 +36,9 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
-	function get(obj, state, cbk = ()=>{}){
+	function get(obj, soskli, state, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) =>{
-			Meteor.call("get" + COLLECTION+"s",obj,(err,res)=>{
+			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
 				if(err){
 					//console.log(err)
 					reject( err );
@@ -57,7 +57,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 	}
 	function get1(obj, state, cbk = () => {}){
 		let p = new Promise( ( resolve, reject ) => {
-			Meteor.call("get" + COLLECTION,obj,(err,res)=>{
+			Meteor.call("get1" + COLLECTION,obj,(err,res)=>{
 				if(err){
 					reject(err);
 				}else{

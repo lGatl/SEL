@@ -21,13 +21,16 @@ export default class ExtraitAnn extends Component {
 					}}>
 						{ type } - { categorie }
 					</div>
-					<div style={{
-						fontSize:22, 
-						fontWeight:400,
-						marginBottom:20
-					}}>
-						{ titre }
-					</div>
+					
+					<a 
+						href={"/annonce/"+_id} 
+						style={{
+							fontSize:22,
+							color:'black',
+							fontWeight:400,
+							marginBottom:20
+						}}>{ titre } </a>
+					
 					<div style={{fontSize:18, color:"grey", flex:1}}>
 						{ description }
 					</div>

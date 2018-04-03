@@ -15,7 +15,7 @@ const SCHEMA ={
 		user_id: { type:String },
 		description: { type: String },
 		categorie:{ type:String },
-		date_de_fin:{type:String},
+		date_de_fin:{type:Date},
 		email:{type:Boolean},
 		telephone:{type:Boolean},
 		adresse:{type:Boolean},
@@ -31,10 +31,14 @@ COLLECTIONS.forEach((COLLECTION) =>{
 		[ "add" + COLLECTION ]:(obj)=>{ 
 			return BD[COLLECTION].insert(obj); // retourne l'id du nouvel objet
 		},
-		[ "get" + COLLECTION+"s" ]:(obj)=>{
-			return BD[COLLECTION].find(obj).fetch(); // retourne un tableau d'objets trouvés
+		[ "get" + COLLECTION+"s" ]:(obj,soskli)=>{
+			
+			let Soskli = soskli?soskli:{};
+
+			return BD[COLLECTION].find(obj, Soskli).fetch(); // retourne un tableau d'objets trouvés
 		},
 		[ "get1" + COLLECTION ]: (obj)=>{
+
 			return BD[COLLECTION].findOne(obj); // retourne l'objet trouvé
 		},
 		[ "count" + COLLECTION+"s" ]:(obj)=>{
