@@ -10,8 +10,11 @@ export default class ExtraitAnn extends Component {
 
 		return(
 
-			<Segment row style={{height:100, marginBottom:20}}> 
-				<img src="/images/1.jpg" alt="photo annonce" style={{width:100}}/>
+			<Segment row style={{minHeight:100, marginBottom:20}}> 
+				<img src="/images/1.jpg" alt="photo annonce" style={{
+					width: 133,
+					maxHeight:"100%" 
+				}}/>
 				<div style={{display:"flex", marginLeft:"10%", flexDirection:"column", flex:1}}>
 					
 					<div style={{

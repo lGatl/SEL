@@ -38,8 +38,8 @@ class FormCategorie extends Component {
 	}
 	//==============ACTION====================
 	annonceCount(categorie_id){
-		this.props.annonceCount({categorie:categorie_id, type: "offre"},"offre"+categorie_id);
-		this.props.annonceCount({categorie:categorie_id, type: "demande"},"demande"+categorie_id);
+		this.props.annonceCount({categorie:categorie_id, type: "offre"},{count: "offre"+categorie_id});
+		this.props.annonceCount({categorie:categorie_id, type: "demande"},{count: "demande"+categorie_id});
 	}
 	categorieAdd(){
 		let {titre} = this.props.categorie_controle;

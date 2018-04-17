@@ -39,11 +39,11 @@ export const Layout = ({ content }) => {
 				<InitState/>
 				<div style={{flex:1}}>
 					<SmartMenu/>
-					<div style={{display: "flex", flex:1, minWidth:145, maxWidth: 1280, marginLeft: "auto"}}>
+					<div style={{display: "flex", flex:1, minWidth:145, marginLeft: "auto",flexWrap:"wrap"}}>
 						<div style={{
-							flex:4,
+							flex:5,
 							display: "flex",
-							flexDirection: "column"
+							justifyContent:"center"
 						}}>		
 							{content}
 						</div>
@@ -52,7 +52,96 @@ export const Layout = ({ content }) => {
 							flexDirection: "column",
 							flex:1
 						}}>		
-							<LastArticles/>
+							<LastArticles annonce actualite/>
+						</div>
+					</div>
+				</div>
+				<Footer style = {{flex:"none"}}/>
+
+			</div>
+		</Provider>
+	);
+};
+//PAS UTILISé
+export const LayoutLAc = ({ content }) => {
+
+	return(
+		<Provider store={store}>	
+			<div style={{
+				display: "flex",
+				minHeight: "100vh",
+				flexDirection: "column"
+			}}>
+				<InitState/>
+				<div style={{flex:1}}>
+					<SmartMenu/>
+					<div style={{display: "flex", flex:1, flexWrap:"wrap"}}>
+						<div style={{
+							flex:5,
+							display: "flex",
+							justifyContent:"center",
+							flexDirection: "column",
+							minWidth:500,
+						}}>
+							<Titre>Actualites</Titre>
+							<div style={{
+								flex:1,
+								display: "flex",
+								justifyContent:"center",
+							}}>		
+								{content}
+							</div>
+						</div>
+						<div style={{
+							display: "flex",
+							flexDirection: "column",
+							flex:1
+						}}>		
+							<LastArticles actualite/>
+						</div>
+					</div>
+				</div>
+				<Footer style = {{flex:"none"}}/>
+
+			</div>
+		</Provider>
+	);
+};
+export const LayoutLAn = ({ content }) => {
+
+	return(
+		<Provider store={store}>	
+			<div style={{
+				display: "flex",
+				minHeight: "100vh",
+				flexDirection: "column"
+			}}>
+				<InitState/>
+				<div style={{flex:1}}>
+					<SmartMenu/>
+					<div style={{display: "flex", flex:1, flexWrap:"wrap"}}>
+						<div style={{
+							flex:5,
+							display: "flex",
+							justifyContent:"center",
+							flexDirection: "column",
+							minWidth:500,
+						}}>
+							<Titre>Actualites</Titre>
+							<div style={{
+								flex:1,
+								display: "flex",
+								justifyContent:"center",
+							}}>		
+								{content}
+							</div>
+						</div>
+						<div style={{
+							display: "flex",
+							flexDirection: "column",
+							flex:1,
+						}}>		
+							<LastArticles annonce/>
 						</div>
 					</div>
 				</div>
@@ -74,13 +163,24 @@ export const LayoutAnnonce = ({ content }) => {
 				<InitState/>
 				<div style={{display:"flex", flexDirection: "column", flex:1}}>
 					<SmartMenu/>
-					<Titre>Annonces</Titre>
-					<div style={{display:"flex", marginTop:20, marginLeft:20}}>		
-						
-						<SmartMenuAnnonce/>
-					</div>
-					<div style={{display: "flex", flexDirection: "column", flex:4, minWidth:550}}>
-						{content}
+					<div style={{display: "flex", flexWrap:"wrap"}}>
+						<div style={{display:"flex",flex:5, flexDirection: "column"}}>
+							<Titre>Annonces</Titre>
+							<div style={{display:"flex", marginLeft:20}}>		
+								
+								<SmartMenuAnnonce/>
+							</div>
+							<div style={{display: "flex", flexDirection: "column",marginLeft:20,marginRight:20, flex:1, minWidth:550}}>
+								{content}
+							</div>
+						</div>
+						<div style={{
+							display: "flex",
+							flexDirection: "column",
+							flex:1,
+						}}>		
+							<LastArticles actualite/>
+						</div>
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>
@@ -106,7 +206,7 @@ export const LayoutMonCompte = ({ content }) => {
 						<div style={{display: "flex", flex:1, minWidth:145}}>
 							<SmartMenuMonCompte/>
 						</div>
-						<div style={{display: "flex", flexDirection: "column", flex:4, minWidth:550, margin:10}}>
+						<div style={{display: "flex", flexDirection: "column", flex:5, minWidth:550, margin:10}}>
 							{content}
 						</div>
 						

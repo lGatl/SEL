@@ -21,15 +21,37 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			return { ...state, all };
 			break;
 		case CONSTANTES[COLLECTION].GET:
-			return action.payload.state?{ ...state, [action.payload.state]:action.payload.val}:{ ...state, all: action.payload.val };
+
+
+			if(typeof action.payload.state=="string"){
+				return { ...state, [action.payload.state]:action.payload.val};
+			}else if((typeof action.payload.state=="object" )&& (action.payload.state != null)){
+				let obj = Object.keys(action.payload.state)[0];
+				return { ...state, [obj]:{...state.count,[action.payload.state[obj]]:action.payload.val}};
+			}else if(action.payload.state == null||action.payload.state == undefined){
+				return { ...state, all: action.payload.val };
+			}			
 			break;
 		case CONSTANTES[COLLECTION].GET1:
-
-			return action.payload.state?{ ...state, [action.payload.state]:action.payload.val}:{ ...state, one: action.payload.val };
+			if(typeof action.payload.state=="string"){
+				return { ...state, [action.payload.state]:action.payload.val};
+			}else if((typeof action.payload.state=="object") && (action.payload.state != null)){
+				let obj = Object.keys(action.payload.state)[0];
+				return { ...state, [obj]:{...state.count,[action.payload.state[obj]]:action.payload.val}};
+			}else if(action.payload.state == null||action.payload.state == undefined){
+				return { ...state, one: action.payload.val };
+			}			
 			break;
 		case CONSTANTES[COLLECTION].COUNT:
-			return action.payload.state?{ ...state, count:{...state.count,[action.payload.state]:action.payload.val}}:{ ...state, count: action.payload.val };
-			
+
+			if(typeof action.payload.state=="string"){
+				return { ...state, [action.payload.state]:action.payload.val};
+			}else if((typeof action.payload.state=="object") && (action.payload.state != null)){
+				let obj = Object.keys(action.payload.state)[0];
+				return { ...state, [obj]:{...state.count,[action.payload.state[obj]]:action.payload.val}};
+			}else if(action.payload.state == null||action.payload.state == undefined){
+				return { ...state, count: action.payload.val };
+			}			
 			break;
 		case CONSTANTES[COLLECTION].RM:
 			

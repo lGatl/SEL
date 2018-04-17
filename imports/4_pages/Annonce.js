@@ -19,7 +19,6 @@ class Annonce extends Component {
 
 		return (
 			<div>
-				<Titre> Annonce </Titre>
 				<ListeAnnonce/>
 			</div>
 		);

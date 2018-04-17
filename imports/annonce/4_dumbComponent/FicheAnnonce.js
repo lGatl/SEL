@@ -5,8 +5,10 @@ export default class FicheAnnonce extends Component {
 	style(){
 		return{
 			s_container:{
-				margin:100,
-				flex:1,
+				maxWidth:800,
+				marginTop:20,
+				MarginBottom:"auto",
+				flexWrap:"wrap",
 				display:"flex", 
 				flexDirection:"column",
 				border:"1px solid rgba(150,150,150,0.3)",
@@ -16,7 +18,6 @@ export default class FicheAnnonce extends Component {
 				overflow:"hidden"
 			},
 			s_titre:{
-				flex:1,
 				fontWeight:400,
 				fontSize:18,
 				padding:10,
@@ -32,7 +33,7 @@ export default class FicheAnnonce extends Component {
 				flexDirection:"column"
 			},
 			s_ligne:{
-				display:"flex"
+				display:"flex",
 			},
 			s_cellule:{
 				padding:8,
@@ -134,7 +135,7 @@ export default class FicheAnnonce extends Component {
 				<div style={{...s_titre}}>
 						Proposition
 				</div>
-				<div style={{...s_ligne}}>
+				<div style={{...s_ligne, flex:1}}>
 					<div style={{...s_colonne, borderRight:s_border}}>
 						<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
 							Faire une proposition

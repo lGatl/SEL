@@ -6,19 +6,35 @@ import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-
+import MiniArticle from "../4_dumbComponent/MiniArticle";
 
 
 class LastArticle extends Component{
 
 	componentWillMount(){
-		this.props.annonceGet({},{limit:4,sort:{date:-1}},"last_ann");
-		this.props.actualiteGet({},{limit:4,sort:{date:-1}},"last_act");
+		let limit = this.props.actualite&&this.props.annonce?2:4;
+		this.props.annonceGet({},{limit,sort:{date:-1}},"last");
+		this.props.actualiteGet({},{limit,sort:{date:-1}},"last");
 	}
-	
+	miniArticle(article, type, i){
+		return <MiniArticle
+			key= {i}
+			image = { "/images/1.jpg" }
+			lien = {type=="actu"?"":"/annonce/"+article._id}
+			titre = { article.titre }
+		/>
+	}
 	render(){
+		let {actu_last,ann_last} = this.props;
 		return(	
-			<div></div>
+			<div style={{boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5}}>
+				{this.props.actualite?
+					<div style={{boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}>{actu_last?actu_last.map((actu,i)=>this.miniArticle(actu,'actu',i)):""}</div>:""
+				}
+				{this.props.annonce?
+					<div style={{boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}>{ann_last?ann_last.map((ann,i)=>this.miniArticle(ann,'ann',i)):""}</div>:""
+				}
+			</div>
 		);
 	}
 }
@@ -26,7 +42,8 @@ class LastArticle extends Component{
 function mapStateToProps( state ){
 	return (
 		{
-			
+			actu_last: state.actualite.last,
+			ann_last: state.annonce.last 
 		}
 	);
 

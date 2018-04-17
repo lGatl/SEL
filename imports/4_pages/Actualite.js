@@ -17,11 +17,8 @@ class Actualite extends Component {
 
 	render(){
 
-		return (
-			<div>
-				<Titre> Actualites </Titre>
-				<SmartActualites/>
-			</div>
+		return (		
+			<SmartActualites/>
 		);
 	}
 }

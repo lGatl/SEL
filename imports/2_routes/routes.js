@@ -1,7 +1,7 @@
 import React from "react";
 import {mount} from "react-mounter";
 
-import {Layout, LayoutAnnonce} from "../3_layout/layout";
+import {Layout, LayoutAnnonce, LayoutLAn} from "../3_layout/layout";
 
 import Accueil from "../4_pages/Accueil";
 import Actualite from "../4_pages/Actualite";
@@ -26,7 +26,7 @@ FlowRouter.route( "/", {
 FlowRouter.route( "/actualite", {
 	name: "actualite",
 	action: function() {
-		mount(Layout, { content: <Actualite /> });
+		mount(LayoutLAn, { content: <Actualite /> });
 		 window.scrollTo(0, 0);
 	}
 });
@@ -54,7 +54,7 @@ FlowRouter.route( "/annonce/demande", {
 FlowRouter.route( "/annonce/:_id", {
 	name: "annonce",
 	action: function(params) {
-		mount(Layout, { content: <AnnonceDetaillee _id={params._id}/> });
+		mount(LayoutLAc, { content: <AnnonceDetaillee _id={params._id}/> });
 		 window.scrollTo(0, 0);
 	}
 });
