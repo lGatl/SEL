@@ -10,8 +10,10 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class FormActu extends Component {
 
 	componentWillMount(){
+		this.props.activeMenu("Mon Compte");
+		this.props.activeMenuMonCompte("Gerer les actualites");
 		this.props.actualiteControle(this.init());
-		this.props.actualiteGet({},null,null,res=>{
+		this.props.actualiteGet({},res=>{
 			this.props.actualiteControle({actions:res.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})});
 		});
 	}
@@ -58,7 +60,7 @@ class FormActu extends Component {
 		this.actualitesUp(actions.filter(action=>action.action=="desactiver"||action.action=="publier"));
 	}
 	actualitesSupprimer(ids){
-		this.props.actualiteRm({_id:{$in:ids}});
+		ids.length>0?this.props.actualiteRm({_id:{$in:ids}}):"";
 	}
 	actualitesUp(actions){
 		if(actions&&actions.length>0){
@@ -139,6 +141,8 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+			activeMenu: ACTIONS.Menu.activeMenu,
+		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		actualiteGet: ACTIONS.Actualite.get,
 		actualiteControle: 	ACTIONS.Actualite.controle,
 		actualiteAdd:	ACTIONS.Actualite.add,

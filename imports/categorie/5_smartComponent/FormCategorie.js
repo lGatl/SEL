@@ -9,8 +9,10 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class FormCategorie extends Component {
 
 	componentWillMount(){
+		this.props.activeMenu("Mon Compte");
+		this.props.activeMenuMonCompte("Gerer les categories");
 		this.props.categorieControle(this.init());
-		this.props.categorieGet({},null,null,res=>{
+		this.props.categorieGet({},res=>{
 			res.map(categorie=>{
 				this.annonceCount(categorie._id);
 			});
@@ -38,8 +40,8 @@ class FormCategorie extends Component {
 	}
 	//==============ACTION====================
 	annonceCount(categorie_id){
-		this.props.annonceCount({categorie:categorie_id, type: "offre"},{count: "offre"+categorie_id});
-		this.props.annonceCount({categorie:categorie_id, type: "demande"},{count: "demande"+categorie_id});
+		this.props.annonceCount_state({categorie:categorie_id, type: "offre"},{count: "offre"+categorie_id});
+		this.props.annonceCount_state({categorie:categorie_id, type: "demande"},{count: "demande"+categorie_id});
 	}
 	categorieAdd(){
 		let {titre} = this.props.categorie_controle;
@@ -140,13 +142,15 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		categorieGet: ACTIONS.Categorie.get,
 		categorieControle: 	ACTIONS.Categorie.controle,
 		categorieAdd:	ACTIONS.Categorie.add,
 		categorieRm: 	ACTIONS.Categorie.rm,
 		categorieUp: 	ACTIONS.Categorie.up,
 
-		annonceCount: ACTIONS.Annonce.count,
+		annonceCount_state: ACTIONS.Annonce.count_state,
 	}, dispatch );
 }
 

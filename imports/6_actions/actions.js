@@ -27,7 +27,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 					reject(err);
 				}else{
 					cbk( res );
-					resolve( { ...obj, _id:res } );
+					resolve( { val:{ ...obj, _id:res }, state:null } );
 				}
 			});
 		});
@@ -36,7 +36,80 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
-	function get(obj, soskli, state, cbk = ()=>{}){
+	function add_state(obj,state, cbk=()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("add" + COLLECTION, obj ,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk( res );
+					resolve( { val:{ ...obj, _id:res }, state } );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].ADD,
+			payload: 	p,
+		};
+	}
+	function get(obj, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,null,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET,
+			payload: 	p,
+		};
+	}
+	function get_SSL(obj, soskli = null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET,
+			payload: 	p,
+		};
+	}
+	function get_state(obj, state =  null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,null,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET,
+			payload: 	p,
+		};
+	}
+	function get_SSL_state(obj, soskli = null, state =  null, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) =>{
 			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
 				if(err){
@@ -55,7 +128,43 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
-	function get1(obj, state, cbk = () => {}){
+	function get_state_SSL(obj, state =  null, soskli = null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET,
+			payload: 	p,
+		};
+	}
+
+	function get1(obj, cbk = () => {}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("get1" + COLLECTION,obj,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk( res );
+					resolve( { val:res, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GET1,
+			payload: 	p,
+		};
+	}
+	function get1_state(obj, state, cbk = () => {}){
 		let p = new Promise( ( resolve, reject ) => {
 			Meteor.call("get1" + COLLECTION,obj,(err,res)=>{
 				if(err){
@@ -71,7 +180,26 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
-	function count(obj, state, cbk = ()=>{}){
+	function count(obj, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("count" + COLLECTION+"s",obj,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].COUNT,
+			payload: 	p,
+		};
+	}
+	function count_state(obj, state, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) =>{
 			Meteor.call("count" + COLLECTION+"s",obj,(err,res)=>{
 				if(err){
@@ -90,14 +218,30 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
-	function rm(obj, cbk =()=>{}){
+	function rm(obj, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) => {
 			Meteor.call("rm" + COLLECTION, obj ,(err,res)=>{
 				if(err){
 					reject(err);
 				}else{
 					cbk();
-					resolve( obj );
+					resolve( { val:obj, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].RM,
+			payload: 	p,
+		};
+	}
+	function rm_state(obj, state, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("rm" + COLLECTION, obj ,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+					cbk();
+					resolve( { val:obj, state } );
 				}
 			});
 		});
@@ -114,7 +258,24 @@ COLLECTIONS.forEach((COLLECTION)=>{
 				}else{
 
 					cbk( res );
-					resolve( {...modif,_id:res} );
+					resolve( { val:{...modif,_id:res},state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].UP,
+			payload: 	p,
+		};
+	}
+	function up_state(reco,modif,state, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) => {
+			Meteor.call("up" + COLLECTION,reco,modif,(err,res)=>{
+				if(err){
+					reject(err);
+				}else{
+
+					cbk( res );
+					resolve( { val:{...modif,_id:res},state} );
 				}
 			});
 		});
@@ -130,7 +291,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 					reject(err);
 				}else{
 					cbk( res );
-					resolve( { val:res, state} );
+					resolve( { val:res, state:null} );
 				}
 			});
 		});
@@ -146,7 +307,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 					reject(err);
 				}else{
 					cbk( res );
-					resolve( { val:res, state} );
+					resolve( { val:res, state:null} );
 				}
 			});
 		});
@@ -165,11 +326,20 @@ COLLECTIONS.forEach((COLLECTION)=>{
 
 	ACTION[COLLECTION] = {
 		add,
+		add_state,
 		rm,
+		rm_state,
 		get,
+		get_SSL,
+		get_state,
+		get_SSL_state,
+		get_state_SSL,
 		get1,
+		get1_state,
 		count,
+		count_state,
 		up,
+		up_state,
 		upm,
 		ups,	
 		controle,

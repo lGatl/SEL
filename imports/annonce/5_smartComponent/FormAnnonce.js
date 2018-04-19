@@ -9,6 +9,8 @@ import { Input, TextArea, Button, Dropdown, Titre, Checkbox, Calendrier } from "
 class FormAnnone extends Component {
 
 	componentWillMount(){
+		this.props.activeMenu("Mon Compte");
+		this.props.activeMenuMonCompte(this.props.type=="offre"?"Deposer une offre":"Deposer une demande");
 		this.props.annonceControle(this.init());
 		this.props.categorieGet({publier:true});
 	}

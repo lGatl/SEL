@@ -16,6 +16,8 @@ class MesInformations extends Component{
 
 	componentWillMount(){
 		
+		this.props.activeMenu("Mon Compte");
+		this.props.activeMenuMonCompte("Mes informations");
 	}
 	editer(){
 		FlowRouter.go("/user/"+this.props.active_user._id+"/edit")
@@ -56,7 +58,8 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
-		
+		activeMenu: ACTIONS.Menu.activeMenu,
+		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 	}, dispatch );
 }
 

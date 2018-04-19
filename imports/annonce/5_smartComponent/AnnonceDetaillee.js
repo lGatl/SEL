@@ -8,7 +8,7 @@ import { dateToFormat } from "../../8_libs/date";
 
 class AnnonceDetaillee extends Component {
 	componentWillMount(){
-		this.props.annonceGet1({_id:this.props._id},null,annonce=>{
+		this.props.annonceGet1({_id:this.props._id},annonce=>{
 			this.props.categorieGet1({_id:annonce.categorie});
 
 			this.props.usersGet1({_id:annonce.user_id});

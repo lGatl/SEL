@@ -13,8 +13,8 @@ class LastArticle extends Component{
 
 	componentWillMount(){
 		let limit = this.props.actualite&&this.props.annonce?2:4;
-		this.props.annonceGet({},{limit,sort:{date:-1}},"last");
-		this.props.actualiteGet({},{limit,sort:{date:-1}},"last");
+		this.props.annonceGet_SSL_state({},{limit,sort:{date:-1}},"last");
+		this.props.actualiteGet_SSL_state({},{limit,sort:{date:-1}},"last");
 	}
 	miniArticle(article, type, i){
 		return <MiniArticle
@@ -51,8 +51,8 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
-		annonceGet: ACTIONS.Annonce.get,
-		actualiteGet: ACTIONS.Actualite.get,
+		annonceGet_SSL_state: ACTIONS.Annonce.get_SSL_state,
+		actualiteGet_SSL_state: ACTIONS.Actualite.get_SSL_state,
 	}, dispatch );
 }
 

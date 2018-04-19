@@ -11,8 +11,10 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class FormUsers extends Component {
 
 	componentWillMount(){
+			this.props.activeMenu("Mon Compte");
+		this.props.activeMenuMonCompte("Gerer les comptes");
 		this.props.usersControle(this.init());
-		this.props.usersGet({},null,null,res=>{});
+		this.props.usersGet({});
 	}
 	init(){
 		return{ 
@@ -110,6 +112,8 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		usersGet: ACTIONS.Users.get,
 		usersControle: 	ACTIONS.Users.controle,
 		usersAdd:	ACTIONS.Users.add,

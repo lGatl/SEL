@@ -13,7 +13,9 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class GererAnnonces extends Component {
 
 	componentWillMount(){
-		this.props.annonceGet({},null,null,res=>{
+		this.props.activeMenu("Mon Compte");
+		this.props.activeMenuMonCompte("Gerer les annonces");
+		this.props.annonceGet({},res=>{
 			this.props.usersGet({_id:{$in:res.map(annonce=>annonce.user_id)}});
 			this.props.categorieGet({_id:{$in:res.map(annonce=>annonce.categorie)}});
 			res.map(annonce=>{
@@ -127,6 +129,8 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		activeMenu: ACTIONS.Menu.activeMenu,
+		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		annonceGet: ACTIONS.Annonce.get,
 		annonceControle: 	ACTIONS.Annonce.controle,
 		annonceAdd:	ACTIONS.Annonce.add,

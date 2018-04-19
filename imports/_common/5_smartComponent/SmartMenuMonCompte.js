@@ -68,7 +68,7 @@ class MenuMonCompte extends Component {
 			display:true,
 		},
 		{
-			title: "Gerer les Categories",
+			title: "Gerer les categories",
 			url: "/admin/categorie",
 			display:true,
 		},
