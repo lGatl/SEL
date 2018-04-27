@@ -13,6 +13,7 @@ class Actualite extends Component {
 
 	componentWillMount(){
 		this.props.activeMenu("Actualité");
+		this.props.titrePage("Actualité");
 	}
 
 	render(){
@@ -35,6 +36,7 @@ function mapStateToProps(state){
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
 		activeMenu: ACTIONS.Menu.activeMenu,
+		titrePage: ACTIONS.Titre.titrePage,
 	}, dispatch );
 }
 

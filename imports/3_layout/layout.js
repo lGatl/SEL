@@ -8,9 +8,21 @@ import reducers from "../7_reducers";
 
 import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
 
+import "react-s-alert/dist/s-alert-default.css";
+import "react-s-alert/dist/s-alert-css-effects/slide.css";
+import "react-s-alert/dist/s-alert-css-effects/scale.css";
+import "react-s-alert/dist/s-alert-css-effects/bouncyflip.css";
+import "react-s-alert/dist/s-alert-css-effects/flip.css";
+import "react-s-alert/dist/s-alert-css-effects/genie.css";
+import "react-s-alert/dist/s-alert-css-effects/jelly.css";
+import "react-s-alert/dist/s-alert-css-effects/stackslide.css";
+import Alert from "react-s-alert";
+
 import SmartMenu from "../_common/5_smartComponent/SmartMenu";
 import SmartMenuAnnonce from "../_common/5_smartComponent/SmartMenuAnnonce";
 import SmartMenuMonCompte from "../_common/5_smartComponent/SmartMenuMonCompte";
+import TitrePage from "../_common/5_smartComponent/TitrePage";
+
 import Footer from "../_common/4_dumbComponent/Footer";
 import InitState from "../_common/5_smartComponent/InitState";
 import LastArticles from "../_common/5_smartComponent/LastArticles";
@@ -57,7 +69,7 @@ export const Layout = ({ content }) => {
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>
-
+				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
 			</div>
 		</Provider>
 	);
@@ -83,7 +95,7 @@ export const LayoutLAc = ({ content }) => {
 							flexDirection: "column",
 							minWidth:500,
 						}}>
-							<Titre>Actualites</Titre>
+							<TitrePage/>
 							<div style={{
 								flex:1,
 								display: "flex",
@@ -100,9 +112,9 @@ export const LayoutLAc = ({ content }) => {
 							<LastArticles actualite/>
 						</div>
 					</div>
+					<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
 				</div>
 				<Footer style = {{flex:"none"}}/>
-
 			</div>
 		</Provider>
 	);
@@ -127,7 +139,7 @@ export const LayoutLAn = ({ content }) => {
 							flexDirection: "column",
 							minWidth:500,
 						}}>
-							<Titre>Actualites</Titre>
+							<TitrePage/>
 							<div style={{
 								flex:1,
 								display: "flex",
@@ -146,7 +158,7 @@ export const LayoutLAn = ({ content }) => {
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>
-
+				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
 			</div>
 		</Provider>
 	);
@@ -165,7 +177,7 @@ export const LayoutAnnonce = ({ content }) => {
 					<SmartMenu/>
 					<div style={{display: "flex", flexWrap:"wrap"}}>
 						<div style={{display:"flex",flex:5, flexDirection: "column"}}>
-							<Titre>Annonces</Titre>
+							<TitrePage/>
 							<div style={{display:"flex", marginLeft:20}}>		
 								
 								<SmartMenuAnnonce/>
@@ -184,7 +196,7 @@ export const LayoutAnnonce = ({ content }) => {
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>
-
+				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
 			</div>
 		</Provider>
 	);
@@ -207,13 +219,14 @@ export const LayoutMonCompte = ({ content }) => {
 							<SmartMenuMonCompte/>
 						</div>
 						<div style={{display: "flex", flexDirection: "column", flex:5, minWidth:550, margin:10}}>
+							<TitrePage/>
 							{content}
 						</div>
 						
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>
-
+				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
 			</div>
 		</Provider>
 	);

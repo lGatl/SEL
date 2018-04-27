@@ -2,6 +2,8 @@ import { COLLECTIONS } from "../5_methodes/methodes";
 
 import { CONSTANTE_Users, ACTION_Users } from "../user/2_action/user_action";
 import { CONSTANTE_Menu, ACTION_Menu } from "./menu_action";
+import { CONSTANTE_Titre, ACTION_Titre } from "./titre_action";
+
 
 const CONSTANTE = {};
 const ACTION = {};
@@ -351,10 +353,12 @@ COLLECTIONS.forEach((COLLECTION)=>{
 
 export const CONSTANTES = { ...CONSTANTE, 
 	Users:{ ...CONSTANTE.Users, ...CONSTANTE_Users },
-	Menu:{...CONSTANTE_Menu}
+	Menu:{...CONSTANTE_Menu},
+	Titre:{...CONSTANTE_Titre}
 };
 export const ACTIONS = { ...ACTION,
 	Users:{ ...ACTION.Users, ...ACTION_Users },
-	Menu:{...ACTION_Menu}
+	Menu:{...ACTION_Menu},
+	Titre:{...ACTION_Titre}
 };
 

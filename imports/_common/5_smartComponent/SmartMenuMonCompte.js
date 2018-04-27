@@ -25,12 +25,12 @@ class MenuMonCompte extends Component {
 			display:true,
 		},
 		{
-			title: "Deposer une offre",
+			title: "Déposer une offre",
 			url: "/mon_compte/annonce/offre/creer",
 			display:true,
 		},
 		{
-			title: "Deposer une demande",
+			title: "Déposer une demande",
 			url: "/mon_compte/annonce/demande/creer",
 			display:true,
 		},
@@ -90,6 +90,7 @@ class MenuMonCompte extends Component {
 			this.props.logOut();
 		}else{
 			this.props.activeMenuMonCompte(title);
+			this.props.titrePage(title);
 			FlowRouter.go(url);
 		}
 	}
@@ -138,6 +139,7 @@ function mapStateToProps(state){
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
+		titrePage: ACTIONS.Titre.titrePage,
 	}, dispatch );
 }
 

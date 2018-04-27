@@ -5,7 +5,8 @@ export default class FicheAnnonce extends Component {
 	style(){
 		return{
 			s_container:{
-				maxWidth:800,
+				flex:1,
+				maxWidth:1000,
 				marginTop:20,
 				MarginBottom:"auto",
 				flexWrap:"wrap",
@@ -30,9 +31,11 @@ export default class FicheAnnonce extends Component {
 			s_colonne:{
 				flex:1,
 				display:"flex", 
+
 				flexDirection:"column"
 			},
 			s_ligne:{
+				
 				display:"flex",
 			},
 			s_cellule:{
@@ -43,16 +46,62 @@ export default class FicheAnnonce extends Component {
 
 		};
 	}
+	propositionForm(){
+		let { s_colonne, s_ligne, s_cellule } = this.style();
+		let { proposition, commentaire } = this.props;
+		let s_border = "1px solid rgba(150,150,150,0.3)";
+		return <div style={{...s_ligne, flex:1, flexWrap:"wrap",}}>
+			<div style={{...s_colonne, borderRight:s_border}}>
+				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
+					Faire une proposition
+				</div>
+				<div style={{...s_cellule, alignItems:"center", display:"flex"}}>
+					<Input
+						placeholder = "proposition"
+						name = "proposition"
+						value = { proposition||"" }
+						onChange = { this.props.change.bind( this ) } 
+					/>
+				</div>
+			</div>
+			<div style={{...s_colonne, borderRight:s_border}}>
+				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
+					Commentaire
+				</div>
+				<div style={{...s_cellule, alignItems:"center", display:"flex"}}>
+					<TextArea
+						placeholder = "commentaire"
+						name = "commentaire"
+						value = { commentaire||"" }
+						onChange = { this.props.change.bind( this ) } 
+					/>
+				</div>
+			</div>
+			<div style={{...s_colonne}}>
+				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
+					Validation
+				</div>
+				<div style={{...s_cellule, alignItems:"center", display:"flex", justifyContent:"center"}}>
+					<Button
+						onClick = { this.props.propositionAdd.bind( this ) }
+					>
+					Proposer
+					</Button>
+				</div>
+			</div>
+		</div>;
+	}
+	
 	render(){
 		let { s_container, s_titre, s_colonne, s_ligne, s_cellule } = this.style();
-		let { categorie, date, date_de_fin, identifiant,email_display, email, telephone_display, telephone,adresse_display, adresse } = this.props;
+		let { edit, moi, editable, categorie, date, date_de_fin, identifiant,email_display, email, telephone_display, telephone,adresse_display, adresse, nbpropositions } = this.props;
 		let s_border = "1px solid rgba(150,150,150,0.3)";
 		return (
 			<div style={{...s_container}}>
 				<div style={{...s_titre}}>
 						Informations de l'annonce
 				</div>
-				<div style={{...s_ligne}}>
+				<div style={{...s_ligne,flexWrap:"wrap",}}>
 					<div style={{...s_colonne, borderRight:"1px solid rgba(150,150,150,0.3)"}}>
 						<div style={{...s_cellule,padding:0,display:"flex", height:300,justifyContent:"center" }}>
 							<div style={{...s_cellule,padding:0,maxWidth:500, height:"100%", background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover"}}>
@@ -133,48 +182,12 @@ export default class FicheAnnonce extends Component {
 					</div>
 				</div>:""}
 				<div style={{...s_titre}}>
-						Proposition
+					{moi?nbpropositions+" Propositions":"Proposition"}
 				</div>
-				<div style={{...s_ligne, flex:1}}>
-					<div style={{...s_colonne, borderRight:s_border}}>
-						<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
-							Faire une proposition
-						</div>
-						<div style={{...s_cellule, alignItems:"center", display:"flex"}}>
-							<Input
-								placeholder = "proposition"
-								name = "proposition"
-								value = { this.props.proposition||"" }
-								onChange = { this.props.change.bind( this ) } 
-							/>
-						</div>
-					</div>
-					<div style={{...s_colonne, borderRight:s_border}}>
-						<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
-							Commentaire
-						</div>
-						<div style={{...s_cellule, alignItems:"center", display:"flex"}}>
-							<TextArea
-								placeholder = "commentaire"
-								name = "commentaire"
-								value = { this.props.commentaire||"" }
-								onChange = { this.props.change.bind( this ) } 
-							/>
-						</div>
-					</div>
-					<div style={{...s_colonne}}>
-						<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
-							Validation
-						</div>
-						<div style={{...s_cellule, alignItems:"center", display:"flex", justifyContent:"center"}}>
-							<Button
-								onClick = { this.props.propositionAdd.bind( this ) }
-							>
-							Sauvegarder
-							</Button>
-						</div>
-					</div>
+				<div style = {{display:"flex",flexDirection: "column", backgroundColor: moi?"pink":""}}>
+					{edit?<Button style = {{flex:1}} onClick={this.props.editer.bind(this)}>Editer</Button>:moi?editable?<Button style = {{flex:1}} onClick={this.props.reediter.bind(this)}>Rééditer</Button>:this.props.propositionsListe:this.propositionForm()}
 				</div>
+				
 			</div>
 		);
 	}

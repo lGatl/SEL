@@ -1,10 +1,11 @@
 import React from "react";
 import {mount} from "react-mounter";
 
-import {Layout, LayoutAnnonce, LayoutLAn} from "../3_layout/layout";
+import {Layout, LayoutAnnonce, LayoutLAn,LayoutLAc} from "../3_layout/layout";
 
 import Accueil from "../4_pages/Accueil";
 import Actualite from "../4_pages/Actualite";
+import Annonce from "../4_pages/Annonce";
 import ListeAnnonce from "../annonce/5_smartComponent/ListeAnnonce";
 import Connexion from "../4_pages/Connexion";
 import Contact from "../4_pages/Contact";
@@ -13,8 +14,7 @@ import LesSelistes from "../4_pages/LesSelistes";
 import MonCompte from "../4_pages/MonCompte";
 import SmartDev from "../_common/5_smartComponent/SmartDev";
 import AnnonceDetaillee from "../annonce/5_smartComponent/AnnonceDetaillee";
-
-
+import FormAnnonce from "../annonce/5_smartComponent/FormAnnonce";
 
 FlowRouter.route( "/", {
 	name: "home",
@@ -33,21 +33,21 @@ FlowRouter.route( "/actualite", {
 FlowRouter.route( "/annonce", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutAnnonce, { content: <ListeAnnonce /> });
+		mount(LayoutAnnonce, { content: <Annonce /> });
 		 window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/offre", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutAnnonce, { content: <ListeAnnonce type = "offre"/> });
+		mount(LayoutAnnonce, { content: <Annonce type = "offre"/> });
 		 window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/demande", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutAnnonce, { content: <ListeAnnonce type = "demande" /> });
+		mount(LayoutAnnonce, { content: <Annonce type = "demande" /> });
 		 window.scrollTo(0, 0);
 	}
 });
@@ -55,6 +55,13 @@ FlowRouter.route( "/annonce/:_id", {
 	name: "annonce",
 	action: function(params) {
 		mount(LayoutLAc, { content: <AnnonceDetaillee _id={params._id}/> });
+		 window.scrollTo(0, 0);
+	}
+});
+FlowRouter.route( "/annonce/:_id/edit", {
+	name: "annonce",
+	action: function(params) {
+		mount(LayoutLAc, { content: <FormAnnonce type="demande" _id={params._id} edit /> });
 		 window.scrollTo(0, 0);
 	}
 });

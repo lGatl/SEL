@@ -13,8 +13,8 @@ class LastArticle extends Component{
 
 	componentWillMount(){
 		let limit = this.props.actualite&&this.props.annonce?2:4;
-		this.props.annonceGet_SSL_state({},{limit,sort:{date:-1}},"last");
-		this.props.actualiteGet_SSL_state({},{limit,sort:{date:-1}},"last");
+		this.props.annonceGet_SSL_state({etat:"valider"},{limit,sort:{date:-1}},"last");
+		this.props.actualiteGet_SSL_state({publier: true},{limit,sort:{date:-1}},"last");
 	}
 	miniArticle(article, type, i){
 		return <MiniArticle

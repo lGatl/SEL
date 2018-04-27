@@ -14,7 +14,7 @@ import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
 	componentWillMount(){
-		
+		this.props.titrePage("Annonces")
 		this.init(this.props);
 	}
 	componentWillReceiveProps(next){
@@ -88,6 +88,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		activeMenuAnnonce: ACTIONS.Menu.activeMenuAnnonce,

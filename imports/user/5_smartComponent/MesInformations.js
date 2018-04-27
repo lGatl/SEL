@@ -18,6 +18,7 @@ class MesInformations extends Component{
 		
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Mes informations");
+		this.props.titrePage("Mes Informations");
 	}
 	editer(){
 		FlowRouter.go("/user/"+this.props.active_user._id+"/edit")
@@ -28,7 +29,6 @@ class MesInformations extends Component{
 			
 			return(	
 				<div>
-					<Titre>Mes informations</Titre>
 					<CardUser
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }
@@ -58,6 +58,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 	}, dispatch );

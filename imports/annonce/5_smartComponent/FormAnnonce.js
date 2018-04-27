@@ -4,15 +4,37 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
+import { dateToFormat } from "../../8_libs/date";
+
 import { Input, TextArea, Button, Dropdown, Titre, Checkbox, Calendrier } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 class FormAnnone extends Component {
 
 	componentWillMount(){
+		this.props.titrePage(this.props.edit?"Editer une annonce":"Déposer une "+ this.props.type);
 		this.props.activeMenu("Mon Compte");
-		this.props.activeMenuMonCompte(this.props.type=="offre"?"Deposer une offre":"Deposer une demande");
-		this.props.annonceControle(this.init());
+		this.props.activeMenuMonCompte(this.props.type=="offre"?"Déposer une offre":"Déposer une demande");
+		
 		this.props.categorieGet({publier:true});
+		if(this.props.edit&&this.props._id){
+			this.props.annonceGet1({_id:this.props._id},(res)=>{
+				this.props.annonceControle({ 
+					titre: res.titre,
+					description: res.description,
+					categorie: res.categorie,
+					date_de_fin:res.date_de_fin,
+					email:res.email,
+					telephone:res.telephone,
+					adresse:res.adresse,
+					image:res.image,
+					etat: res.etat,
+					date: res.date,
+					
+				});
+			});
+		}else{
+			this.props.annonceControle(this.init());
+		}
 	}
 	init(){
 		return{ 
@@ -23,7 +45,9 @@ class FormAnnone extends Component {
 			email:false,
 			telephone:false,
 			adresse:false,
-			image:"/images/1.jpg"
+			image:"/images/1.jpg",
+			etat: "en_attente",
+			date: Date.now(),
 			
 		};
 	}
@@ -33,32 +57,50 @@ class FormAnnone extends Component {
 		this.props.annonceControle({ [name]:value||checked });
 	}
 	//Action
-	annonceAdd(){
+	soumettre(){
 		let {titre, description, categorie, email, telephone, adresse, date_de_fin} = this.props.annonce_controle;
-		this.props.annonceAdd(
-			{
-				titre,
-				description,
-				etat: "en_attente",
-				date: Date.now(),
-				type: this.props.type,
-				user_id:this.props.active_user._id,
-				categorie,
-				email,
-				telephone,
-				adresse,
-				date_de_fin: new Date(date_de_fin)
-
-			}
-		);
+		this.props.edit&&this.props.id?
+			this.props.annonceAdd(
+				{
+					titre,
+					description,
+					etat: "en_attente",
+					date: Date.now(),
+					type: this.props.type,
+					user_id:this.props.active_user._id,
+					categorie,
+					email,
+					telephone,
+					adresse,
+					date_de_fin: date_de_fin
+				}
+			):
+			this.props.annonceUp({_id:this.props._id},
+				{
+					titre,
+					description,
+					etat: "en_attente",
+					date: Date.now(),
+					type: this.props.type,
+					user_id:this.props.active_user._id,
+					categorie,
+					email,
+					telephone,
+					adresse,
+					date_de_fin: date_de_fin
+				});
 		this.props.annonceControle(this.init());
+		FlowRouter.go("/annonce/"+this.props._id)
+
 	}
 	//Preparation du rendu
 	render() {
+		let { active_user } = this.props;
 		let { titre, description, categorie, date_de_fin, email, adresse, telephone } = this.props.annonce_controle;
 		return (
+			
 			<form style={{}}>
-				<Titre>Deposer une {this.props.type}</Titre>
+				
 				<Dropdown
 					label = "Categorie"
 					placeholder = "Categorie"
@@ -108,11 +150,12 @@ class FormAnnone extends Component {
 				/>
 				<br/>
 				<Button
-					onClick = { this.annonceAdd.bind( this ) }
+					onClick = { this.soumettre.bind( this ) }
 				>
 				Sauvegarder {this.props.type=="offre"?"l'offre":"la demande"}
 				</Button>
 			</form>
+				
 		);
 	}
 }
@@ -129,11 +172,14 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({ 
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
-
+	
 		annonceControle: 	ACTIONS.Annonce.controle,
 		annonceAdd: 			ACTIONS.Annonce.add,
+		annonceUp: 			ACTIONS.Annonce.up,
+		annonceGet1: 			ACTIONS.Annonce.get1,
 		categorieGet: 			ACTIONS.Categorie.get,
 	}, dispatch );
 }

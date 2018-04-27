@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-export const COLLECTIONS = ["Users","Actualite","Annonce","Categorie"];
+export const COLLECTIONS = ["Users","Actualite","Annonce","Categorie","Proposition"];
 
 const SCHEMA ={
 	Actualite : new SimpleSchema({

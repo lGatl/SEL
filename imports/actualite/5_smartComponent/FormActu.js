@@ -141,7 +141,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
-			activeMenu: ACTIONS.Menu.activeMenu,
+		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		actualiteGet: ACTIONS.Actualite.get,
 		actualiteControle: 	ACTIONS.Actualite.controle,

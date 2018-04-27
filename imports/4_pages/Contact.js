@@ -36,10 +36,10 @@ class Contact extends Component {
 	render(){
 		return (
 			<div>
-					<Segment><CoordonneesHoraires contenu={this.infos}></CoordonneesHoraires></Segment>
-					<Segment><CoordonneesHoraires contenu={this.horaires}></CoordonneesHoraires></Segment>
+				<Segment><CoordonneesHoraires contenu={this.infos}></CoordonneesHoraires></Segment>
+				<Segment><CoordonneesHoraires contenu={this.horaires}></CoordonneesHoraires></Segment>
 				
-						<FormContact></FormContact>
+					<FormContact></FormContact>
 
 			</div>
 		);

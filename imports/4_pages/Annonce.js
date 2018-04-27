@@ -17,11 +17,7 @@ class Annonce extends Component {
 
 	render(){
 
-		return (
-			<div>
-				<ListeAnnonce/>
-			</div>
-		);
+		return <ListeAnnonce type = {this.props.type}/>;
 	}
 }
 
@@ -37,6 +33,7 @@ function mapStateToProps(state){
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
 		activeMenu: ACTIONS.Menu.activeMenu,
+
 	}, dispatch );
 }
 

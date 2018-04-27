@@ -71,7 +71,7 @@ export default class Calendrier extends Component{
 		let { name, onChange} = this.props;
 		if(value!=""){
 			//this.setState({show:false});
-			onChange(e,{ name, value:(Date.parse(new Date(annee,mois,value))) });
+			onChange(e,{ name, value:(new Date(annee,mois,value)) });
 		}
 	}
 	render(){
