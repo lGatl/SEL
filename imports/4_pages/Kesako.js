@@ -9,6 +9,7 @@ import ContenuKesako from '../_common/4_dumbComponent/ContenuKesako';
 
 class Kesako extends Component {
 	componentWillMount(){
+		this.props.titrePage("LE SEL C'EST QUOI ?");
 		this.props.activeMenu("Kesako");
 	}
 
@@ -34,6 +35,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 	}, dispatch );
 }

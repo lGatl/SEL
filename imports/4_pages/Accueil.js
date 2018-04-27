@@ -12,6 +12,8 @@ import GoogleMap from "../_common/4_dumbComponent/GoogleMap";
 class Accueil extends Component {
 
 	componentWillMount(){
+		this.props.titrePage("Bienvenue Futur Seliste");
+		
 		this.props.activeMenu("Accueil");
 	}
 
@@ -19,8 +21,8 @@ class Accueil extends Component {
 
 		return (
 			<div>
-				<Titre> Bienvenue Futur Seliste  <br/> Partagez des services et des savoirs... Créez des liens </Titre>
-				<div>CArrousel  3 annonces</div>
+				<Titre> Partagez des services et des savoirs... Créez des liens </Titre>
+				<div>CArrousel 3 annonces</div>
 				<Titre> Trouvez un SEL près de chez vous ! C'est simple avec la carte des sélistes </Titre>
 				<GoogleMap/>
 
@@ -41,6 +43,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 	}, dispatch );
 }

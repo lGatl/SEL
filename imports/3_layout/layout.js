@@ -55,9 +55,18 @@ export const Layout = ({ content }) => {
 						<div style={{
 							flex:5,
 							display: "flex",
-							justifyContent:"center"
-						}}>		
-							{content}
+							justifyContent:"center",
+							flexDirection: "column",
+							minWidth:500,
+						}}>
+							<TitrePage/>
+							<div style={{
+								flex:1,
+								display: "flex",
+								justifyContent:"center",
+							}}>		
+								{content}
+							</div>
 						</div>
 						<div style={{
 							display: "flex",

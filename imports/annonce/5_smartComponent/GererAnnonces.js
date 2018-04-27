@@ -13,6 +13,7 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class GererAnnonces extends Component {
 
 	componentWillMount(){
+		this.props.titrePage("Gerer les actualités");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les annonces");
 		this.props.annonceGet({},res=>{
@@ -76,7 +77,6 @@ class GererAnnonces extends Component {
 		
 		return (
 			<div>
-				<Titre>Gerer les annonces</Titre>
 				<Tableau
 					ligne1sur2
 					border_line
@@ -129,6 +129,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		annonceGet: ACTIONS.Annonce.get,

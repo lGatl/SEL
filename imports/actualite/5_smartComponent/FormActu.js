@@ -10,6 +10,7 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class FormActu extends Component {
 
 	componentWillMount(){
+		this.props.titrePage("Gerer les actualités");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les actualites");
 		this.props.actualiteControle(this.init());
@@ -77,7 +78,6 @@ class FormActu extends Component {
 		
 		return (
 			<div>
-				<Titre>Gerer les actualites</Titre>
 				<form>
 					
 					<Input
@@ -141,6 +141,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		actualiteGet: ACTIONS.Actualite.get,

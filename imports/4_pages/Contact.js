@@ -16,16 +16,16 @@ class Contact extends Component {
 	constructor(){
 		super();
 		this.infos={
-			titre:"Coordonnées de la Croix Rouge de Damvillers",
-			details:["6 rue des Remparts",
-				"55150 DAMVILLERS",
-				"Mme CHALUPKA M.L.",
-				"Tél : 09 71 44 27 87",
-				"Mail : mchalupka@wanadoo.fr"]
+			titre:"Coordonnées de la collectivité",
+			details:[" 9 rue des Meninges",
+				"52250 LARGONI",
+				"Mr GRIGON F.",
+				"Tél : 06 95 84 48 03",
+				"Mail : fgrigon@gmail.fr"]
 		};
 		this.horaires={
-			titre:"Horaires de permanence de la Croix Rouge",
-			details:["Mardi de 13h30 à 16h30 et le Vendredi de 10 h à 12h."]
+			titre:"Horaires :",
+			details:["du Lundi au Vendredi 9h à 16h30"]
 		};
 	}
 
@@ -38,8 +38,7 @@ class Contact extends Component {
 			<div>
 				<Segment><CoordonneesHoraires contenu={this.infos}></CoordonneesHoraires></Segment>
 				<Segment><CoordonneesHoraires contenu={this.horaires}></CoordonneesHoraires></Segment>
-				
-					<FormContact></FormContact>
+				<FormContact></FormContact>
 
 			</div>
 		);

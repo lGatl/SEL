@@ -10,32 +10,27 @@ import { Segment } from "../_common/4_dumbComponent/_gat_ui_react";
 class LesSelistes extends Component {
 
 	componentWillMount(){
+		this.props.titrePage("Les Selistes");
 		this.props.activeMenu("Les Selistes");
 	}
 
 	render(){
 
-		return (
-			<div>
-					LesSelistes
-
-			</div>
-		);
+		return <div>sfrfefzef</div>
+	//<UsersListe/>;
 	}
 }
 
 
 function mapStateToProps(state){
-	return (
-		{
+	return ({
 
-			
-		}
-	);
+	});
 }
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 	}, dispatch );
 }
