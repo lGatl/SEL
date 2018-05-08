@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Input, TextArea, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Input, TextArea, Button, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 export default class FicheAnnonce extends Component {
 	style(){
@@ -39,6 +39,9 @@ export default class FicheAnnonce extends Component {
 				display:"flex",
 			},
 			s_cellule:{
+				display:"flex",
+				justifyContent: "center",
+				alignItems:"center",
 				padding:8,
 				flex:1,
 				textAlign:"center"
@@ -50,7 +53,7 @@ export default class FicheAnnonce extends Component {
 		let { s_colonne, s_ligne, s_cellule } = this.style();
 		let { proposition, commentaire } = this.props;
 		let s_border = "1px solid rgba(150,150,150,0.3)";
-		return <div style={{...s_ligne, flex:1, flexWrap:"wrap",}}>
+		return <div style={{...s_ligne, flex:1, flexWrap:"wrap", borderBottom:s_border}}>
 			<div style={{...s_colonne, borderRight:s_border}}>
 				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
 					Faire une proposition
@@ -91,15 +94,26 @@ export default class FicheAnnonce extends Component {
 			</div>
 		</div>;
 	}
-	
+	//================== + RENDU + ==================
+	proposition(){
+		if(this.props.actif){
+			return this.props.moi?
+				this.props.edit?<Button style = {{flex:1}} onClick={this.props.editer.bind(this)}>Editer</Button>:
+					this.props.editable?<Button style = {{flex:1}} onClick={this.props.reediter.bind(this)}>Rééditer</Button>:
+						this.props.propositionsListe: <div>{this.propositionForm()}{this.props.propositionsListe}</div>;
+
+		} else {
+			return <Button style = {{flex:1}} onClick={this.props.connexion.bind(this)}>Connectez vous pour faire une proposition</Button>;
+		}
+	}
 	render(){
 		let { s_container, s_titre, s_colonne, s_ligne, s_cellule } = this.style();
-		let { edit, moi, editable, categorie, date, date_de_fin, identifiant,email_display, email, telephone_display, telephone,adresse_display, adresse, nbpropositions } = this.props;
+		let { moi, categorie, date, date_de_fin, identifiant,email_display, email, telephone_display, telephone,adresse_display, adresse, nbpropositions, type, statut, actif } = this.props;
 		let s_border = "1px solid rgba(150,150,150,0.3)";
 		return (
 			<div style={{...s_container}}>
 				<div style={{...s_titre}}>
-						Informations de l'annonce
+					{ this.props.type&&this.props.type == "offre" ? "Offre" : "Demande" }
 				</div>
 				<div style={{...s_ligne,flexWrap:"wrap",}}>
 					<div style={{...s_colonne, borderRight:"1px solid rgba(150,150,150,0.3)"}}>
@@ -137,7 +151,10 @@ export default class FicheAnnonce extends Component {
 								Statut
 							</div>
 							<div style={{...s_cellule}}>
-								
+								{ statut }
+								<div style={{ width:30,height:30, 
+									backgroundColor:statut == "en attente"?"green":statut == "en cours"?"orange":"red",
+									margin:5,borderRadius:"50%"}}></div>
 							</div>
 						</div>
 					</div>
@@ -147,14 +164,14 @@ export default class FicheAnnonce extends Component {
 					</div>
 				</div>
 				<div style={{...s_titre}}>
-						Informations séliste
+					{ type && type == "offre" ? "Offrant" : "Demandeur" }
 				</div>
 				<div style={{...s_ligne}}>
 					<div style={{...s_cellule, borderRight:s_border}}>
 						Identifiant
 					</div>
 					<div style={{...s_cellule}}>
-						{ identifiant }
+						<A href = {this.props.href_annonceur}>{ identifiant }</A>
 					</div>
 				</div>
 				{email_display?<div style={{...s_ligne, borderTop:s_border}}>
@@ -182,10 +199,10 @@ export default class FicheAnnonce extends Component {
 					</div>
 				</div>:""}
 				<div style={{...s_titre}}>
-					{moi?nbpropositions+" Propositions":"Proposition"}
+					{ actif && moi ? statut != "en attente"?"Proposition acceptée" : nbpropositions + " Propositions":"Proposition"}
 				</div>
-				<div style = {{display:"flex",flexDirection: "column", backgroundColor: moi?"pink":""}}>
-					{edit?<Button style = {{flex:1}} onClick={this.props.editer.bind(this)}>Editer</Button>:moi?editable?<Button style = {{flex:1}} onClick={this.props.reediter.bind(this)}>Rééditer</Button>:this.props.propositionsListe:this.propositionForm()}
+				<div style = {{display:"flex",flexDirection: "column"}}>
+					{ this.proposition()}
 				</div>
 				
 			</div>

@@ -10,6 +10,7 @@ import { Titre, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
+import { goUserEdit } from "../../8_libs/go";
 
 
 class MesInformations extends Component{
@@ -20,12 +21,10 @@ class MesInformations extends Component{
 		this.props.activeMenuMonCompte("Mes informations");
 		this.props.titrePage("Mes Informations");
 	}
-	editer(){
-		FlowRouter.go("/user/"+this.props.active_user._id+"/edit")
-	}
+	
 	render(){
 		if(this.props.active_user){
-			let { emails, profile } = this.props.active_user;
+			let { emails, profile, _id } = this.props.active_user;
 			
 			return(	
 				<div>
@@ -33,13 +32,13 @@ class MesInformations extends Component{
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }
 						note = {5}
-						categories = {['cuisine','menage']}
+						categories = {["cuisine","menage"]}
 						email = {emails&&emails.length>0?emails[0].address:""}
 						telephone = {profile?profile.telephone:""}
 						adresse = { profile?profile.adresse:"" }
 						date_val_resp={ profile?profile.date_val_resp:"" }
+						editer = {goUserEdit.bind(this,_id)}
 					/>
-					<Button onClick={this.editer.bind(this)}>Editer</Button>
 					<Titre>Mes Seugnettes</Titre>
 				</div>
 			);

@@ -9,6 +9,7 @@ import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common
 class FormCategorie extends Component {
 
 	componentWillMount(){
+		this.props.titrePage("Gérer les catégories");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les categories");
 		this.props.categorieControle(this.init());
@@ -83,7 +84,6 @@ class FormCategorie extends Component {
 		
 		return (
 			<div>
-				<Titre>Gerer les categories</Titre>
 				<form>
 					
 					<Input
@@ -95,14 +95,14 @@ class FormCategorie extends Component {
 				
 					<Button
 						onClick = { this.categorieAdd.bind( this ) }
-					>Ajouter la categorie</Button>
+					>Ajouter la catégorie</Button>
 					<Tableau
 						ligne1sur2
 						border_line
 						border_table
 						s_col = {[{col:3,style:{flex:2}}]}
 						donnees={[
-							{thead:[["Categorie","Offre","Demande","Action"]]},
+							{thead:[["Catégorie","Offre","Demande","Action"]]},
 							{tbody:this.props.categories.map((categorie)=>{
 								let value = actions?actions.find((act)=>act._id==categorie._id).action:{};
 								let offres_count = annonces_count&&categorie?annonces_count["offre"+categorie._id]:"";
@@ -142,6 +142,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		categorieGet: ACTIONS.Categorie.get,

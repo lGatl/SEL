@@ -45,7 +45,7 @@ class MenuMonCompte extends Component {
 			display:true,
 		},
 		{
-			title: "Mes proposition",
+			title: "Mes propositions",
 			url: "/mon_compte/annonce/proposition",
 			display:true,
 		},];

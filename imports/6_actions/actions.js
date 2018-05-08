@@ -286,14 +286,15 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
-	function upm(obj, cbk = ()=>{}){
+	function upm(reco, modif, cbk = ()=>{}){
 		let p = new Promise( ( resolve, reject ) => {
-			Meteor.call("upm" + COLLECTION,obj,(err,res)=>{
+			Meteor.call("upm" + COLLECTION,reco,modif,(err,res)=>{
 				if(err){
 					reject(err);
 				}else{
 					cbk( res );
-					resolve( { val:res, state:null} );
+					console.log("res", res);
+					resolve( { val:{...modif,_id:res}, state:null} );
 				}
 			});
 		});

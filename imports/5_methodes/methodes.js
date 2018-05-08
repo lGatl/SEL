@@ -1,5 +1,5 @@
 import SimpleSchema from 'simpl-schema';
-export const COLLECTIONS = ["Users","Actualite","Annonce","Categorie","Proposition"];
+export const COLLECTIONS = ["Users","Actualite","Annonce","Categorie","Proposition","Transaction"];
 
 const SCHEMA ={
 	Actualite : new SimpleSchema({
@@ -15,11 +15,12 @@ const SCHEMA ={
 		user_id: { type:String },
 		description: { type: String },
 		categorie:{ type:String },
-		date_de_fin:{type:Date},
-		email:{type:Boolean},
-		telephone:{type:Boolean},
-		adresse:{type:Boolean},
-		date: {type: Date}
+		date_de_fin:{ type:Date },
+		email:{ type:Boolean },
+		telephone:{ type:Boolean },
+		adresse:{ type:Boolean },
+		date: { type: Date },
+		statut: { type: String }
 	})
 };
 
@@ -51,8 +52,9 @@ COLLECTIONS.forEach((COLLECTION) =>{
 			let succed = BD[COLLECTION].update(reco,{$set:modif}); //retourne l'id de l'objet updaté => res.insertedId
 			return succed == 1 ? BD[COLLECTION].findOne(reco)._id:false;
 		},
-		[ "upm" + COLLECTION ]:(obj)=>{		
-			return BD[COLLECTION].update(obj,{multi:true}); //retourne l'id de l'objet updaté => res.insertedId
+		[ "upm" + COLLECTION ]:(reco,modif)=>{
+			let succed = BD[COLLECTION].update(reco,{$set:modif},{multi:true});
+			return succed != 0 ? BD[COLLECTION].find(reco).fetch().reduce((total,upd)=>[...total,upd._id],[]):false; //retourne l'id de l'objet updaté => res.insertedId
 		},
 		[ "ups"+COLLECTION ]:(obj)=>{		
 			return BD[COLLECTION].upsert(obj); //retourne l'id de l'objet upserté => res.insertedId

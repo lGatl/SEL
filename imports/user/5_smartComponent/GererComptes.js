@@ -4,14 +4,15 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
+import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
-
-import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { hrefUser, goUserEdit } from "../../8_libs/go";
 
 class FormUsers extends Component {
 
 	componentWillMount(){
-			this.props.activeMenu("Mon Compte");
+		this.props.titrePage("Gerer les comptes");
+		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les comptes");
 		this.props.usersControle(this.init());
 		this.props.usersGet({});
@@ -59,9 +60,7 @@ class FormUsers extends Component {
 			});
 		}
 	}
-	goEdit(_id){
-		FlowRouter.go("/user/"+_id+"/edit");
-	}
+
 	//========================Preparation du rendu========================
 	
 	render(){
@@ -69,7 +68,6 @@ class FormUsers extends Component {
 		
 		return (
 			<div>
-				<Titre>Gerer les Comptes</Titre>
 				<form>
 					
 					<Input
@@ -88,7 +86,7 @@ class FormUsers extends Component {
 							{thead:[["Login","ID","Action"]]},
 							{tbody:this.props.userss.reduce((total,user)=>{
 								return user.username.indexOf(filtre)>=0?
-									[...total,[user.username, user._id,<Button onClick={this.goEdit.bind(this, user._id)}>Editer</Button>]]:total;
+									[...total,[<A href={hrefUser(user._id)}>{user.username}</A>, user._id,<Button onClick={goUserEdit.bind(this, user._id)}>Editer</Button>]]:total;
 							},[])
 							},
 						]}
@@ -112,6 +110,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		usersGet: ACTIONS.Users.get,

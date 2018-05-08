@@ -10,16 +10,27 @@ import { dateToFormat } from "../../8_libs/date";
 
 import Alert from "react-s-alert";
 
+import { goAnnonceEdit, hrefUser } from "../../8_libs/go";
+
 class AnnonceDetaillee extends Component {
 	componentWillMount(){
 		this.props.titrePage("Annonce Detaillée");
-		this.props.annonceGet1({_id:this.props._id},annonce=>{
-			this.props.categorieGet1({_id:annonce.categorie});
-			this.props.propositionGet({annonce_id:annonce._id},(propositions)=>{
-				this.props.usersGet({_id:{$in:propositions.map(prop=>annonce.type=="offre"?prop.payeur:prop.prestataire)}});
-			});
-			this.props.usersGet1({_id:annonce.user_id});
 
+		this.props.annonceGet1({_id:this.props._id},annonce=>{
+			if(annonce ){
+				this.props.usersGet1({_id:annonce.user_id});
+				this.props.categorieGet1({_id:annonce.categorie});
+				if(this.props.active_user){
+					if(annonce.user_id == this.props.active_user._id){
+						this.props.propositionGet({annonce_id:annonce._id},(propositions)=>{
+							this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}});
+						});
+						
+					}else if(annonce.user_id!=this.props.active_user._id){
+						this.props.propositionGet({annonce_id:annonce._id,posteur:this.props.active_user._id});
+					}
+				}
+			}
 		});
 	}
 	change(e,{ value, name, checked }){
@@ -34,6 +45,7 @@ class AnnonceDetaillee extends Component {
 			this.props.propositionAdd({
 				annonce_id:annonce._id,
 				prestataire:annonce.type == "offre"?user._id:active_user._id,
+				posteur: active_user._id,
 				payeur:annonce.type == "offre"?active_user._id:user._id,
 				prix:parseFloat(proposition),
 				commentaire,
@@ -45,27 +57,65 @@ class AnnonceDetaillee extends Component {
 			Alert.error("Erreur");
 		}
 	}
-	propositionsListe(){
-		let { propositions, annonce, users } = this.props;
-		return propositions.map((proposition,i)=>{
-			let user = users.find(user=>user._id==(annonce.type=="offre"?proposition.payeur:proposition.prestataire))
-			return <Proposition 
-				date = { dateToFormat(proposition.date) }
-				prix = { proposition.prix }
-				user_nom = { user? user.profile.nom:"" }
-				user_prenom = { user? user.profile.prenom:"" }
-				user_username = { user? user.username:"" }
-				commentaire = { proposition.commentaire }
-				etat = { proposition.etat }
-				key = {i}
-			/>});
+	accepter(_id){
+		this.props.annonceGet1({_id:this.props._id},annonce=>{
+			if(annonce && annonce.statut && annonce.statut == "en attente"){
+				this.props.propositionUp({_id:_id}, {etat:"accepte"},()=>{
+					this.props.propositionUpm({_id:{$in:this.props.propositions.reduce((total,pro)=>pro._id != _id?[...total,pro._id]:total,[])}}, {etat:"refuse"});
+					this.props.annonceUp({_id:this.props._id}, {statut:"en cours"});
+				});
+			}	
+		});
+	}
+	refuser(_id){
+		this.props.propositionUp({_id:_id}, {etat:"refuse"},()=>{});
+	}
+	effectue(){
 
 	}
-	reediter(){
-		FlowRouter.go("/annonce/"+this.props.annonce._id+"/edit");
+	supprimer(_id){
+		this.props.propositionRm({_id});
 	}
+	// editer(_id){
+	// 	FlowRouter.go("/proposition/"+_id+"/Editer");
+	// }
+	connexion(){
+		FlowRouter.go("/connexion/");
+	}
+	reediter(){
+		goAnnonceEdit(this.props.annonce._id);
+	}
+	//========RENDU======================
+	propositionsListe(){
+		let { propositions, annonce, users, active_user } = this.props;
+		return <div style = {{display:"flex",flexDirection: "column", backgroundColor:"pink"}}>
+			{propositions.reduce((total,proposition,i)=>{
+				let user = users.find(user=>user._id==(annonce.type=="offre"?proposition.payeur:proposition.prestataire));
+				return (this.props.annonce.statut != "en attente" && proposition.etat == "accepte")||this.props.annonce.statut == "en attente"? 
+					[...total,<Proposition 
+						key = {i}
+						date = { dateToFormat(proposition.date) }
+						prix = { proposition.prix }
+						type = { annonce.type }
+						user_nom = { user? user.profile.nom:active_user?active_user.profile.nom : "" }
+						user_prenom = { user? user.profile.prenom:active_user?active_user.profile.prenom : "" }
+						user_username = { user? user.username:active_user?active_user.username : "" }
+						commentaire = { proposition.commentaire }
+						etat = { proposition.etat }
+						accepter = { this.accepter.bind(this,proposition._id) }
+						refuser = { this.refuser.bind(this,proposition._id) }
+						supprimer = {this.supprimer.bind(this,proposition._id)}
+						effectue = { this. effectue.bind(this,proposition._id)}
+						moi = { annonce && active_user && (annonce.user_id == active_user._id) }
+						href_posteur = {user?hrefUser(user._id):active_user?hrefUser(active_user._id):"/#"}
+					/>]:total;},[])}
+		</div>;
+		
+	//editer = {this.editer.bind(this)}
+	}
+
 	render(){
-		let { annonce, user } = this.props;
+		let { propositions, annonce, user } = this.props;
 		let { proposition, commentaire } = this.props.proposition_controle;
 		
 		return (
@@ -74,6 +124,7 @@ class AnnonceDetaillee extends Component {
 				categorie = { this.props.categorie.titre }
 				date = { annonce.date?dateToFormat( annonce.date ):"" }
 				date_de_fin = { annonce.date?dateToFormat( annonce.date_de_fin ):"" }
+				statut = { annonce.statut?annonce.statut:"" }
 				titre = { annonce.titre?annonce.titre:"" }
 				description = { annonce.description?annonce.description:"" }
 				email_display= { annonce.email }
@@ -83,15 +134,19 @@ class AnnonceDetaillee extends Component {
 				adresse_display= { annonce.adresse }
 				adresse = { user&&user.profile&&user.profile.adresse?user.profile.adresse:"" }
 				proposition = { proposition }
-				nbpropositions = {this.propositionsListe().length}
+				nbpropositions = {propositions.length}
 				commentaire = { commentaire }
+				connexion = {this.connexion.bind(this)}
 				identifiant = {user&&user.username?user.username:""}
 				propositionAdd = { this.propositionAdd.bind(this) }
 				change = { this.change.bind(this) }
 				propositionsListe =  { this.propositionsListe() }
-				moi = { this.props.user&&this.props.user._id == this.props.active_user._id||false }
-				editable = {this.propositionsListe().length==0}
+				actif={ this.props.active_user }
+				moi = { ((this.props.user && this.props.active_user && this.props.user._id == this.props.active_user._id))||false }
+				editable = {this.props.propositions.length == 0}
 				reediter = {this.reediter.bind(this)}
+				type = {annonce.type?annonce.type:""}
+				href_annonceur = {user?hrefUser(user._id):"#"}
 			/>
 		);
 	}
@@ -107,6 +162,7 @@ function mapStateToProps( state ){
 			user: state.users.one,
 			users: state.users.all,
 			propositions: state.proposition.all,
+			proposition: state.proposition.one,
 		}
 	);
 }
@@ -115,13 +171,22 @@ function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
 		titrePage: ACTIONS.Titre.titrePage,
 
+		annonceGet1: ACTIONS.Annonce.get1,
+		annonceUp: ACTIONS.Annonce.up,
+
 		propositionControle: 	ACTIONS.Proposition.controle,
 		propositionGet: ACTIONS.Proposition.get,
-		annonceGet1: ACTIONS.Annonce.get1,
+		propositionGet1: ACTIONS.Proposition.get1,
+		propositionAdd: ACTIONS.Proposition.add,
+		propositionUp: ACTIONS.Proposition.up,
+		propositionUpm: ACTIONS.Proposition.upm,
+		propositionRm: ACTIONS.Proposition.rm,
+
+
 		categorieGet1: ACTIONS.Categorie.get1,
 		usersGet1: ACTIONS.Users.get1,
 		usersGet: ACTIONS.Users.get,
-		propositionAdd: ACTIONS.Proposition.add,
+		
 
 	}, dispatch );
 }

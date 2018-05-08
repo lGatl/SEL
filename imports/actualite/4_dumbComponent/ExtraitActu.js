@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Segment,Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Button, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 export default class ExtraitAnn extends Component {
 
@@ -23,7 +23,7 @@ export default class ExtraitAnn extends Component {
 						marginTop:10,
 						marginBottom:20
 					}}>
-						{ titre }
+						<A href = { this.props.href }>{ titre }</A>
 					</div>
 					<div style={{fontSize:18, color:"grey", flex:1}}>
 						{ description }

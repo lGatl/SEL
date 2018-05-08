@@ -57,7 +57,7 @@ export const Layout = ({ content }) => {
 							display: "flex",
 							justifyContent:"center",
 							flexDirection: "column",
-							minWidth:500,
+							
 						}}>
 							<TitrePage/>
 							<div style={{
@@ -102,7 +102,7 @@ export const LayoutLAc = ({ content }) => {
 							display: "flex",
 							justifyContent:"center",
 							flexDirection: "column",
-							minWidth:500,
+							
 						}}>
 							<TitrePage/>
 							<div style={{
@@ -146,7 +146,7 @@ export const LayoutLAn = ({ content }) => {
 							display: "flex",
 							justifyContent:"center",
 							flexDirection: "column",
-							minWidth:500,
+							
 						}}>
 							<TitrePage/>
 							<div style={{
@@ -191,7 +191,7 @@ export const LayoutAnnonce = ({ content }) => {
 								
 								<SmartMenuAnnonce/>
 							</div>
-							<div style={{display: "flex", flexDirection: "column",marginLeft:20,marginRight:20, flex:1, minWidth:550}}>
+							<div style={{display: "flex", flexDirection: "column",marginLeft:20,marginRight:20, flex:1, }}>
 								{content}
 							</div>
 						</div>
@@ -227,7 +227,7 @@ export const LayoutMonCompte = ({ content }) => {
 						<div style={{display: "flex", flex:1, minWidth:145}}>
 							<SmartMenuMonCompte/>
 						</div>
-						<div style={{display: "flex", flexDirection: "column", flex:5, minWidth:550, margin:10}}>
+						<div style={{display: "flex", flexDirection: "column", flex:5, margin:10}}>
 							<TitrePage/>
 							{content}
 						</div>

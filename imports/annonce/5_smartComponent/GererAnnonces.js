@@ -6,14 +6,15 @@ import { ACTIONS } from "../../6_actions/actions";
 
 
 import { dateToFormat } from "../../8_libs/date";
+import { hrefUser, hrefAnnonce } from "../../8_libs/go";
 
-import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 
 class GererAnnonces extends Component {
 
 	componentWillMount(){
-		this.props.titrePage("Gerer les actualités");
+		this.props.titrePage("Gerer les annonces");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les annonces");
 		this.props.annonceGet({},res=>{
@@ -55,9 +56,13 @@ class GererAnnonces extends Component {
 	}
 	annonceAppliquer(){
 		let { actions } = this.props.annonce_controle;
+		let { annonces } = this.props;
 
 		this.annoncesSupprimer(actions.reduce((total, action)=>action.action=="supprimer"?[...total,action._id]:total,[]));
-		this.annoncesUp(actions.filter(action=>action.action=="mettre en attente"||action.action=="valider"||action.action=="refuser"));
+		this.annoncesUp(actions.filter((action,i)=>
+			(action.action == "en_attente" && annonces[i].etat != "en attente")||
+			(action.action == "valider" && annonces[i].etat != "valider")||
+			(action.action == "refuser" && annonces[i].etat != "refuser")));
 	}
 	annoncesSupprimer(ids){
 		this.props.annonceRm({_id:{$in:ids}});
@@ -69,6 +74,7 @@ class GererAnnonces extends Component {
 			});
 		}
 	}
+
 	//========================Preparation du rendu========================
 	
 	render(){
@@ -89,7 +95,9 @@ class GererAnnonces extends Component {
 							let user = this.props.users.find(luser=>luser._id==annonce.user_id);
 							let categorie = this.props.categories.find(luser=>luser._id==annonce.categorie);
 							let date = new Date(annonce.date);
-							return[dateToFormat(date),user?user.username:"",annonce.type,categorie?categorie.titre:"",annonce.titre,
+							return[dateToFormat(date),user?<A href = {hrefUser(user._id)}>{user.username}</A>:"",
+								annonce.type,categorie?categorie.titre:"",
+								<A href = {hrefAnnonce(annonce._id)}>{annonce.titre}</A>,
 								<Dropdown
 									placeholder = 'Action'
 									name = {annonce._id}
@@ -106,6 +114,12 @@ class GererAnnonces extends Component {
 												annonce.etat=="refuser"&&value=="refuser"?"refusé":annonce.etat!="refuser"&&value=="refuser"?"refuser":
 													value
 									}
+									style_choice = {{ 
+										backgroundColor:annonce.etat=="en_attente"&&value=="en_attente"?"":annonce.etat!="en_attente"&&value=="en_attente"?"AntiqueWhite":
+											annonce.etat=="valider"&&value=="valider"?"":annonce.etat!="valider"&&value=="valider"?"LimeGreen":
+												annonce.etat=="refuser"&&value=="refuser"?"":annonce.etat!="refuser"&&value=="refuser"?"Orange":
+													"red"
+									}}
 								/>];}):[]},
 					]}
 				/>

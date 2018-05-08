@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 import { ACTIONS } from "../../6_actions/actions";
 import { dateToFormat } from "../../8_libs/date";
 
-import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
+
+import { hrefActualite } from "../../8_libs/go";
 
 class FormActu extends Component {
 
@@ -95,7 +97,7 @@ class FormActu extends Component {
 				
 					<Button
 						onClick = { this.actualiteAdd.bind( this ) }
-					>Ajouter la actualite</Button>
+					>Ajouter l'actualité</Button>
 					<Tableau
 						ligne1sur2
 						border_line
@@ -107,7 +109,7 @@ class FormActu extends Component {
 								let value = actions?actions.find((act)=>act._id==actualite._id).action:{};
 								let date = new Date(actualite.date);
 
-								return[dateToFormat(date),actualite.titre,
+								return[dateToFormat(date),<A href = {hrefActualite(actualite._id)}>{actualite.titre}</A>,
 									<Dropdown
 										placeholder = 'Action'
 										name = {actualite._id}

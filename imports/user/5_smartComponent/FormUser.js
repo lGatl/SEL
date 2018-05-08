@@ -8,6 +8,8 @@ import { Input, TextArea, Button, Dropdown } from "../../_common/4_dumbComponent
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
+import { goUser, goUserEdit } from "../../8_libs/go";
+
 
 
 
@@ -22,10 +24,22 @@ class FormulaireDInscription extends Component {
 			{ key: 'ad', value: 'ad', text: 'admin' }
 		];
 	}
-	init(props){
-		if(props.active_user){let { emails, profile } = props.active_user;
+	componentWillMount(){
+		
+		this.init(this.props);
+		this.props.categorieGet({publier:true});
 
-			return {
+	}
+	componentWillReceiveProps(news){
+
+		if((this.props.active_user != news.active_user)||(this.props.edit != news.edit)||(this.props._id != news._id)){this.init(news);}
+	}
+	init(props){
+		this.props.titrePage(props.edit?"Editer un utilisateur":"Fiche utilisateur");
+		this.props.usersGet1({_id:props._id},user=>{
+			let { emails, profile, username } = user;
+			this.props.usersControle({
+				username: username?username:"",
 				email: emails&&emails.length>0?emails[0].address:"",
 				nom:profile?profile.nom:"",
 				prenom:profile?profile.prenom:"",
@@ -33,18 +47,11 @@ class FormulaireDInscription extends Component {
 				adresse:profile?profile.adresse:"",
 				date_val_resp:profile?profile.date_val_resp:"",
 				categories:profile&&profile.categories?profile.categories:[]
-			};}
+			});});
+			
 	}
-	componentWillMount(){
-		this.props.usersControle(this.init(this.props));
-		this.props.categorieGet({publier:true});
-
-	}
-	componentWillReceiveProps(news){
-
-		if(this.props.active_user!= news.active_user){this.props.usersControle(this.init(news))}
-	}
-	//Controle
+	
+	//Controle 
 	change(e,{ value, name }){
 
 		this.props.usersControle({ [name]:value });
@@ -63,13 +70,14 @@ class FormulaireDInscription extends Component {
 	}
 	//Action
 	usersUp(){
-		let {email,password,nom,prenom,telephone,adresse,date_val_resp, categories} = this.props.controle;
+		let {username, email,password,nom,prenom,telephone,adresse,date_val_resp,categories} = this.props.controle;
 		if(this.props.edit){
 			let usermodifi = {
 				emails:[{...this.props.active_user.emails[0],address:email}],
 				username:email,
 				password,
 				profile:{
+					username,
 					nom,
 					prenom,
 					telephone,
@@ -78,13 +86,11 @@ class FormulaireDInscription extends Component {
 					date_val_resp
 				}
 			};
-			this.props.usersUp({
-				_id:this.props._id},usermodifi, (res)=>{
-				this.props.usersControle(this.init(usermodifi));
-				FlowRouter.go("/user/"+this.props._id);
+			this.props.usersUp({_id:this.props._id},usermodifi, (res)=>{
+				goUser(this.props._id);
 			});
 		}else{
-			FlowRouter.go("/user/"+this.props._id+"/edit");
+			goUserEdit(this.props._id);
 		}
 		
 		
@@ -105,6 +111,14 @@ class FormulaireDInscription extends Component {
 			value = { prenom || "" }
 			onChange = { this.change.bind( this ) } 
 		/>:prenom;
+	}
+	username(username){
+		let { edit } = this.props;
+		return edit?<Input style={{flex:1}}
+			name = 'username'
+			value = { username || "" }
+			onChange = { this.change.bind( this ) } 
+		/>:username;
 	}
 	telephone(telephone){
 		let { edit } = this.props;
@@ -172,11 +186,12 @@ class FormulaireDInscription extends Component {
 		</ul>;
 	}
 	render() {
-		let { emails, profile } = this.props.active_user;
-		let {email,password,nom,prenom,telephone,adresse,date_val_resp,categories} = this.props.controle;
+
+		let {username,email,password,nom,prenom,telephone,adresse,date_val_resp,categories} = this.props.controle;
 		return (
 			<div>
 				<CardUser
+					username = {this.username(username)}
 					nom = { this.nom(nom) }
 					prenom = { this.prenom(prenom) }
 					note = {5}
@@ -200,6 +215,7 @@ class FormulaireDInscription extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			user: state.users.one,
 			active_user: state.users.active_user,
 			controle: state.users.controle,
 			categories: state.categorie.all
@@ -210,8 +226,10 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		usersControle: ACTIONS.Users.controle,
 		usersUp: ACTIONS.Users.up,
+		usersGet1: ACTIONS.Users.get1,
 		categorieGet: ACTIONS.Categorie.get,
 
 	}, dispatch );

@@ -59,27 +59,13 @@ class FormAnnone extends Component {
 	//Action
 	soumettre(){
 		let {titre, description, categorie, email, telephone, adresse, date_de_fin} = this.props.annonce_controle;
-		this.props.edit&&this.props.id?
-			this.props.annonceAdd(
-				{
-					titre,
-					description,
-					etat: "en_attente",
-					date: Date.now(),
-					type: this.props.type,
-					user_id:this.props.active_user._id,
-					categorie,
-					email,
-					telephone,
-					adresse,
-					date_de_fin: date_de_fin
-				}
-			):
+		if(this.props.edit&&this.props._id){
 			this.props.annonceUp({_id:this.props._id},
 				{
 					titre,
 					description,
 					etat: "en_attente",
+					statut: "en attente",
 					date: Date.now(),
 					type: this.props.type,
 					user_id:this.props.active_user._id,
@@ -89,8 +75,30 @@ class FormAnnone extends Component {
 					adresse,
 					date_de_fin: date_de_fin
 				});
-		this.props.annonceControle(this.init());
-		FlowRouter.go("/annonce/"+this.props._id)
+			this.props.annonceControle(this.init());
+			FlowRouter.go("/annonce/"+this.props._id);
+			
+		}else{
+			
+			this.props.annonceAdd(
+				{
+					titre,
+					description,
+					etat: "en_attente",
+					statut: "en attente",
+					date: Date.now(),
+					type: this.props.type,
+					user_id:this.props.active_user._id,
+					categorie,
+					email,
+					telephone,
+					adresse,
+					date_de_fin: date_de_fin
+				}
+			);
+			this.props.annonceControle(this.init());
+		}
+		
 
 	}
 	//Preparation du rendu

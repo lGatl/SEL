@@ -8,8 +8,9 @@ import { Segment} from "../../_common/4_dumbComponent/_gat_ui_react";
 import ListeComp from "../../_common/4_dumbComponent/ListeComp";
 import ExtraitActu from "../4_dumbComponent/ExtraitActu";
 
+import { hrefActualite } from "../../8_libs/go";
 
-class Actualites extends Component {
+class SmartActualites extends Component {
 	//=========INITIALISATION
 	componentWillMount(){
 		this.props.actualiteGet({publier:true});
@@ -24,6 +25,7 @@ class Actualites extends Component {
 			key = {i}
 			_id = { actu._id }
 			titre = { actu.titre }
+			href = {hrefActualite(actu._id)}
 			description = { actu.description }
 			onClick = { this.actualiteRm.bind(this) }
 		/>):"";
@@ -57,4 +59,4 @@ function mapDispatchToProps( dispatch ){
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( Actualites );
+export default connect( mapStateToProps, mapDispatchToProps )( SmartActualites );

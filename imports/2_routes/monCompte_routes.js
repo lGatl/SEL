@@ -8,7 +8,6 @@ import MesInformations from "../user/5_smartComponent/MesInformations";
 import FormAnnonce from "../annonce/5_smartComponent/FormAnnonce";
 import ListeAnnonce from "../annonce/5_smartComponent/ListeAnnonce";
 import ListeProposition from "../proposition/5_smartComponent/ListeProposition";
-import FormUser from "../user/5_smartComponent/FormUser";
 
 
 var mon_compteRoutes = FlowRouter.group({
@@ -71,17 +70,4 @@ mon_compteRoutes.route( "/annonce/proposition", {
 		window.scrollTo(0, 0);
 	}
 });
-FlowRouter.route( "/user/:_id/edit", {
-	name: "home",
-	action: function(params) {
-		mount(LayoutMonCompte, { content: <FormUser _id={params._id} edit/> });
-		 window.scrollTo(0, 0);
-	}
-});
-FlowRouter.route( "/user/:_id/", {
-	name: "home",
-	action: function(params) {
-		mount(LayoutMonCompte, { content: <FormUser _id={params._id} /> });
-		 window.scrollTo(0, 0);
-	}
-});
+

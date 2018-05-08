@@ -62,18 +62,18 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			if(typeof action.payload.state=="string"){
 				all = [...state[action.payload.state]];
 				ALL = (typeof action.payload.val._id)=="string"? all.reduce((total,al)=>al._id == action.payload.val._id?total:[...total,al],[]):
-					(typeof action.payload.val._id)=="object"? all.reduce((total,al)=>action.payload.val._id.$in.indexOf(al._id)>=0?total:[...total,al],[]):all
+					(typeof action.payload.val._id)=="object"? all.reduce((total,al)=>action.payload.val._id.$in.indexOf(al._id)>=0?total:[...total,al],[]):all;
 				return { ...state, [action.payload.state]:ALL};
 			}else if((typeof action.payload.state=="object" ) && (action.payload.state != null)){
 				let obj = Object.keys(action.payload.state)[0];
 				all = [...state[action.payload.state][obj]];
 				ALL = (typeof action.payload.val._id)=="string"? all.reduce((total,al)=>al._id == action.payload.val._id?total:[...total,al],[]):
-					(typeof action.payload.val._id)=="object"? all.reduce((total,al)=>action.payload.val._id.$in.indexOf(al._id)>=0?total:[...total,al],[]):all
+					(typeof action.payload.val._id)=="object"? all.reduce((total,al)=>action.payload.val._id.$in.indexOf(al._id)>=0?total:[...total,al],[]):all;
 				return { ...state, [obj]:{...state[obj],[action.payload.state[obj]]:ALL}};
 			}else if(action.payload.state == null||action.payload.state == undefined){
 
 				ALL = (typeof action.payload.val._id)=="string"? all.reduce((total,al)=>al._id == action.payload.val._id?total:[...total,al],[]):
-					(typeof action.payload.val._id)=="object"? all.reduce((total,al)=>action.payload.val._id.$in.indexOf(al._id)>=0?total:[...total,al],[]):all
+					(typeof action.payload.val._id)=="object"? all.reduce((total,al)=>action.payload.val._id.$in.indexOf(al._id)>=0?total:[...total,al],[]):all;
 				return {...state, all:ALL};	
 			}			
 			
@@ -94,10 +94,22 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			}else if(action.payload.state == null||action.payload.state == undefined){
 				up = all.find(allu=>allu._id==action.payload.val._id);
 				all.splice(all.indexOf(up),1,{...up,...action.payload.val});
-				return {...state, all};	
+				return {...state, all, one:{...state.one,...action.payload.val}};	
+			}		
+			break;		
+		case CONSTANTES[COLLECTION].UPM:
+			console.log("fonction state non testée");
+			if(typeof action.payload.state=="string"){
+				all = [...state[action.payload.state]];
+				return { ...state, [action.payload.state]:all.reduce((total,upm)=>action.payload.val._id.indexOf(upm._id)>=0?[...total,{...upm,...action.payload.val,_id:upm._id}]:[...total,upm],[])};
+			}else if((typeof action.payload.state=="object" ) && (action.payload.state != null)){
+				let obj = Object.keys(action.payload.state)[0];
+				all = [...state[action.payload.state][obj]];
+				return { ...state, [obj]:{...state[obj],[action.payload.state[obj]]:all.reduce((total,upm)=>action.payload.val._id.indexOf(upm._id)>=0?[...total,{...upm,...action.payload.val,_id:upm._id}]:[...total,upm],[])}};
+			}else if(action.payload.state == null||action.payload.state == undefined){
+				return {...state, all:all.reduce((total,upm)=>action.payload.val._id.indexOf(upm._id)>=0?[...total,{...upm,...action.payload.val,_id:upm._id}]:[...total,upm],[])};	
+
 			}			
-			
-			
 			break;
 		case CONSTANTES[COLLECTION].CONTROLE:
 			return { ...state, controle:{...state.controle,...action.payload} };
