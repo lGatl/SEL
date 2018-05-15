@@ -12,4 +12,4 @@ import Tableau from "./Tableau";
 import Calendrier from "./Calendrier";
 import A from "./A";
 
-export { Input, TextArea, Button, Form, Segment, Titre, Menu, Item, Dropdown, Checkbox, Tableau, Calendrier, A  };
+export { Input, TextArea, Button, Form, Segment, Titre, Menu, Item, Dropdown, Checkbox, Tableau, Calendrier, A };

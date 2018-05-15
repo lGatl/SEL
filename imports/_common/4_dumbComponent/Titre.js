@@ -5,12 +5,15 @@ export default class Titre extends Component {
 		return (
 			<div>
 				<h1 style = {{ 
-					textAlign:"center" 
+					padding:10,
+					margin: 10,
+					textAlign:"center",
+					color:"red",
+					borderBottom:" 1px solid red"
+
 				}}>
 					{ this.props.children||"" }
 				</h1>
-				<hr/>
-				<br/>
 			</div>
 		);
 	}

@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 
 import { ACTIONS } from "../6_actions/actions";
 
-import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
-
 import SmartActualites from "../actualite/5_smartComponent/SmartActualites";
 
 class Actualite extends Component {

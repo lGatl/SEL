@@ -36,9 +36,8 @@ class UsersList extends Component{
 
 	render(){
 		return <div style = {{display:"flex", flex:1, justifyContent:"space-around", flexWrap: "wrap", alignItems:"flex-start", alignContent:"flex-start"}}> {
-			this.props.users.map((user,i)=><CardUser
-				style = {{maxWidth: 400}}
-				key = {i}
+			this.props.users.map((user,i)=><div key = {i} style = {{padding:20}}><CardUser
+				style = {{maxWidth: 300}}
 				username = { user.username }
 				nom = { user.profile.nom }
 				prenom = { user.profile.prenom }
@@ -50,7 +49,7 @@ class UsersList extends Component{
 				telephone = {user.profile.telephone}
 				adresse = {user.profile.adresse}
 				date_val_resp={user.profile.date_val_resp}
-			/>)
+			/></div>)
 		} </div>;
 	}
 }

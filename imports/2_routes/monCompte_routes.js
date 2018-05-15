@@ -3,10 +3,10 @@ import {mount} from "react-mounter";
 
 import {Layout, LayoutMonCompte} from "../3_layout/layout";
 
-import MonCompte from "../4_pages/MonCompte";
+import MonReleveDeCompte from "../user/5_smartComponent/MonReleveDeCompte";
 import MesInformations from "../user/5_smartComponent/MesInformations";
 import FormAnnonce from "../annonce/5_smartComponent/FormAnnonce";
-import ListeAnnonce from "../annonce/5_smartComponent/ListeAnnonce";
+import ListeAnnonceMonCompte from "../annonce/5_smartComponent/ListeAnnonceMonCompte";
 import ListeProposition from "../proposition/5_smartComponent/ListeProposition";
 
 
@@ -31,7 +31,7 @@ mon_compteRoutes.route( "/informations", {
 mon_compteRoutes.route( "/releve", {
 	name: "mon_compte",
 	action: function() {
-		mount(LayoutMonCompte, { content: <MonCompte type = "releve" /> });
+		mount(LayoutMonCompte, { content: <MonReleveDeCompte/> });
 		window.scrollTo(0, 0);
 	}
 });
@@ -52,14 +52,14 @@ mon_compteRoutes.route( "/annonce/demande/creer", {
 mon_compteRoutes.route( "/annonce/offre", {
 	name: "mon_compte",
 	action: function() {
-		mount(LayoutMonCompte, { content: <ListeAnnonce type="offre" mon_compte/> });
+		mount(LayoutMonCompte, { content: <ListeAnnonceMonCompte type="offre" mon_compte/> });
 		window.scrollTo(0, 0);
 	}
 });
 mon_compteRoutes.route( "/annonce/demande", {
 	name: "mon_compte",
 	action: function() {
-		mount(LayoutMonCompte, { content: <ListeAnnonce type="demande" mon_compte/> });
+		mount(LayoutMonCompte, { content: <ListeAnnonceMonCompte type="demande" mon_compte/> });
 		window.scrollTo(0, 0);
 	}
 });

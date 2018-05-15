@@ -5,23 +5,51 @@ import { connect } from "react-redux";
 import { ACTIONS } from "../../6_actions/actions";
 import { dateToFormat } from "../../8_libs/date";
 
-import { Menu } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Menu, Dropdown } from "../../_common/4_dumbComponent/_gat_ui_react";
 
-import ListeComp from "../../_common/4_dumbComponent/ListeComp";
+import SmartMenuAnnonce from "../../_common/5_smartComponent/SmartMenuAnnonce";
+
 import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 import Proposition from "../../proposition/4_dumbComponent/Proposition";
 
 import { hrefUser, hrefAnnonce } from "../../8_libs/go";
 
+function throttle(callback, delay) {
+	var last;
+	var timer;
+	return function () {
+		var context = this;
+		var now = +new Date();
+		var args = arguments;
+		if (last && now < last + delay) {
+			// le délai n'est pas écoulé on reset le timer
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				last = now;
+				callback.apply(context, args);
+			}, delay);
+		} else {
+			last = now;
+			callback.apply(context, args);
+		}
+	};
+}
+
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
 	constructor(){
 		super();
-		this.state = {};
+		this.scroll = throttle(this.scroll.bind(this),40);
+		this.state = {
+			nbpp: 5,
+			nump: 0
+		};
 	}
 	componentWillMount(){
 		this.props.titrePage("Annonces");
+		this.props.activeMenu("Annonce");
 		this.init(this.props);
+		this.props.categorieGet({});
 	}
 	componentWillReceiveProps(nextp){
 		
@@ -29,113 +57,101 @@ class ListeAnnonce extends Component {
 			this.init(nextp);
 		}
 	}
-		
+	componentDidMount() {
+		document.addEventListener("scroll", this.scroll);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("scroll", this.scroll);
+		this.props.annonceControle({ categorie:"" });
+	}
+
 	init(props){
-		this.props.activeMenu(props.mon_compte?"Mon Compte":"Annonce");
-		this.props.activeMenuMonCompte(props.type=="offre"?"Mes offres":"Mes demandes");
-		this.props.activeMenuAnnonce(props.type=="offre"?"Offres":props.type=="demande"? "Demandes": "Toutes");
-
-		let CONDITION = {etat:"valider"};
-		CONDITION = props.mon_compte?{...CONDITION,user_id:props.active_user._id}:CONDITION;
-		CONDITION = props.type?{...CONDITION,type:props.type}:CONDITION;
-		this.props.annonceGet(CONDITION,(annonces)=>{
-			
-			annonces.forEach(annc=>this.setState({[annc._id]:false}));
-			
-
-			this.props.propositionGet({annonce_id:{$in:annonces.map(annonce=>annonce._id)}},(propositions=>
-				this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}})
-			));
+		
+		this.props.activeMenuAnnonce(props.type=="offre"?"Offres":props.type=="demande"? "Demandes": "Toutes");	
+		
+		this.props.annonceGetSSL(this.condition(props),{sort:{date:-1},skip:0,limit:this.state.nbpp},(annonces)=>{
+			this.props.annonceCount(this.condition(props),(nb_annonces)=>{
+				this.scroll(annonces,nb_annonces);
+			});
 		});
-		this.props.categorieGet({});
+		
+		this.setState({nump:1});
+
+		
+
+	}
+
+	//Controle
+	change(e,{ value, name, checked }){
+
+		this.props.annonceControle({ [name]:value||checked });
+		this.init({...this.props,annonce_controle:{...this.props.annonce_controle, [name]:value||checked }});
 	}
 	//=========ACTIONS
-	annonceRm( id ){
-		this.props.annonceRm({ _id: id });
+	condition(props){
+		let CONDITION = {etat:"valider"};
+		CONDITION = props.type?{...CONDITION,type:props.type}:CONDITION;
+		CONDITION = props.annonce_controle.categorie?{...CONDITION,categorie:props.annonce_controle.categorie}:CONDITION;
+		return CONDITION;
 	}
-	accepter(proposition_id, annonce_id){
-		this.props.annonceGet1({_id:annonce_id},annonce=>{
-			if(annonce && annonce.statut && annonce.statut == "en attente"){
-				this.props.propositionUp({_id:proposition_id}, {etat:"accepte"},()=>{
-					this.props.propositionUpm({_id:{$in:this.props.propositions.reduce((total,pro)=>pro._id != proposition_id?[...total,pro._id]:total,[])}}, {etat:"refuse"});
-					this.props.annonceUp({_id:annonce_id}, {statut:"en cours"});
-				});
-			}	
-		});
-	}
-	refuser(_id){
-		this.props.propositionUp({_id:_id}, {etat:"refuse"},()=>{});
-	}
-	effectue(){
 
+	scroll(annonces,nb_annonces){
+		if(
+			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
+			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
+			&& ((this.props.annonces.length < this.props.nb_annonces)||(annonces&&nb_annonces&&annonces.length < nb_annonces))
+		){
+			this.props.annonceGetAddSSL(this.condition(this.props),{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_annonces)=>{
+				this.scroll(nv_annonces,nb_annonces);
+			});
+			this.setState({nump:this.state.nump+1});
+		}
 	}
-	goAnnonce(_id,e){
-		e.preventDefault();
-		goAnnonce(_id);
-	}
-	montrerPropositions(_id){
-		this.setState({[_id]:!this.state[_id]});
-	}
-	//==========PREPARATION RENDU
-	propositions(annonce,propositions){
-		let active_user = this.props.active_user;
-		return propositions.reduce((total,proposition,i)=>{
-			let user = this.props.users.find(user=>user._id == proposition.posteur);
-			return this.state[annonce._id]&&(proposition.etat=="en attente"||proposition.etat=="accepte")?
-				[...total,<Proposition 
-					key = {i}
-					date = { dateToFormat(proposition.date) }
-					prix = { proposition.prix }
-					type = { annonce.type }
-					user_nom = { user? user.profile.nom:active_user?active_user.profile.nom : "" }
-					user_prenom = { user? user.profile.prenom:active_user?active_user.profile.prenom : "" }
-					user_username = { user? user.username:active_user?active_user.username : "" }
-					commentaire = { proposition.commentaire }
-					etat = { proposition.etat }
-					accepter = { this.accepter.bind(this,proposition._id,annonce._id) }
-					refuser = { this.refuser.bind(this,proposition._id,annonce._id) }
-					effectue = { this. effectue.bind(this,proposition._id,annonce._id)}
-					moi = { annonce && active_user && (annonce.user_id == active_user._id) }
-					href_posteur = { user?hrefUser(user._id):"#"}
-
-				/>]:total;},[]);
-	}
-	annonces(anns, categories){//anns = [{},...] => [<Comps/>,...]
 	
-		return anns && anns.length > 0 ? anns.reduce((total, ann, i )=>{
+	//==========PREPARATION RENDU
+	
+	annonces(){//annonces = [{},...] => [<Comps/>,...]
+		let { annonces, categories} = this.props;
+		return annonces && annonces.length > 0 ? annonces.reduce((total, ann, i )=>{
 			let categorie = categories&&categories.length>0?categories.find(cat=>cat._id==ann.categorie):null;
 			let date = new Date(ann.date);
-			let propositions = this.props.propositions.reduce((total,proposition)=>proposition.annonce_id == ann._id?[...total,proposition]:total,[]);
-
-			return[...total, <div key = {i}><ExtraitAnn 
+			return[...total, <ExtraitAnn 
+				key = { i }
 				style = {{marginTop:i!=0?20:0}}
 				type = {ann.type}
 				categorie = {categorie?categorie.titre:""}
-				montrerPropositions = { this.montrerPropositions.bind(this, ann._id) }
-				montree = {this.state[ann._id]}
 				_id = { ann._id }
-				nb_prop = {this.props.mon_compte?propositions.length:null}
 				titre = { ann.titre }
 				description = { ann.description }
 				date = { dateToFormat(date) }
-				onClick = { this.annonceRm.bind(this) }
 				statut = { ann.statut }
 				href = {hrefAnnonce(ann._id)}
-			/><div style = {{backgroundColor:"pink",paddingTop:this.state[ann._id]?10:0,paddingBottom:this.state[ann._id]?10:0}}>{this.propositions(ann, propositions)}</div></div>];}
+			/>];}
 			,[]):"";
 		// return [<Comps/>,...]
 	}
-	liste(tableau){// tableau = [<Comps/>,...] => <Comp/>
-		return tableau && tableau.length > 0 ? <ListeComp donnees = { tableau } /> : "";
-		//return <Comp/>
-	}
+	
 	render() {
-		let { annonces, categories} = this.props;
+		let { categorie } = this.props.annonce_controle;
+
 		return (
-			<div>
-				
+			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
+				<div style={{display:"flex", flexDirection:"column"}}>
+					<Dropdown
+						label = "Categorie"
+						placeholder = "Categorie"
+						name = "categorie"
+						onChange = { this.change.bind ( this ) } 
+						options = { [...this.props.categories.reduce((total,cat)=>{return cat.publier==true?[...total,{value:cat._id,text:cat.titre}]:total;},[]),{value:"",text:"Pas de categorie"} ]}
+						value = { categorie?categorie:"" }
+					/>
+				</div>
+				<div style={{display:"flex", marginLeft:20}}>				
+					<SmartMenuAnnonce/>
+				</div>
 				{/*	<Comp/>   [<Comps/>,...]  			[{},...]   */}
-				{ this.liste(this.annonces(annonces, categories)) }
+				{ this.annonces() }
 				
 			</div>
 		);
@@ -146,11 +162,11 @@ function mapStateToProps( state ){
 	return (
 		{
 			active_user: state.users.active_user,
-			users: state.users.all,
 			annonces: state.annonce.all,
 			categories: state.categorie.all,
 			active_menu_annonce: state.menu.active_menu_annonce,
-			propositions: state.proposition.all,
+			nb_annonces: state.annonce.count,
+			annonce_controle: state.annonce.controle,
 
 		}
 	);
@@ -163,18 +179,12 @@ function mapDispatchToProps( dispatch ){
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		activeMenuAnnonce: ACTIONS.Menu.activeMenuAnnonce,
 
-		annonceGet: ACTIONS.Annonce.get,
-		annonceRm: ACTIONS.Annonce.rm,
-		annonceGet1: ACTIONS.Annonce.get1,
-		annonceUp: ACTIONS.Annonce.up,
-		
-		propositionGet: ACTIONS.Proposition.get,
-		propositionUp: ACTIONS.Proposition.up,
-		propositionUpm: ACTIONS.Proposition.upm,
+		annonceGetSSL: ACTIONS.Annonce.get_SSL,
+		annonceGetAddSSL: ACTIONS.Annonce.getAdd_SSL,
+		annonceCount: ACTIONS.Annonce.count,
 
 		categorieGet: ACTIONS.Categorie.get,
-
-		usersGet: ACTIONS.Users.get,
+		annonceControle: ACTIONS.Annonce.controle,
 
 	}, dispatch );
 }

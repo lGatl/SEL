@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { ACTIONS } from "../../6_actions/actions";
 
 import { Segment} from "../../_common/4_dumbComponent/_gat_ui_react";
-import ListeComp from "../../_common/4_dumbComponent/ListeComp";
 import ExtraitActu from "../4_dumbComponent/ExtraitActu";
 
 import { hrefActualite } from "../../8_libs/go";
@@ -30,14 +29,12 @@ class SmartActualites extends Component {
 			onClick = { this.actualiteRm.bind(this) }
 		/>):"";
 	}
-	liste(tableau){ // tableau = [<Comps/>,...] => <Comp/>
-		return tableau && tableau.length > 0 ? <ListeComp donnees = { tableau } /> : "";
-	}
+	
 	render() {
 		return (
-			<div>
-				{/*	<Comp/>  	 [<Comps/>,...]  			[{},...]  		 */}
-				{ this.liste(this.actualites(this.props.actualites)) }
+			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
+				
+				{ this.actualites(this.props.actualites) }
 				
 			</div>
 		);

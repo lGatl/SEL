@@ -3,6 +3,7 @@ import { COLLECTIONS } from "../5_methodes/methodes";
 import { CONSTANTE_Users, ACTION_Users } from "../user/2_action/user_action";
 import { CONSTANTE_Menu, ACTION_Menu } from "./menu_action";
 import { CONSTANTE_Titre, ACTION_Titre } from "./titre_action";
+import { CONSTANTE_Transaction, ACTION_Transaction } from "../transaction/2_action/transaction_action";
 
 
 const CONSTANTE = {};
@@ -13,6 +14,7 @@ COLLECTIONS.forEach((COLLECTION)=>{
 	CONSTANTE[ COLLECTION ] ={ 
 		ADD : COLLECTION+"_ADD",
 		GET : COLLECTION+"_GET",
+		GETADD : COLLECTION+"_GETADD",
 		GET1 : COLLECTION+ "_GET1",
 		COUNT : COLLECTION+"_COUNT",
 		RM : COLLECTION+"_RM",
@@ -149,6 +151,103 @@ COLLECTIONS.forEach((COLLECTION)=>{
 			payload: 	p,
 		};
 	}
+	//________________________________-
+	function getAdd(obj, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,null,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GETADD,
+			payload: 	p,
+		};
+	}
+	function getAdd_SSL(obj, soskli = null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state:null} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GETADD,
+			payload: 	p,
+		};
+	}
+	function getAdd_state(obj, state =  null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,null,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GETADD,
+			payload: 	p,
+		};
+	}
+	function getAdd_SSL_state(obj, soskli = null, state =  null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GETADD,
+			payload: 	p,
+		};
+	}
+	function getAdd_state_SSL(obj, state =  null, soskli = null, cbk = ()=>{}){
+		let p = new Promise( ( resolve, reject ) =>{
+			Meteor.call("get" + COLLECTION+"s",obj,soskli,(err,res)=>{
+				if(err){
+					//console.log(err)
+					reject( err );
+				}else{
+					//console.log(res)
+					cbk( res );
+					
+					resolve( { val:res, state} );
+				}
+			});
+		});
+		return {
+			type: 		CONSTANTES[ COLLECTION ].GETADD,
+			payload: 	p,
+		};
+	}
+	//_____________
 
 	function get1(obj, cbk = () => {}){
 		let p = new Promise( ( resolve, reject ) => {
@@ -337,6 +436,11 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		get_state,
 		get_SSL_state,
 		get_state_SSL,
+		getAdd,
+		getAdd_SSL,
+		getAdd_state,
+		getAdd_SSL_state,
+		getAdd_state_SSL,
 		get1,
 		get1_state,
 		count,
@@ -355,11 +459,13 @@ COLLECTIONS.forEach((COLLECTION)=>{
 export const CONSTANTES = { ...CONSTANTE, 
 	Users:{ ...CONSTANTE.Users, ...CONSTANTE_Users },
 	Menu:{...CONSTANTE_Menu},
-	Titre:{...CONSTANTE_Titre}
+	Titre:{...CONSTANTE_Titre},
+	Transaction:{...CONSTANTE.Transaction, ...CONSTANTE_Transaction}
 };
 export const ACTIONS = { ...ACTION,
 	Users:{ ...ACTION.Users, ...ACTION_Users },
 	Menu:{...ACTION_Menu},
-	Titre:{...ACTION_Titre}
+	Titre:{...ACTION_Titre},
+	Transaction:{...ACTION.Transaction, ...ACTION_Transaction}
 };
 

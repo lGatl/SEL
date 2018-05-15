@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 
 import { ACTIONS } from "../6_actions/actions";
 
-import { Titre } from "../_common/4_dumbComponent/_gat_ui_react";
-
 import ListeAnnonce from "../annonce/5_smartComponent/ListeAnnonce";
-import FormAnnonce from "../annonce/5_smartComponent/FormAnnonce";
 class Annonce extends Component {
 
 	componentWillMount(){

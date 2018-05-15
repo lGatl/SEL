@@ -42,21 +42,21 @@ FlowRouter.route( "/actualite/:_id", {
 FlowRouter.route( "/annonce", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutAnnonce, { content: <Annonce /> });
+		mount(LayoutLAc, { content: <Annonce /> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/offre", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutAnnonce, { content: <Annonce type = "offre"/> });
+		mount(LayoutLAc, { content: <Annonce type = "offre"/> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/demande", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutAnnonce, { content: <Annonce type = "demande" /> });
+		mount(LayoutLAc, { content: <Annonce type = "demande" /> });
 		window.scrollTo(0, 0);
 	}
 });

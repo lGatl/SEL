@@ -8,7 +8,7 @@ export default class Segment extends Component {
 				display:"flex",
 				flexDirection:this.props.row?"row":"column",
 				borderRadius:5,
-				fontSize:20,
+				fontSize:16,
 				border: "1px solid rgba(150,150,150,0.5)",
 				boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",
 			},

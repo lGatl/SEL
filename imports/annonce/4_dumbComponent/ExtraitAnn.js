@@ -16,7 +16,7 @@ export default class ExtraitAnn extends Component {
 					{
 						this.props.nb_prop && statut == "en attente"?<label style = {{
 							textAlign:"center",
-							fontSize:15,
+							fontSize:14,
 							margin:"5%"
 						}} >Nombre de propositions : </label>:""
 					}
@@ -27,14 +27,14 @@ export default class ExtraitAnn extends Component {
 								cursor: "pointer",
 								padding:10, 
 								borderRadius:5,
-								fontSize:20,
+								fontSize:16,
 								backgroundColor: "rgba(150,150,150,0.5)",
 								boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",}} >{this.props.nb_prop}</label>:""
 					}
 					{
 						this.props.nb_prop && statut == "en cours"?<label style = {{
 							textAlign:"center",
-							fontSize:15,
+							fontSize:14,
 							margin:"5%"
 						}} >Proposition acceptée : </label>:""
 					}
@@ -45,7 +45,7 @@ export default class ExtraitAnn extends Component {
 								cursor: "pointer",
 								padding:10, 
 								borderRadius:5,
-								fontSize:20,
+								fontSize:16,
 								backgroundColor: "rgba(150,150,150,0.5)",
 								boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",}} ><span style = {{float:"right", transform:montree?"rotate(90deg)":"rotate(0deg)",transition:"0.5s"}}>></span></label>:""
 					}
@@ -63,16 +63,16 @@ export default class ExtraitAnn extends Component {
 					<A 
 						href={this.props.href} 
 						style={{
-							fontSize:22,
+							fontSize:18,
 							fontWeight:400,
 							marginBottom:20
 						}}>{ titre } </A>
 					
-					<div style={{fontSize:18, color:"grey", flex:1}}>
+					<div style={{fontSize:14, color:"grey", flex:1}}>
 						{ description }
 					</div>
 					<div style={{
-						fontSize:16,
+						fontSize:14,
 						marginBottom:10
 					}}>
 						{ date }

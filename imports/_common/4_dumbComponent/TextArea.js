@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
 export default class TextArea extends Component {
-		style(){
+	style(){
 		return{
 			s_container:{
 				margin:5,
@@ -17,7 +17,7 @@ export default class TextArea extends Component {
 				padding:5,
 				border: "1px solid rgba(150,150,150,0.5)",
 				borderRadius:5,
-				fontSize:20,
+				fontSize:14,
 				boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",
 			},
 		};

@@ -115,7 +115,7 @@ class FormAnnone extends Component {
 					name = "categorie"
 					onChange = { this.change.bind ( this ) } 
 					options = { this.props.categories.map(cat=>{return{value:cat._id,text:cat.titre};}) }
-					value = { this.props.categories.find(cat=>cat._id==categorie)?this.props.categories.find(cat=>cat._id==categorie).titre:"" }
+					value = { categorie?categorie:"" }
 				/>
 				<Input
 					label = "Titre"

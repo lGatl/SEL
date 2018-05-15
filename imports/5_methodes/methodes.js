@@ -23,9 +23,8 @@ const SCHEMA ={
 		statut: { type: String }
 	})
 };
-
+var BD = {};
 COLLECTIONS.forEach((COLLECTION) =>{
-	var BD = {};
 	COLLECTION.toLowerCase() == "users" ? BD[COLLECTION] = Meteor[COLLECTION.toLowerCase()] : BD[COLLECTION] = new Mongo.Collection(COLLECTION.toLowerCase());
 		
 	Meteor.methods({
@@ -64,3 +63,4 @@ COLLECTIONS.forEach((COLLECTION) =>{
 	SCHEMA[COLLECTION]?BD[COLLECTION].attachSchema(SCHEMA[COLLECTION]):"";
 
 });
+export {BD};

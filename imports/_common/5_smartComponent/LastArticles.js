@@ -29,12 +29,12 @@ class LastArticle extends Component{
 	render(){
 		let {actu_last,ann_last} = this.props;
 		return(	
-			<div style={{boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5}}>
+			<div style={{}}>
 				{this.props.actualite?
-					<div style={{boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}>{actu_last?actu_last.map((actu,i)=>this.miniArticle(actu,'actu',i)):""}</div>:""
+					<div style={{display:"flex", flexDirection:"column", alignItems:"center",boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}> <span style = {{marginBottom:10, fontWeight:600}}>Actualités</span> {actu_last?actu_last.map((actu,i)=>this.miniArticle(actu,"actu",i)):""}</div>:""
 				}
 				{this.props.annonce?
-					<div style={{boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}>{ann_last?ann_last.map((ann,i)=>this.miniArticle(ann,'ann',i)):""}</div>:""
+					<div style={{display:"flex", flexDirection:"column", alignItems:"center",boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}> <span style = {{marginBottom:10, fontWeight:600}}>Annonces</span> {ann_last?ann_last.map((ann,i)=>this.miniArticle(ann,"ann",i)):""}</div>:""
 				}
 			</div>
 		);

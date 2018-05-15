@@ -70,8 +70,8 @@ class AnnonceDetaillee extends Component {
 	refuser(_id){
 		this.props.propositionUp({_id:_id}, {etat:"refuse"},()=>{});
 	}
-	effectue(){
-
+	effectue(annonce_id, proposition_id){
+		this.props.transactionCree(annonce_id,proposition_id);
 	}
 	supprimer(_id){
 		this.props.propositionRm({_id});
@@ -105,7 +105,7 @@ class AnnonceDetaillee extends Component {
 						accepter = { this.accepter.bind(this,proposition._id) }
 						refuser = { this.refuser.bind(this,proposition._id) }
 						supprimer = {this.supprimer.bind(this,proposition._id)}
-						effectue = { this. effectue.bind(this,proposition._id)}
+						effectue = { this. effectue.bind(this,this.props._id,proposition._id,user,this.props.user)}
 						moi = { annonce && active_user && (annonce.user_id == active_user._id) }
 						href_posteur = {user?hrefUser(user._id):active_user?hrefUser(active_user._id):"/#"}
 					/>]:total;},[])}
@@ -182,10 +182,11 @@ function mapDispatchToProps( dispatch ){
 		propositionUpm: ACTIONS.Proposition.upm,
 		propositionRm: ACTIONS.Proposition.rm,
 
-
 		categorieGet1: ACTIONS.Categorie.get1,
 		usersGet1: ACTIONS.Users.get1,
+		usersGet1State: ACTIONS.Users.get1_state,
 		usersGet: ACTIONS.Users.get,
+		transactionCree: ACTIONS.Transaction.cree,
 		
 
 	}, dispatch );

@@ -19,14 +19,13 @@ import "react-s-alert/dist/s-alert-css-effects/stackslide.css";
 import Alert from "react-s-alert";
 
 import SmartMenu from "../_common/5_smartComponent/SmartMenu";
-import SmartMenuAnnonce from "../_common/5_smartComponent/SmartMenuAnnonce";
 import SmartMenuMonCompte from "../_common/5_smartComponent/SmartMenuMonCompte";
 import TitrePage from "../_common/5_smartComponent/TitrePage";
 
 import Footer from "../_common/4_dumbComponent/Footer";
 import InitState from "../_common/5_smartComponent/InitState";
 import LastArticles from "../_common/5_smartComponent/LastArticles";
-
+import IsLogged from "../user/5_smartComponent/IsLogged";
 
 /*import Alert from 'react-s-alert';*/
 /*import 'react-s-alert/dist/s-alert-default.css';*/
@@ -53,19 +52,26 @@ export const Layout = ({ content }) => {
 					<SmartMenu/>
 					<div style={{display: "flex", flex:1, minWidth:145, marginLeft: "auto",flexWrap:"wrap"}}>
 						<div style={{
-							flex:5,
+							flex:4,
 							display: "flex",
 							justifyContent:"center",
 							flexDirection: "column",
-							
+							padding:20
 						}}>
 							<TitrePage/>
 							<div style={{
 								flex:1,
-								display: "flex",
-								justifyContent:"center",
-							}}>		
-								{content}
+								alignItems:"center",
+							}}>
+								<div style={{
+									flex:1,
+									display: "flex",
+									justifyContent:"center",
+									alignItems:"center",
+									maxWidth: 1280
+								}}>	
+									{content}
+								</div>
 							</div>
 						</div>
 						<div style={{
@@ -83,7 +89,7 @@ export const Layout = ({ content }) => {
 		</Provider>
 	);
 };
-//PAS UTILISé
+
 export const LayoutLAc = ({ content }) => {
 
 	return(
@@ -98,19 +104,24 @@ export const LayoutLAc = ({ content }) => {
 					<SmartMenu/>
 					<div style={{display: "flex", flex:1, flexWrap:"wrap"}}>
 						<div style={{
-							flex:5,
+							flex:4,
 							display: "flex",
 							justifyContent:"center",
 							flexDirection: "column",
-							
+							padding:20
 						}}>
 							<TitrePage/>
 							<div style={{
 								flex:1,
 								display: "flex",
-								justifyContent:"center",
-							}}>		
-								{content}
+							}}>
+								<div style={{
+									flex:1,
+									display: "flex",
+									maxWidth: 1280
+								}}>	
+									{content}
+								</div>
 							</div>
 						</div>
 						<div style={{
@@ -142,19 +153,26 @@ export const LayoutLAn = ({ content }) => {
 					<SmartMenu/>
 					<div style={{display: "flex", flex:1, flexWrap:"wrap"}}>
 						<div style={{
-							flex:5,
+							flex:4,
 							display: "flex",
 							justifyContent:"center",
 							flexDirection: "column",
-							
+							padding:20
 						}}>
 							<TitrePage/>
 							<div style={{
 								flex:1,
 								display: "flex",
-								justifyContent:"center",
-							}}>		
-								{content}
+							}}>
+								<div style={{
+									flex:1,
+									display: "flex",
+									justifyContent:"center",
+									alignItems:"center",
+									maxWidth: 1280
+								}}>	
+									{content}
+								</div>
 							</div>
 						</div>
 						<div style={{
@@ -163,44 +181,6 @@ export const LayoutLAn = ({ content }) => {
 							flex:1,
 						}}>		
 							<LastArticles annonce/>
-						</div>
-					</div>
-				</div>
-				<Footer style = {{flex:"none"}}/>
-				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
-			</div>
-		</Provider>
-	);
-};
-export const LayoutAnnonce = ({ content }) => {
-
-	return(
-		<Provider store={store}>	
-			<div style={{
-				display: "flex",
-				minHeight: "100vh",
-				flexDirection: "column"
-			}}>
-				<InitState/>
-				<div style={{display:"flex", flexDirection: "column", flex:1}}>
-					<SmartMenu/>
-					<div style={{display: "flex", flexWrap:"wrap"}}>
-						<div style={{display:"flex",flex:5, flexDirection: "column"}}>
-							<TitrePage/>
-							<div style={{display:"flex", marginLeft:20}}>		
-								
-								<SmartMenuAnnonce/>
-							</div>
-							<div style={{display: "flex", flexDirection: "column",marginLeft:20,marginRight:20, flex:1, }}>
-								{content}
-							</div>
-						</div>
-						<div style={{
-							display: "flex",
-							flexDirection: "column",
-							flex:1,
-						}}>		
-							<LastArticles actualite/>
 						</div>
 					</div>
 				</div>
@@ -227,9 +207,9 @@ export const LayoutMonCompte = ({ content }) => {
 						<div style={{display: "flex", flex:1, minWidth:145}}>
 							<SmartMenuMonCompte/>
 						</div>
-						<div style={{display: "flex", flexDirection: "column", flex:5, margin:10}}>
+						<div style={{display: "flex", flexDirection: "column", flex:5, margin:10, }}>
 							<TitrePage/>
-							{content}
+							<IsLogged>{content}</IsLogged>
 						</div>
 						
 					</div>

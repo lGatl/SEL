@@ -22,8 +22,8 @@ class ListeProposition extends Component {
 	}
 
 	//=========ACTIONS
-	effectue(){
-
+	effectue(annonce_id, proposition_id){
+		this.props.transactionCree(annonce_id,proposition_id);
 	}
 	supprimer(_id){
 		this.props.propositionRm({_id});
@@ -56,7 +56,7 @@ class ListeProposition extends Component {
 					etat = { proposition.etat }
 					supprimer = {this.supprimer.bind(this)}
 					
-					effectue = { this. effectue.bind(this)}
+					effectue = { this. effectue.bind(this,annonce._id,proposition._id)}
 				/>]:total);},[]);
 
 		// editer = {this.editer.bind(this)}
@@ -90,6 +90,8 @@ function mapDispatchToProps( dispatch ){
 		propositionGet: ACTIONS.Proposition.get,
 		propositionRm: ACTIONS.Proposition.rm,
 		annonceGet: ACTIONS.Annonce.get,
+
+		transactionCree: ACTIONS.Transaction.cree,
 	
 	}, dispatch );
 }

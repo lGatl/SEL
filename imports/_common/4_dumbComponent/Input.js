@@ -18,7 +18,7 @@ export default class Input extends Component {
 			s_input:{
 				padding:5,
 				borderRadius:5,
-				fontSize:20,
+				fontSize:14,
 				border: "1px solid rgba(150,150,150,0.5",
 				boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",
 			},

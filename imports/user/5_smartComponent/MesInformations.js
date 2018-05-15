@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Titre, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Titre, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
@@ -20,19 +20,40 @@ class MesInformations extends Component{
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Mes informations");
 		this.props.titrePage("Mes Informations");
+		this.props.categorieGet({publier:true});
+
+		this.props.transactionGetState({$or:[{"proposition.payeur":this.props.active_user._id},{"proposition.posteur":this.props.active_user._id}]});
+	}
+
+	categories(categories){
+		let { edit } = this.props;
+		return <ul>
+			{
+				categories&&categories.length>0?categories.reduce((total,categorie,i)=>{
+					let find = this.props.categories.find(cat=>cat._id==categorie);
+					return find?[...total,
+						<li key={i} >
+							{find.titre}
+						</li>]:total;
+				},[]):""
+			}
+		</ul>;
 	}
 	
 	render(){
+		let { transactions } = this.props;
 		if(this.props.active_user){
 			let { emails, profile, _id } = this.props.active_user;
-			
+			let debit = transactions.reduce((total,transaction)=>transaction.proposition.payeur==_id?transaction.proposition.prix+total:total,0)
+			let credit = transactions.reduce((total,transaction)=>transaction.proposition.prestataire==_id?transaction.proposition.prix+total:total,0)
 			return(	
+				
 				<div>
 					<CardUser
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }
 						note = {5}
-						categories = {["cuisine","menage"]}
+						categories = {this.categories(profile.categories)}
 						email = {emails&&emails.length>0?emails[0].address:""}
 						telephone = {profile?profile.telephone:""}
 						adresse = { profile?profile.adresse:"" }
@@ -40,6 +61,12 @@ class MesInformations extends Component{
 						editer = {goUserEdit.bind(this,_id)}
 					/>
 					<Titre>Mes Seugnettes</Titre>
+					<Segment style ={{padding: 20}}>
+						<span>Mon solde : { profile?profile.solde:"" }</span> 
+						<span>Total crédit : {credit} </span>
+						<span>Total débit : {debit}</span>
+					</Segment>
+					
 				</div>
 			);
 		}return (<div>wait</div>);
@@ -49,7 +76,11 @@ class MesInformations extends Component{
 function mapStateToProps( state ){
 	return (
 		{
-			active_user: 	state.users.active_user
+			active_user: 	state.users.active_user,
+			transactions: state.transaction.all,
+			categories: state.categorie.all
+
+
 		}
 	);
 
@@ -60,6 +91,9 @@ function mapDispatchToProps(dispatch){
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
+		transactionGetState: ACTIONS.Transaction.get_state,
+		categorieGet: ACTIONS.Categorie.get,
+
 	}, dispatch );
 }
 

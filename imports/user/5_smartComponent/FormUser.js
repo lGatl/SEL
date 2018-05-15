@@ -77,6 +77,7 @@ class FormulaireDInscription extends Component {
 				username:email,
 				password,
 				profile:{
+					...this.props.user.profile,
 					username,
 					nom,
 					prenom,
@@ -191,6 +192,7 @@ class FormulaireDInscription extends Component {
 		return (
 			<div>
 				<CardUser
+					edit
 					username = {this.username(username)}
 					nom = { this.nom(nom) }
 					prenom = { this.prenom(prenom) }

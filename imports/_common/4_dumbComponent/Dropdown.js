@@ -38,7 +38,7 @@ export default class Dropdown extends Component {
 				color:this.props.value.length>0?"rgba(0,0,0,1)":"rgba(0,0,0,0.5)",
 				padding:5,
 				borderRadius:this.state.show ? "5px 5px 0 0" : 5,
-				fontSize:20,
+				fontSize:14,
 				minHeight:32,
 				border: "1px solid rgba(150,150,150,0.5)",
 				borderBottom:this.state.show ? "none" : "1px solid rgba(150,150,150,0.5)",
@@ -49,7 +49,8 @@ export default class Dropdown extends Component {
 				paddingLeft:5,
 				paddingRight:5,
 				fontSize:15,
-				transform: "rotate(180deg)",
+				transition:"0.2s",
+				transform: this.state.show?"rotate(-90deg)":"rotate(0deg)",
 			},
 			s_lignes:{
 				position:"absolute",
@@ -58,7 +59,7 @@ export default class Dropdown extends Component {
 				width:"100%",
 				top:"100%",
 				borderRadius:"0 0 5px 5px",
-				fontSize:20,
+				fontSize:14,
 				border: "1px solid rgba(150,150,150,0.5)",
 				borderTop:"none",
 				boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",
@@ -74,7 +75,7 @@ export default class Dropdown extends Component {
 			}
 		};
 	}
- componentDidMount() {
+	componentDidMount() {
 		document.addEventListener('mousedown', this.handleClickOutside);
 	}
 
@@ -109,13 +110,17 @@ export default class Dropdown extends Component {
 	
 	render(){
 		let {s_container, s_label, s_content, s_lignes, s_ligne, s_choice, s_fleche} = this.style();
+		let selected = this.props.options.find(opt=>opt.value==this.props.value);
+		
 		return (
 			<div style={{s_container, ...this.props.style}}>
 				{this.props.label?<label style={s_label}>{this.props.label}</label>:""}
 				<div style={{...s_content }} ref={this.setWrapperRef} onClick={this.clickin.bind(this)}>
 					<div style={{...s_choice, ...this.props.style_choice}}>
-						{this.props.value.length>0?this.props.value:this.props.placeholder}
-						<span style={{...s_fleche}}> ^ </span>
+						{//this.props.value.length>0?this.props.value:this.props.placeholder
+							selected?selected.text?selected.text:selected.value:this.props.value?this.props.value:this.props.placeholder
+						}
+						<span style={{...s_fleche}}> {"<"} </span>
 					</div>
 					<div style={{...s_lignes}}   >
 						{

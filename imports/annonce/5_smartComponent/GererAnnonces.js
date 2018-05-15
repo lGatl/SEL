@@ -17,12 +17,12 @@ class GererAnnonces extends Component {
 		this.props.titrePage("Gerer les annonces");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les annonces");
-		this.props.annonceGet({},res=>{
+		this.props.annonceGetSSL({},{sort:{date:-1}},res=>{
 			this.props.usersGet({_id:{$in:res.map(annonce=>annonce.user_id)}});
 			this.props.categorieGet({_id:{$in:res.map(annonce=>annonce.categorie)}});
 			res.map(annonce=>{
 			});
-			this.props.annonceControle({actions:res.map((annonce)=>{return{...annonce,action:annonce.etat};})});
+			this.props.annonceControle({actions:res.map((annonce)=>{return{_id:annonce._id,action:annonce.etat};})});
 		});
 	}
 	
@@ -87,11 +87,11 @@ class GererAnnonces extends Component {
 					ligne1sur2
 					border_line
 					border_table
-					s_col = {[{col:5,style:{flex:2}},{col:4,style:{flex:2}}]}
+					s_col = {[]}
 					donnees={[
 						{thead:[["Date","Seliste","Type","Categorie","Titre de l'annonce","Action"]]},
 						{tbody:this.props.annonces?this.props.annonces.map((annonce)=>{
-							let value = actions&&actions.find((act)=>act._id==annonce._id)?actions.find((act)=>act._id==annonce._id).action:{};
+							let value = actions&&actions.find((act)=>act._id==annonce._id)?actions.find((act)=>act._id==annonce._id).action:"";
 							let user = this.props.users.find(luser=>luser._id==annonce.user_id);
 							let categorie = this.props.categories.find(luser=>luser._id==annonce.categorie);
 							let date = new Date(annonce.date);
@@ -146,7 +146,7 @@ function mapDispatchToProps( dispatch ){
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
-		annonceGet: ACTIONS.Annonce.get,
+		annonceGetSSL: ACTIONS.Annonce.get_SSL,
 		annonceControle: 	ACTIONS.Annonce.controle,
 		annonceAdd:	ACTIONS.Annonce.add,
 		annonceRm: 	ACTIONS.Annonce.rm,

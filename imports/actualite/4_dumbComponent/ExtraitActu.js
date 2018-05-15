@@ -18,7 +18,7 @@ export default class ExtraitAnn extends Component {
 				<div style={{display:"flex", marginLeft:"10%", flexDirection:"column", flex:1}}>
 					
 					<div style={{
-						fontSize:22, 
+						fontSize:16, 
 						fontWeight:400,
 						marginTop:10,
 						marginBottom:20
@@ -29,7 +29,7 @@ export default class ExtraitAnn extends Component {
 						{ description }
 					</div>
 					<div style={{
-						fontSize:16,
+						fontSize:14,
 						marginBottom:10
 					}}>
 						

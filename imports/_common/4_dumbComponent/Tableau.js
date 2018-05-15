@@ -9,7 +9,7 @@ export default class Tableau extends Component {
 				flexDirection:"column",
 				margin:5,
 				borderRadius:5,
-				fontSize:20,				
+				fontSize:14,				
 				border:this.props.border_table?"1px solid rgba(150,150,150,0.5)": "none",
 				boxSizing: "border-box"
 			},
