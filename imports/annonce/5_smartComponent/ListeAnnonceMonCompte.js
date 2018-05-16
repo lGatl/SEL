@@ -12,16 +12,22 @@ import SmartMenuAnnonce from "../../_common/5_smartComponent/SmartMenuAnnonce";
 import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 import Proposition from "../../proposition/4_dumbComponent/Proposition";
 
-import { hrefUser, hrefAnnonce } from "../../8_libs/go";
+import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
+import { throttle } from "../../8_libs/throttle";
 
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
 	constructor(){
 		super();
-		this.state = {};
+		this.scroll = throttle(this.scroll.bind(this),40);
+		this.state = {
+			nbpp: 5,
+			nump: 0
+		};
 	}
 	componentWillMount(){
-		this.props.titrePage("Annonces");
+		
+		this.props.activeMenu("Mon Compte");
 		this.init(this.props);
 	}
 	componentWillReceiveProps(nextp){
@@ -30,27 +36,58 @@ class ListeAnnonce extends Component {
 			this.init(nextp);
 		}
 	}
-		
-	init(props){
-		this.props.activeMenu(props.mon_compte?"Mon Compte":"Annonce");
-		this.props.activeMenuMonCompte(props.type=="offre"?"Mes offres":"Mes demandes");
-		this.props.activeMenuAnnonce(props.type=="offre"?"Offres":props.type=="demande"? "Demandes": "Toutes");
+	componentDidMount() {
+		document.addEventListener("scroll", this.scroll);
+	}
 
+	componentWillUnmount() {
+		document.removeEventListener("scroll", this.scroll);
+	}	
+	condition(props){
 		let CONDITION = {etat:"valider"};
-		CONDITION = props.mon_compte?{...CONDITION,user_id:props.active_user._id}:CONDITION;
+		CONDITION = {...CONDITION,user_id:props.active_user._id};
 		CONDITION = props.type?{...CONDITION,type:props.type}:CONDITION;
-		this.props.annonceGet(CONDITION,(annonces)=>{
-			
+		return CONDITION;
+	}
+	init(props){
+		this.props.titrePage(props.type=="offre"?"Mes offres":"Mes demandes");
+		this.props.activeMenuMonCompte(props.type=="offre"?"Mes offres":"Mes demandes");
+		
+		this.props.annonceGetSSL(this.condition(props),{sort:{date:-1},skip:0,limit:this.state.nbpp},(annonces)=>{
+			this.setState({nump:1});
 			annonces.forEach(annc=>this.setState({[annc._id]:false}));
 			
-
 			this.props.propositionGet({annonce_id:{$in:annonces.map(annonce=>annonce._id)}},(propositions=>
-				this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}})
+				this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}},()=>{
+					this.props.annonceCount(this.condition(props),(nb_annonces)=>{
+						this.scroll(annonces,nb_annonces);
+					});
+				})
 			));
 		});
 		this.props.categorieGet({});
 	}
+
 	//=========ACTIONS
+	scroll(annonces,nb_annonces){
+		if(
+			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
+			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
+			&& ((this.props.annonces.length < this.props.nb_annonces)||(annonces&&nb_annonces&&annonces.length < nb_annonces))
+		){
+			this.props.annonceGetAddSSL(this.condition(this.props),{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_annonces)=>{
+				nv_annonces.forEach(annc=>this.setState({[annc._id]:false}));
+				this.props.propositionGetAdd({annonce_id:{$in:nv_annonces.map(annonce=>annonce._id)}},(propositions=>
+					this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}},()=>{
+						this.props.annonceCount(this.condition(this.props),(nb_annonces)=>{
+							this.scroll(annonces,nb_annonces);
+						});
+					})
+				));
+			});
+			this.setState({nump:this.state.nump+1});
+		}
+	}
 	annonceRm( id ){
 		this.props.annonceRm({ _id: id });
 	}
@@ -115,7 +152,7 @@ class ListeAnnonce extends Component {
 				titre = { ann.titre }
 				description = { ann.description }
 				date = { dateToFormat(date) }
-				onClick = { this.annonceRm.bind(this) }
+				goAnnonce = { goAnnonce.bind(this,ann._id) }
 				statut = { ann.statut }
 				href = {hrefAnnonce(ann._id)}
 			/><div style = {{backgroundColor:"pink",paddingTop:this.state[ann._id]?10:0,paddingBottom:this.state[ann._id]?10:0}}>{this.propositions(ann, propositions)}</div></div>];}
@@ -142,6 +179,7 @@ function mapStateToProps( state ){
 			active_user: state.users.active_user,
 			users: state.users.all,
 			annonces: state.annonce.all,
+			nb_annonces: state.annonce.count,
 			categories: state.categorie.all,
 			active_menu_annonce: state.menu.active_menu_annonce,
 			propositions: state.proposition.all,
@@ -158,12 +196,15 @@ function mapDispatchToProps( dispatch ){
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
 		activeMenuAnnonce: ACTIONS.Menu.activeMenuAnnonce,
 
-		annonceGet: ACTIONS.Annonce.get,
+		annonceGetSSL: ACTIONS.Annonce.get_SSL,
+		annonceGetAddSSL: ACTIONS.Annonce.getAdd_SSL,
+		annonceCount: ACTIONS.Annonce.count,
 		annonceRm: ACTIONS.Annonce.rm,
 		annonceGet1: ACTIONS.Annonce.get1,
 		annonceUp: ACTIONS.Annonce.up,
 		
 		propositionGet: ACTIONS.Proposition.get,
+		propositionGetAdd: ACTIONS.Proposition.getAdd,
 		propositionGet1: ACTIONS.Proposition.get1,
 		propositionUp: ACTIONS.Proposition.up,
 		propositionUpm: ACTIONS.Proposition.upm,

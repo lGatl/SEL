@@ -80,7 +80,7 @@ class FormCategorie extends Component {
 	
 	render(){
 		let { annonces_count } = this.props;
-		let {titre, des, actions} = this.props.categorie_controle;
+		let {titre, actions} = this.props.categorie_controle;
 		
 		return (
 			<div>
@@ -104,7 +104,7 @@ class FormCategorie extends Component {
 						donnees={[
 							{thead:[["Catégorie","Offre","Demande","Action"]]},
 							{tbody:this.props.categories.map((categorie)=>{
-								let value = actions?actions.find((act)=>act._id==categorie._id).action:{};
+								let value = actions?actions.find((act)=>act._id==categorie._id).action:"";
 								let offres_count = annonces_count&&categorie?annonces_count["offre"+categorie._id]:"";
 								let demandes_count = annonces_count&&categorie?annonces_count["demande"+categorie._id]:"";
 								return[categorie.titre,offres_count,demandes_count,

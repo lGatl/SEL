@@ -106,7 +106,7 @@ class FormActu extends Component {
 						donnees={[
 							{thead:[["Date","Titre","Action"]]},
 							{tbody:this.props.actualites.map((actualite)=>{
-								let value = actions?actions.find((act)=>act._id==actualite._id).action:{};
+								let value = actions?actions.find((act)=>act._id==actualite._id).action:"";
 								let date = new Date(actualite.date);
 
 								return[dateToFormat(date),<A href = {hrefActualite(actualite._id)}>{actualite.titre}</A>,

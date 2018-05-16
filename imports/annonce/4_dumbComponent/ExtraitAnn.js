@@ -10,24 +10,26 @@ export default class ExtraitAnn extends Component {
 
 		return(
 
-			<Segment row style={{height:200,...this.props.style}}> 
-				<img src="/images/1.jpg" alt="photo annonce"/>
-				<div style = {{display: "flex", flex:2, flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+			<Segment row style={{height:200,...this.props.style}} > 
+				<img src="/images/1.jpg" alt="photo annonce" style = {{cursor:"pointer"}} onClick={this.props.goAnnonce.bind(this)}/>
+				<div style = {{display: "flex", flex:2, flexDirection:"column", justifyContent:"center", alignItems:"center", 
+					cursor:"pointer" }} 
+				onClick={this.props.nb_prop && (statut == "en attente"||statut == "en cours")?this.props.montrerPropositions.bind(this):this.props.goAnnonce.bind(this)}>
 					{
 						this.props.nb_prop && statut == "en attente"?<label style = {{
 							textAlign:"center",
 							fontSize:14,
-							margin:"5%"
+							margin:"5%",
+							cursor:"pointer"
 						}} >Nombre de propositions : </label>:""
 					}
 					{
 						this.props.nb_prop && statut == "en attente"?<label 
-							onClick = { this.props.montrerPropositions.bind(this) }
 							style = {{
 								cursor: "pointer",
-								padding:10, 
+								padding:20, 
 								borderRadius:5,
-								fontSize:16,
+								fontSize:20,
 								backgroundColor: "rgba(150,150,150,0.5)",
 								boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",}} >{this.props.nb_prop}</label>:""
 					}
@@ -35,12 +37,12 @@ export default class ExtraitAnn extends Component {
 						this.props.nb_prop && statut == "en cours"?<label style = {{
 							textAlign:"center",
 							fontSize:14,
-							margin:"5%"
+							margin:"5%",
+							cursor:"pointer"
 						}} >Proposition acceptée : </label>:""
 					}
 					{
 						this.props.nb_prop && statut == "en cours"?<label 
-							onClick = { this.props.montrerPropositions.bind(this) }
 							style = {{
 								cursor: "pointer",
 								padding:10, 
@@ -50,12 +52,12 @@ export default class ExtraitAnn extends Component {
 								boxShadow: "1px 1px 1px rgba(150,150,150,0.3)",}} ><span style = {{float:"right", transform:montree?"rotate(90deg)":"rotate(0deg)",transition:"0.5s"}}>></span></label>:""
 					}
 				</div>
-				<div style={{display:"flex", flexDirection:"column", flex:7}}>
+				<div style={{display:"flex", flexDirection:"column", flex:7, cursor:"pointer"}} onClick={this.props.goAnnonce.bind(this)}>
 					<div style={{
 						fontSize:16,
 						marginTop:5,
 						marginBottom:5
-
+						
 					}}>
 						{ type } - { categorie }
 					</div>

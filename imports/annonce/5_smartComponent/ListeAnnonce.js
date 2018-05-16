@@ -12,28 +12,9 @@ import SmartMenuAnnonce from "../../_common/5_smartComponent/SmartMenuAnnonce";
 import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 import Proposition from "../../proposition/4_dumbComponent/Proposition";
 
-import { hrefUser, hrefAnnonce } from "../../8_libs/go";
+import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
+import { throttle } from "../../8_libs/throttle";
 
-function throttle(callback, delay) {
-	var last;
-	var timer;
-	return function () {
-		var context = this;
-		var now = +new Date();
-		var args = arguments;
-		if (last && now < last + delay) {
-			// le délai n'est pas écoulé on reset le timer
-			clearTimeout(timer);
-			timer = setTimeout(function () {
-				last = now;
-				callback.apply(context, args);
-			}, delay);
-		} else {
-			last = now;
-			callback.apply(context, args);
-		}
-	};
-}
 
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
@@ -127,6 +108,8 @@ class ListeAnnonce extends Component {
 				date = { dateToFormat(date) }
 				statut = { ann.statut }
 				href = {hrefAnnonce(ann._id)}
+				goAnnonce = { goAnnonce.bind(this,ann._id) }
+
 			/>];}
 			,[]):"";
 		// return [<Comps/>,...]
