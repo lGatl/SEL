@@ -11,6 +11,9 @@ import { throttle } from "../../8_libs/throttle";
 
 import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
+import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
+
+
 
 class GererAnnonces extends Component {
 	constructor(){
@@ -117,15 +120,30 @@ class GererAnnonces extends Component {
 		let {titre, des, actions} = this.props.annonce_controle;
 		
 		return (
-			<div>
-				<Button onClick={this.annonceAppliquer.bind(this)}>Appliquer</Button>
+			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
+				
+				<FixedLayoutMonCompte>
+					<div style={{display:"flex", flexDirection:"column", flex:1 }}>
+						<Tableau
+							style = {{flex:1, marginBottom:0, borderBottom:"none",borderBottomLeftRadius: "0px 0px",borderBottomRightRadius: "0px 0px",}}
+							ligne1sur2
+							border_line
+							border_table
+							s_col = {[]}
+							donnees={[
+								{thead:[["Date","Seliste","Type","Categorie","Titre de l'annonce",<Button onClick={this.annonceAppliquer.bind(this)}>Appliquer</Button>]]} ]}/>
+					</div>
+					
+				</FixedLayoutMonCompte>
+								
+
 				<Tableau
+					style ={{flex:1, marginTop:50,borderTopLeftRadius: "0px 0px",borderTopRightRadius: "0px 0px",}}
 					ligne1sur2
 					border_line
 					border_table
 					s_col = {[]}
 					donnees={[
-						{thead:[["Date","Seliste","Type","Categorie","Titre de l'annonce","Action"]]},
 						{tbody:this.props.annonces?this.props.annonces.map((annonce)=>{
 							let value = actions&&actions.find((act)=>act._id==annonce._id)?actions.find((act)=>act._id==annonce._id).action:"";
 							let user = this.props.users.find(luser=>luser._id==annonce.user_id);
@@ -158,7 +176,7 @@ class GererAnnonces extends Component {
 									}}
 								/>];}):[]},
 					]}
-				/>		
+				/>
 			</div>
 		);
 	}

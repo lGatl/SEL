@@ -48,7 +48,7 @@ class MesInformations extends Component{
 			let credit = transactions.reduce((total,transaction)=>transaction.proposition.prestataire==_id?transaction.proposition.prix+total:total,0)
 			return(	
 				
-				<div>
+				<div style={{display:"flex", flex:1, flexDirection:"column"}}>
 					<CardUser
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }

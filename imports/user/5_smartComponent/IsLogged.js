@@ -20,12 +20,13 @@ class IsLogged extends Component{
 		FlowRouter.go('/Connexion');
 	}
 	aAfficher(){
-		return this.props.active_user && this.props.active_user._id ? this.props.children : <div> <Segment> Vous n'etes pas connecté </Segment> <Button onClick={this.pageConnexion.bind(this)}> Page de connexion</Button> </div>;
+		//return this.props.active_user && this.props.active_user._id ? this.props.children : <div> <Segment> Vous n'etes pas connecté </Segment> <Button onClick={this.pageConnexion.bind(this)}> Page de connexion</Button> </div>;
+		return this.props.children
 	}
 	render(){
 					
 		return(	
-			<div>{this.aAfficher()}</div>
+			<div style={{...this.props.style}}>{this.aAfficher()}</div>
 		);
 	}
 }

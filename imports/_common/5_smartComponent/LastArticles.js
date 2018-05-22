@@ -14,9 +14,8 @@ import {  goAnnonce } from "../../8_libs/go";
 class LastArticle extends Component{
 
 	componentWillMount(){
-		let limit = this.props.actualite&&this.props.annonce?2:4;
-		this.props.annonceGet_SSL_state({etat:"valider"},{limit,sort:{date:-1}},"last");
-		this.props.actualiteGet_SSL_state({publier: true},{limit,sort:{date:-1}},"last");
+		this.props.annonceGet_SSL_state({etat:"valider"},{limit:4,sort:{date:-1}},"last");
+		this.props.actualiteGet_SSL_state({publier: true},{limit:4,sort:{date:-1}},"last");
 	}
 	miniArticle(article, type, i){
 		return <MiniArticle
@@ -24,17 +23,34 @@ class LastArticle extends Component{
 			image = { "/images/1.jpg" }
 			lien = {type=="actu"?()=>{}:goAnnonce.bind(this,article._id)}
 			titre = { article.titre }
-		/>
+		/>;
 	}
+
 	render(){
-		let {actu_last,ann_last} = this.props;
+		let {actu_last, ann_last, active_menu} = this.props;
+		actu_last = active_menu == "Annonce" ? actu_last : 
+			active_menu == "Accueil" || 
+			active_menu == "Contact" ||
+			active_menu == "Kesako"
+				? actu_last&&actu_last.slice(0,2):[];
+		ann_last = active_menu == "Actualité" ? ann_last : 
+			active_menu == "Accueil" ||
+			active_menu == "Contact" ||
+			active_menu == "Kesako"
+				? ann_last&&ann_last.slice(0,2):[];
 		return(	
 			<div style={{}}>
-				{this.props.actualite?
-					<div style={{display:"flex", flexDirection:"column", alignItems:"center",boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}> <span style = {{marginBottom:10, fontWeight:600}}>Actualités</span> {actu_last?actu_last.map((actu,i)=>this.miniArticle(actu,"actu",i)):""}</div>:""
+				{actu_last&&actu_last.length>0?
+					<div style={{display:"flex", flexDirection:"column", alignItems:"center",boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}> 
+						<span style = {{marginBottom:10, fontWeight:600}}>Actualités</span> 
+						{actu_last.map((actu,i)=>this.miniArticle(actu,"actu",i))}
+					</div>:""
 				}
-				{this.props.annonce?
-					<div style={{display:"flex", flexDirection:"column", alignItems:"center",boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}> <span style = {{marginBottom:10, fontWeight:600}}>Annonces</span> {ann_last?ann_last.map((ann,i)=>this.miniArticle(ann,"ann",i)):""}</div>:""
+				{ann_last&&ann_last.length>0?
+					<div style={{display:"flex", flexDirection:"column", alignItems:"center",boxShadow: "2px 2px 3px rgba(150,150,150,0.3)",border:"1px solid rgba(150,150,150,0.1)",borderRadius:5,padding:10, margin:10}}>
+						<span style = {{marginBottom:10, fontWeight:600}}>Annonces</span> 
+						{ann_last.map((ann,i)=>this.miniArticle(ann,"ann",i))}
+					</div>:""
 				}
 			</div>
 		);
@@ -44,6 +60,7 @@ class LastArticle extends Component{
 function mapStateToProps( state ){
 	return (
 		{
+			active_menu: state.menu.active_menu,
 			actu_last: state.actualite.last,
 			ann_last: state.annonce.last 
 		}

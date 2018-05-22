@@ -11,14 +11,34 @@ import { ACTIONS } from "../../6_actions/actions";
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
 import { hrefUser, goUserEdit } from "../../8_libs/go";
+import { throttle } from "../../8_libs/throttle";
 
 class UsersList extends Component{
 
+	constructor(){
+		super();
+		this.scroll = throttle(this.scroll.bind(this),40);
+		this.state = {
+			nbpp: 4,
+			nump: 0
+		};
+	}
 	componentWillMount(){
-		this.props.usersGet({});
+		this.props.usersGetSSL({},{sort:{createdAt:-1},skip:0,limit:this.state.nbpp},(users)=>{
+			this.setState({nump:1});
+			this.props.usersCount({},(nb_users)=>{
+				this.scroll(users,nb_users);
+			});
+		})
 		this.props.categorieGet({publier:true});
 	}
+		componentDidMount() {
+		document.addEventListener("scroll", this.scroll);
+	}
 
+	componentWillUnmount() {
+		document.removeEventListener("scroll", this.scroll);
+	}
 	categories(categories){
 		let { edit } = this.props;
 		return <ul>
@@ -33,10 +53,21 @@ class UsersList extends Component{
 			}
 		</ul>;
 	}
-
+	scroll(users,nb_users){
+		if(
+			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
+			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
+			&& ((this.props.users.length < this.props.nb_users)||(users&&nb_users&&users.length < nb_users))
+		){
+			this.props.usersGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_users)=>{
+				this.scroll(nv_users,this.props.nb_users);
+			});
+			this.setState({nump:this.state.nump+1});
+		}
+	}
 	render(){
 		return <div style = {{display:"flex", flex:1, justifyContent:"space-around", flexWrap: "wrap", alignItems:"flex-start", alignContent:"flex-start"}}> {
-			this.props.users.map((user,i)=><div key = {i} style = {{padding:20}}><CardUser
+			this.props.users.map((user,i)=><div key = {i} style = {{padding:5}}><CardUser
 				style = {{maxWidth: 300}}
 				username = { user.username }
 				nom = { user.profile.nom }
@@ -58,7 +89,7 @@ function mapStateToProps( state ){
 	return (
 		{
 			users: state.users.all,
-
+			nb_users: state.users.count,
 			categories: state.categorie.all
 
 		}
@@ -68,7 +99,9 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
-		usersGet: ACTIONS.Users.get,
+		usersGetSSL: ACTIONS.Users.get_SSL,
+		usersGetAddSSL: ACTIONS.Users.getAdd_SSL,
+		usersCount: ACTIONS.Users.count,
 		categorieGet: ACTIONS.Categorie.get,
 
 	}, dispatch );

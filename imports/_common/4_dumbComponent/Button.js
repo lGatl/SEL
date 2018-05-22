@@ -5,10 +5,10 @@ export default class Button extends Component {
 		return{
 		
 			s_button:{
-				padding:10,
+				padding:8,
 				cursor:"pointer",
 				borderRadius:5,
-				fontSize:20,
+				fontSize:14,
 				border: "1px solid rgba(150,150,150,0.5)",
 				boxShadow: "1px 1px 1px rgba(150,150,150,0.5)",
 			},

@@ -9,7 +9,7 @@ import { Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
 class TitrePage extends Component {
 	render(){
 		return (
-			<Titre>
+			<Titre style={{ backgroundColor:"white", ...this.props.style}}>
 				{ this.props.titre_page }
 			</Titre>
 		);

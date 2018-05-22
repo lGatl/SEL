@@ -74,7 +74,7 @@ class SmartMenu extends Component {
 		/*La constante prepare le style des items (de types meteo ou non)*/
 		return (
 			
-			<Menu row style = {{color:"white", backgroundColor:"red", flexWrap: "wrap" }}>
+			<Menu row style = {{color:"white", backgroundColor:"red", flexWrap: "wrap", ...this.props.style }}>
 				{ 
 					this.menus().map(({title, url, display}, i)=> {
 						if(display){

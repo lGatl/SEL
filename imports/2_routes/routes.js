@@ -1,7 +1,7 @@
 import React from "react";
 import {mount} from "react-mounter";
 
-import {Layout, LayoutAnnonce, LayoutLAn,LayoutLAc} from "../3_layout/layout";
+import {Layout, LayoutAnnonce, LayoutSA} from "../3_layout/layout";
 
 import Accueil from "../4_pages/Accueil";
 import Actualite from "../4_pages/Actualite";
@@ -28,42 +28,42 @@ FlowRouter.route( "/", {
 FlowRouter.route( "/actualite", {
 	name: "actualite",
 	action: function() {
-		mount(LayoutLAn, { content: <Actualite /> });
+		mount(Layout, { content: <Actualite /> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/actualite/:_id", {
 	name: "annonce",
 	action: function(params) {
-		mount(LayoutLAn, { content: <ActualiteDetaillee _id={params._id}/> });
+		mount(Layout, { content: <ActualiteDetaillee _id={params._id}/> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutLAc, { content: <Annonce /> });
+		mount(Layout, { content: <Annonce /> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/offre", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutLAc, { content: <Annonce type = "offre"/> });
+		mount(Layout, { content: <Annonce type = "offre"/> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/demande", {
 	name: "annonce",
 	action: function() {
-		mount(LayoutLAc, { content: <Annonce type = "demande" /> });
+		mount(Layout, { content: <Annonce type = "demande" /> });
 		window.scrollTo(0, 0);
 	}
 });
 FlowRouter.route( "/annonce/:_id", {
 	name: "annonce",
 	action: function(params) {
-		mount(LayoutLAc, { content: <AnnonceDetaillee _id={params._id}/> });
+		mount(Layout, { content: <AnnonceDetaillee _id={params._id}/> });
 		window.scrollTo(0, 0);
 	}
 });
@@ -71,7 +71,7 @@ FlowRouter.route( "/annonce/:_id", {
 FlowRouter.route( "/annonce/:_id/edit", {
 	name: "annonce",
 	action: function(params) {
-		mount(LayoutLAc, { content: <FormAnnonce type="demande" _id={params._id} edit /> });
+		mount(Layout, { content: <FormAnnonce type="demande" _id={params._id} edit /> });
 		window.scrollTo(0, 0);
 	}
 });
@@ -99,7 +99,7 @@ FlowRouter.route( "/kesako", {
 FlowRouter.route( "/les_selistes", {
 	name: "les_selistes",
 	action: function() {
-		mount(Layout, { content: <LesSelistes /> });
+		mount(LayoutSA, { content: <LesSelistes /> });
 		window.scrollTo(0, 0);
 	}
 });

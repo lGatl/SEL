@@ -163,7 +163,7 @@ class ListeAnnonce extends Component {
 	render() {
 		let { annonces, categories} = this.props;
 		return (
-			<div style={{display:"flex", flexDirection:"column"}}>
+			<div style={{display:"flex", flex:1, flexDirection:"column"}}>
 				
 				{/*	<Comp/>   [<Comps/>,...]  			[{},...]   */}
 				{ this.annonces(annonces, categories) }

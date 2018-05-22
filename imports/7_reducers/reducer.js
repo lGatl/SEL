@@ -20,12 +20,12 @@ COLLECTIONS.forEach((COLLECTION)=>{
 		switch ( action.type ) {	
 		case  CONSTANTES[COLLECTION].ADD:
 			if(typeof action.payload.state=="string"){
-				return { ...state, [action.payload.state]:[...state[action.payload.state],action.payload.val]};
+				return { ...state, [action.payload.state]:[action.payload.val,...state[action.payload.state]]};
 			}else if((typeof action.payload.state=="object" ) && (action.payload.state != null)){
 				let obj = Object.keys(action.payload.state)[0];
-				return { ...state, [obj]:{...state[obj],[action.payload.state[obj]]:[...state[action.payload.state[obj]],action.payload.val]}};
+				return { ...state, [obj]:{...state[obj],[action.payload.state[obj]]:[action.payload.val,...state[action.payload.state[obj]]]}};
 			}else if(action.payload.state == null||action.payload.state == undefined){
-				return { ...state, all: [...state.all,action.payload.val] };
+				return { ...state, all: [action.payload.val,...state.all] };
 			}			
 			break;
 		case CONSTANTES[COLLECTION].GET:

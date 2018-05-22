@@ -48,144 +48,93 @@ export const Layout = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
-				<div style={{flex:1}}>
-					<SmartMenu/>
-					<div style={{display: "flex", flex:1, minWidth:145, marginLeft: "auto",flexWrap:"wrap"}}>
-						<div style={{
-							flex:4,
-							display: "flex",
-							justifyContent:"center",
-							flexDirection: "column",
-							padding:20
-						}}>
-							<TitrePage/>
-							<div style={{
-								flex:1,
-								alignItems:"center",
-							}}>
-								<div style={{
-									flex:1,
-									display: "flex",
-									justifyContent:"center",
-									alignItems:"center",
-									maxWidth: 1280
-								}}>	
-									{content}
-								</div>
-							</div>
-						</div>
-						<div style={{
-							display: "flex",
-							flexDirection: "column",
-							flex:1
-						}}>		
-							<LastArticles annonce actualite/>
-						</div>
-					</div>
+				<SmartMenu style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<TitrePage style = {{position:"fixed",left:0,width:"80%",top:40,zIndex:990}} />
+				<div className = "supprmobile" 
+					style={{
+						position:"fixed",right:0, top:100,zIndex:997,
+						width:"20%",
+						display: "flex",
+						flexDirection: "column",
+						
+					}}>		
+					<LastArticles actualite/>
 				</div>
-				<Footer style = {{flex:"none"}}/>
-				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
-			</div>
-		</Provider>
-	);
-};
 
-export const LayoutLAc = ({ content }) => {
+				<div style={{display: "flex", flex:1, flexWrap:"wrap",marginTop:105}}>
+					<div style={{
+						flex:4,
+						display: "flex",
+						justifyContent:"center",
+						flexDirection: "column",
 
-	return(
-		<Provider store={store}>	
-			<div style={{
-				display: "flex",
-				minHeight: "100vh",
-				flexDirection: "column"
-			}}>
-				<InitState/>
-				<div style={{flex:1}}>
-					<SmartMenu/>
-					<div style={{display: "flex", flex:1, flexWrap:"wrap"}}>
+					}}>
+						
 						<div style={{
-							flex:4,
-							display: "flex",
-							justifyContent:"center",
-							flexDirection: "column",
-							padding:20
-						}}>
-							<TitrePage/>
-							<div style={{
-								flex:1,
-								display: "flex",
-							}}>
-								<div style={{
-									flex:1,
-									display: "flex",
-									maxWidth: 1280
-								}}>	
-									{content}
-								</div>
-							</div>
-						</div>
-						<div style={{
-							display: "flex",
-							flexDirection: "column",
-							flex:1
-						}}>		
-							<LastArticles actualite/>
-						</div>
-					</div>
-					<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
-				</div>
-				<Footer style = {{flex:"none"}}/>
-			</div>
-		</Provider>
-	);
-};
-export const LayoutLAn = ({ content }) => {
-
-	return(
-		<Provider store={store}>	
-			<div style={{
-				display: "flex",
-				minHeight: "100vh",
-				flexDirection: "column"
-			}}>
-				<InitState/>
-				<div style={{flex:1}}>
-					<SmartMenu/>
-					<div style={{display: "flex", flex:1, flexWrap:"wrap"}}>
-						<div style={{
-							flex:4,
-							display: "flex",
-							justifyContent:"center",
-							flexDirection: "column",
-							padding:20
-						}}>
-							<TitrePage/>
-							<div style={{
-								flex:1,
-								display: "flex",
-							}}>
-								<div style={{
-									flex:1,
-									display: "flex",
-									justifyContent:"center",
-									alignItems:"center",
-									maxWidth: 1280
-								}}>	
-									{content}
-								</div>
-							</div>
-						</div>
-						<div style={{
-							display: "flex",
-							flexDirection: "column",
 							flex:1,
-						}}>		
-							<LastArticles annonce/>
+							display: "flex",
+							justifyContent:"center",
+						}}>
+							<div style={{
+								flex:1,
+								display: "flex",
+								maxWidth: 800,
+								minWidth:"40%",
+							}}>	
+								<IsLogged style={{flex:1,display:"flex"}}>{content}</IsLogged>
+							</div>
+						</div>
+					</div>
+					<div className = "supprmobile" style={{flex:1}}></div>
+				</div>
+
+				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
+				<Footer style = {{flex:"none"}}/>
+			</div>
+		</Provider>
+	);
+};
+export const LayoutSA = ({ content }) => {
+
+	return(
+		<Provider store={store}>	
+			<div style={{
+				display: "flex",
+				minHeight: "100vh",
+				flexDirection: "column"
+			}}>
+				<InitState/>
+				<div style={{display:"flex", flexDirection:"column", flex:1, position:"fixed",right: 0, left: 0,zIndex:998}}>
+					<SmartMenu/>
+					<TitrePage style = {{flex:1}} />
+				</div>
+
+				<div style={{display: "flex", flex:1, flexWrap:"wrap",marginTop:105}}>
+					<div style={{
+						flex:4,
+						display: "flex",
+						justifyContent:"center",
+						flexDirection: "column",
+					}}>
+						
+						<div style={{
+							flex:1,
+							display: "flex",
+							justifyContent:"center",
+						}}>
+							<div style={{
+								flex:1,
+								display: "flex",
+								maxWidth: 1025,
+								minWidth:"40%",
+							}}>	
+								<IsLogged style={{flex:1,display:"flex"}}>{content}</IsLogged>
+							</div>
 						</div>
 					</div>
 				</div>
-				<Footer style = {{flex:"none"}}/>
 				<Alert stack={{limit: 3}} effect='slide' timeout={2500} position='bottom-right'/>
+				<Footer style = {{flex:"none"}}/>
 			</div>
 		</Provider>
 	);
@@ -201,17 +150,30 @@ export const LayoutMonCompte = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
+				<SmartMenu style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<TitrePage style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
+			
+					
+				<SmartMenuMonCompte style={{
+					position:"fixed", top:100,zIndex:998,
+					display: "flex",
+					flexDirection: "column",
+				}}/>
+	
 				<div style={{display:"flex", flexDirection: "column", flex:1}}>
-					<SmartMenu/>
-					<div style={{display:"flex", flexWrap:"wrap", flex:1}}>		
-						<div style={{display: "flex", flex:1, minWidth:145}}>
-							<SmartMenuMonCompte/>
+					<div style={{display:"flex", flexWrap:"wrap", flex:1,marginTop:100}}>		
+						<div className = "supprmobile"  style={{display: "flex", flex:1}}>
+							
 						</div>
-						<div style={{display: "flex", flexDirection: "column", flex:5, margin:10, }}>
-							<TitrePage/>
-							<IsLogged>{content}</IsLogged>
+						<div style={{display: "flex", flexDirection: "column", flex:5, marginTop:0}}>
+							
+							<div style={{display: "flex", justifyContent:"center", flex:1 }}>
+								
+								<IsLogged style={{flex:1,display:"flex", maxWidth: 800}}>{content}</IsLogged>
+							</div>	
+							
 						</div>
-						
+							
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>

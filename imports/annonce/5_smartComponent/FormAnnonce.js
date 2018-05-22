@@ -107,7 +107,7 @@ class FormAnnone extends Component {
 		let { titre, description, categorie, date_de_fin, email, adresse, telephone } = this.props.annonce_controle;
 		return (
 			
-			<form style={{}}>
+			<form style={{display:"flex", flex:1, flexDirection:"column"}}>
 				
 				<Dropdown
 					label = "Categorie"

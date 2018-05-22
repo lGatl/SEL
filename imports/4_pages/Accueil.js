@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
-import { bindActionCreators }	from 'redux';
-import { connect } from 'react-redux';
+import { bindActionCreators }	from "redux";
+import { connect } from "react-redux";
 
 import { ACTIONS } from "../6_actions/actions";
 
@@ -12,7 +12,7 @@ import GoogleMap from "../_common/4_dumbComponent/GoogleMap";
 class Accueil extends Component {
 
 	componentWillMount(){
-		this.props.titrePage("Bienvenue Futur Seliste");
+		this.props.titrePage("Bienvenue " + (this.props.active_user&&this.props.active_user.profile ? (this.props.active_user.profile.prenom + " !") : "Futur Seliste !"));
 		
 		this.props.activeMenu("Accueil");
 	}
@@ -35,7 +35,7 @@ class Accueil extends Component {
 function mapStateToProps(state){
 	return (
 		{
-			
+			active_user: state.users.active_user
 			
 		}
 	);

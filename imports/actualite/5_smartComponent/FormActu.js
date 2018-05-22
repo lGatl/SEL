@@ -8,17 +8,40 @@ import { dateToFormat } from "../../8_libs/date";
 import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { hrefActualite } from "../../8_libs/go";
+import { throttle } from "../../8_libs/throttle";
+
+import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
 
 class FormActu extends Component {
+
+	constructor(){
+		super();
+		this.scroll = throttle(this.scroll.bind(this),40);
+		this.state = {
+			nbpp: 10,
+			nump: 0
+		};
+	}
 
 	componentWillMount(){
 		this.props.titrePage("Gerer les actualités");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les actualites");
 		this.props.actualiteControle(this.init());
-		this.props.actualiteGet({},res=>{
-			this.props.actualiteControle({actions:res.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})});
+		this.props.actualiteGetSSL({},{sort:{date:-1},skip:0,limit:this.state.nbpp},actualites=>{
+			this.setState({nump:1});
+			this.props.actualiteControle({actions:actualites.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})});
+			this.props.actualiteCount({},(nb_actualites)=>{
+				this.scroll(actualites,nb_actualites);
+			});
 		});
+	}
+	componentDidMount() {
+		document.addEventListener("scroll", this.scroll);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("scroll", this.scroll);
 	}
 	init(){
 		return{ 
@@ -26,6 +49,7 @@ class FormActu extends Component {
 			description:""	
 		};
 	}
+
 	//==============CONTROLE====================
 	change(e,{ value, name }){
 		
@@ -41,12 +65,29 @@ class FormActu extends Component {
 		this.props.actualiteControle({actions:[...actions]});
 	}
 	//==============ACTION====================
+
+	scroll(actualites,nb_actualites){
+		if(
+			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
+			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
+			&& ((this.props.actualites.length < this.props.nb_actualites)||(actualites&&nb_actualites&&actualites.length < nb_actualites))
+		){
+			this.props.actualiteGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_actualites)=>{
+				this.props.actualiteControle({actions:[...this.props.actualite_controle.actions,...nv_actualites.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})]});				
+
+				this.props.actualiteCount({},(nb_actualites)=>{
+					this.scroll(actualites,nb_actualites);
+				});
+			});
+			this.setState({nump:this.state.nump+1});
+		}
+	}
 	actualiteAdd(){
 		let {titre, description} = this.props.actualite_controle;
 
 		this.props.actualiteAdd(
 			{
-				titre, description, date:Date.now(), publier:false
+				titre, description, date: new Date(Date.now()), publier:false
 			},
 			(res)=>{
 				let Actions = this.props.actualite_controle.actions;
@@ -79,55 +120,67 @@ class FormActu extends Component {
 		let {titre, description, actions} = this.props.actualite_controle;
 		
 		return (
-			<div>
-				<form>
+	
+			<form style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<FixedLayoutMonCompte>
+					<div style={{display:"flex", flex:1, flexDirection:"column"}}>
+						<Input
+							label = 'Titre'
+							name = 'titre'
+							value = { titre||"" }
+							onChange = { this.change.bind( this ) } 
+						/>
+						<TextArea
+							label = 'Description'
+							name = 'description'
+							value = { description||"" }
+							onChange = { this.change.bind( this ) } 
+						/>
 					
-					<Input
-						label = 'Titre'
-						name = 'titre'
-						value = { titre||"" }
-						onChange = { this.change.bind( this ) } 
-					/>
-					<TextArea
-						label = 'Description'
-						name = 'description'
-						value = { description||"" }
-						onChange = { this.change.bind( this ) } 
-					/>
+						<Button
+							onClick = { this.actualiteAdd.bind( this ) }
+						>Ajouter l'actualité</Button>
+						<Tableau
+							style={{ marginBottom:0, borderBottom:"none",borderBottomLeftRadius: "0px 0px",borderBottomRightRadius: "0px 0px",}}
+							ligne1sur2
+							border_line
+							border_table
+							s_col = {[{col:3,style:{flex:2}}]}
+							donnees={[
+								{thead:[["Date","Titre",<Button onClick={this.actualiteAppliquer.bind(this)}>Appliquer</Button>]]},]}/>
+					</div>
+				</FixedLayoutMonCompte>
 				
-					<Button
-						onClick = { this.actualiteAdd.bind( this ) }
-					>Ajouter l'actualité</Button>
-					<Tableau
-						ligne1sur2
-						border_line
-						border_table
-						s_col = {[{col:3,style:{flex:2}}]}
-						donnees={[
-							{thead:[["Date","Titre","Action"]]},
-							{tbody:this.props.actualites.map((actualite)=>{
-								let value = actions?actions.find((act)=>act._id==actualite._id).action:"";
-								let date = new Date(actualite.date);
 
-								return[dateToFormat(date),<A href = {hrefActualite(actualite._id)}>{actualite.titre}</A>,
-									<Dropdown
-										placeholder = 'Action'
-										name = {actualite._id}
-										onChange = { this.changeAction.bind ( this ) } 
-										options = { [
-											{ value: "publier", text: "publier" },
-											{ value: "desactiver", text: "desactiver" },
-											{ value: "supprimer", text: "supprimer" }
-										]}
-										style_choice = {{backgroundColor:value == "supprimer"?"red":!actualite.publier&&value =="publier"?"AliceBlue":actualite.publier&&value=="desactiver"?"Cornsilk":"white" }}
-										value = { actualite.publier&&value == "publier"?"publié":(!actualite.publier)&&value == "desactiver"?"desactivé":value||"" }
-									/>];})},
-						]}
-					/>
-					<Button onClick={this.actualiteAppliquer.bind(this)}>Appliquer</Button>
-					
-				</form>
-			</div>
+				
+				<Tableau
+					style={{marginTop:245,borderTopLeftRadius: "0px 0px",borderTopRightRadius: "0px 0px", }}
+					ligne1sur2
+					border_line
+					border_table
+					s_col = {[{col:3,style:{flex:2}}]}
+					donnees={[
+						{tbody:this.props.actualites.map((actualite)=>{
+							let value = actions&&actions.find((act)=>act._id==actualite._id)?actions.find((act)=>act._id==actualite._id).action:"";
+							let date = new Date(actualite.date);
+
+							return[dateToFormat(date),<A href = {hrefActualite(actualite._id)}>{actualite.titre}</A>,
+								<Dropdown
+									placeholder = 'Action'
+									name = {actualite._id}
+									onChange = { this.changeAction.bind ( this ) } 
+									options = { [
+										{ value: "publier", text: "publier" },
+										{ value: "desactiver", text: "desactiver" },
+										{ value: "supprimer", text: "supprimer" }
+									]}
+									style_choice = {{backgroundColor:value == "supprimer"?"red":!actualite.publier&&value =="publier"?"AliceBlue":actualite.publier&&value=="desactiver"?"Cornsilk":"white" }}
+									value = { actualite.publier&&value == "publier"?"publié":(!actualite.publier)&&value == "desactiver"?"desactivé":value||"" }
+								/>];})},
+					]}
+				/>
+				
+			</form>
 		);
 	}
 }
@@ -137,6 +190,7 @@ function mapStateToProps( state ){
 		{
 			actualite_controle: state.actualite.controle,
 			actualites: state.actualite.all,
+			nb_actualites: state.actualite.count,
 		}
 	);
 }
@@ -146,7 +200,9 @@ function mapDispatchToProps( dispatch ){
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
-		actualiteGet: ACTIONS.Actualite.get,
+		actualiteGetSSL: ACTIONS.Actualite.get_SSL,
+		actualiteGetAddSSL: ACTIONS.Actualite.getAdd_SSL,
+		actualiteCount: ACTIONS.Actualite.count,
 		actualiteControle: 	ACTIONS.Actualite.controle,
 		actualiteAdd:	ACTIONS.Actualite.add,
 		actualiteRm: 	ACTIONS.Actualite.rm,

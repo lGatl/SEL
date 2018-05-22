@@ -34,14 +34,14 @@ export default class Tableau extends Component {
 				borderBottom:this.props.border_line?"1px solid rgba(150,150,150,0.5)": "none",
 			},
 			s_th:{
-				padding:"1%",
+				padding:1,
 				display:"flex",
 				flex:1,
 				border:this.props.border_cell?"1px solid rgba(150,150,150,0.5)": "none",
 				alignItems:"center",
 			},
 			s_td:{
-				padding:"1%",
+				padding:1,
 				display:"flex",
 				alignItems:"center",
 				border:this.props.border_cell?"1px solid rgba(150,150,150,0.5)": "none",
@@ -77,7 +77,7 @@ export default class Tableau extends Component {
 		let {s_table} = this.style();
 		
 		return (
-			<table style={{...s_table}}>
+			<table style={{...s_table, ...this.props.style}}>
 				{
 					this.props.donnees.map((obj,i)=>{
 						const key = Object.keys(obj);

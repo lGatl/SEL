@@ -11,7 +11,7 @@ export default class ExtraitAnn extends Component {
 		return(
 
 			<Segment row style={{height:200,...this.props.style}} > 
-				<img src="/images/1.jpg" alt="photo annonce" style = {{cursor:"pointer"}} onClick={this.props.goAnnonce.bind(this)}/>
+				<img src="/images/1.jpg" draggable="false" alt="photo annonce" style = {{cursor:"pointer"}} onClick={this.props.goAnnonce.bind(this)}/>
 				<div style = {{display: "flex", flex:2, flexDirection:"column", justifyContent:"center", alignItems:"center", 
 					cursor:"pointer" }} 
 				onClick={this.props.nb_prop && (statut == "en attente"||statut == "en cours")?this.props.montrerPropositions.bind(this):this.props.goAnnonce.bind(this)}>

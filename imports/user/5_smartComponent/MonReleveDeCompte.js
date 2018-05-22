@@ -34,7 +34,7 @@ class MonReleveDeCompte extends Component{
 
 			return(	
 				
-				<div>
+				<div style={{display:"flex", flex:1, flexDirection:"column"}}>
 					<div style={{display:"flex",justifyContent:"flex-end"}}>
 						<Segment row style = {{padding:10}}>
 							<span style = {{fontWeight:600, paddingRight:10}}>Solde :</span> {profile?profile.solde:""}

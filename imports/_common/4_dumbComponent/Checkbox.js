@@ -6,7 +6,7 @@ export default class Segment extends Component {
 
 			s_container:{
 				display:"flex",
-				alignItems:'center',
+				alignItems:"center",
 				padding:5,
 				margin:5,
 				fontSize:20,

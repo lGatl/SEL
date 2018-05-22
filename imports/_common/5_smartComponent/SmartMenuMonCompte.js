@@ -7,11 +7,74 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { Titre, Menu } from "../../_common/4_dumbComponent/_gat_ui_react";
 
-
+import { throttle } from "../../8_libs/throttle";
 
 
 class MenuMonCompte extends Component {
+	constructor(){
+		super();
+		this.mousedown = this.mousedown.bind(this);
+		this.mouseup = this.mouseup.bind(this);
+		this.mousemove = throttle(this.mousemove.bind(this),40);
+		this.resize = throttle(this.resize.bind(this),40);
+		this.state = {
+			windowwidth:window.innerWidth,
+			transition:false,
+			down:0,
+			left:-200,
+			nbpp: 10,
+			nump: 0
+		};
+	}
+	componentDidMount() {
+		document.addEventListener("mousedown", this.mousedown);
+		document.addEventListener("mouseup", this.mouseup);
+		document.addEventListener("mousemove", this.mousemove);
+		document.addEventListener("touchstart", this.mousedown);
+		document.addEventListener("touchend", this.mouseup);
+		document.addEventListener("touchmove", this.mousemove);
+		window.addEventListener("resize", this.resize);
 
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("mousedown", this.mousedown);
+		document.removeEventListener("mouseup", this.mouseup);
+		document.addEventListener("mousemove", this.mousemove);
+		document.removeEventListener("touchstart", this.mousedown);
+		document.removeEventListener("touchend", this.mouseup);
+		document.addEventListener("touchmove", this.mousemove);
+		window.addEventListener("resize", this.resize);
+	}
+	resize(){
+		this.setState({windowwidth:window.innerWidth});
+	}
+	mousedown(event){
+		if(window.innerWidth<640){
+			event.preventDefault();
+		}
+		
+		if(this.state.left!=0){
+			this.setState({down:(event.clientX||event.touches[0].clientX),transition:false});
+		}
+		
+	}
+	mouseup(event){
+		if((this.state.down>0)&&(this.state.left)>-20){
+			this.setState({down:0,left:0,transition:"1s"});
+		}else{
+			this.setState({down:0,left:-200,transition:"1s"});
+		}
+	
+	}
+	mousemove(event){
+
+		if(this.state.down>0){
+			this.setState({left:(-200+(event.clientX||event.touches[0].clientX)-this.state.down)>0?0:(-200+(event.clientX||event.touches[0].clientX)-this.state.down)});
+
+		}
+	}
+	
 	items(){return[
 		{
 			title: "Mes informations",
@@ -97,9 +160,12 @@ class MenuMonCompte extends Component {
 	render(){
 		let { Item } =  Menu;
 		return (
-			<div style = {{display:"flex", flexDirection:"column", flex:1}}>
+			<div style = {{display:"flex", flexDirection:"column", flex:1,...this.props.style,
+				left:this.state.windowwidth<640?this.state.left:0, 
+				width:this.state.windowwidth<640?200:"17%",
+				transition:this.state.transition?this.state.transition:"0.1s"}}>
 				
-				<Menu style = {{color:"white", backgroundColor:"rgba(23, 189, 224,1"}}>
+				<Menu style = {{margin:10, borderRadius:5,backgroundColor:"white"}}>
 					{this.items().map(({title, url, display},i)=>{
 						if(display){
 							return	<Item 
@@ -110,8 +176,8 @@ class MenuMonCompte extends Component {
 						}
 					})}
 				</Menu>
-				<br/>
-				<Menu style = {{color:"white", backgroundColor:"rgba(23, 189, 224,1"}}>
+				
+				<Menu style = {{margin:10, borderRadius:5,backgroundColor:"white"}}>
 					{this.items_admin().map(({title, url, display},i)=>{
 						if(display){
 							return	<Item 

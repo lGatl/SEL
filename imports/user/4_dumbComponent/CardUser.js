@@ -14,7 +14,7 @@ export default class CardUser extends Component {
 		let { username, nom, prenom, telephone, adresse, note, categories , email,date_val_resp, edit} = this.props;
 
 		return (
-			<Segment style={{overflow:"hidden", ...this.props.style, height:edit?"":380}}>
+			<Segment style={{overflow:"hidden", ...this.props.style, height:edit?"":300}}>
 				<div style={{display:"flex"}}>
 					<div style={{width:80, height:80, background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover", margin:10}}></div>
 					<div style={{display:"flex", flex:1,flexDirection:"column"}}> 
@@ -35,8 +35,8 @@ export default class CardUser extends Component {
 					<div style={{...champs}}><span style={{...s_span}}> telephone :</span> {telephone}</div>
 					<div style={{...champs}}><span style={{...s_span}}> adresse : </span>{adresse}</div>
 				</div>
-				<div style={{display:"flex",flexDirection:"column", padding:10, borderTop:"1px solid rgba(150,150,150,0.5)"}}>
-					<div style={{...champs}}><span style={{...s_span}}>Date de validité de votre responsabilité civil :</span> {date_val_resp} </div>
+				<div style={{display:"flex",flexDirection:"column", padding:10}}>
+					
 				</div>
 				{this.props.editer?<Button onClick={this.props.editer.bind(this)}>Editer</Button>:""}
 			</Segment>
@@ -44,3 +44,4 @@ export default class CardUser extends Component {
 	}
 }
 
+//<div style={{...champs}}><span style={{...s_span}}>Date de validité de votre responsabilité civil :</span> {date_val_resp} </div>

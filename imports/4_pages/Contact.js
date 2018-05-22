@@ -8,9 +8,6 @@ import { ACTIONS } from "../6_actions/actions";
 import { Segment } from "../_common/4_dumbComponent/_gat_ui_react";
 
 import FormContact from "../_common/4_dumbComponent/FormContact.js";
-import CoordonneesHoraires from "../_common/4_dumbComponent/CoordonneesHoraires.js";
-
-
 
 class Contact extends Component {
 	constructor(){
@@ -31,13 +28,14 @@ class Contact extends Component {
 
 	componentWillMount(){
 		this.props.activeMenu("Contact");
+		this.props.titrePage("Contact");
 	}
 
 	render(){
 		return (
-			<div>
-				<Segment><CoordonneesHoraires contenu={this.infos}></CoordonneesHoraires></Segment>
-				<Segment><CoordonneesHoraires contenu={this.horaires}></CoordonneesHoraires></Segment>
+			<div style = {{display:"flex", flexDirection:"column", flex:1}}>
+				<Segment> Coordonnées horaires</Segment>
+
 				<FormContact></FormContact>
 
 			</div>
@@ -56,6 +54,7 @@ function mapStateToProps(state){
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
 		activeMenu: ACTIONS.Menu.activeMenu,
+		titrePage: ACTIONS.Titre.titrePage,
 	}, dispatch );
 }
 

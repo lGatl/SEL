@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 
-import { bindActionCreators }	from 'redux';
-import { connect } from 'react-redux';
+import { bindActionCreators }	from "redux";
+import { connect } from "react-redux";
 
 import { ACTIONS } from "../6_actions/actions";
 
-import ContenuKesako from '../_common/4_dumbComponent/ContenuKesako';
+import ContenuKesako from "../_common/4_dumbComponent/ContenuKesako";
 
 class Kesako extends Component {
 	componentWillMount(){
@@ -18,7 +18,7 @@ class Kesako extends Component {
 		return (
 
 			<div className="">
-				<ContenuKesako/>
+				<ContenuKesako style = {{marginTop:15}}/>
 
 			</div>
 		);

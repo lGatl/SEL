@@ -15,6 +15,8 @@ import Proposition from "../../proposition/4_dumbComponent/Proposition";
 import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
 import { throttle } from "../../8_libs/throttle";
 
+import FixedLayout from "../../_common/4_dumbComponent/FixedLayout";
+
 
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
@@ -40,6 +42,7 @@ class ListeAnnonce extends Component {
 	}
 	componentDidMount() {
 		document.addEventListener("scroll", this.scroll);
+		this.props.annonceControle({ categorie:"" });
 	}
 
 	componentWillUnmount() {
@@ -120,22 +123,32 @@ class ListeAnnonce extends Component {
 
 		return (
 			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
-				<div style={{display:"flex", flexDirection:"column"}}>
-					<Dropdown
-						label = "Categorie"
-						placeholder = "Categorie"
-						name = "categorie"
-						onChange = { this.change.bind ( this ) } 
-						options = { [...this.props.categories.reduce((total,cat)=>{return cat.publier==true?[...total,{value:cat._id,text:cat.titre}]:total;},[]),{value:"",text:"Pas de categorie"} ]}
-						value = { categorie?categorie:"" }
-					/>
-				</div>
-				<div style={{display:"flex", marginLeft:20}}>				
-					<SmartMenuAnnonce/>
-				</div>
-				{/*	<Comp/>   [<Comps/>,...]  			[{},...]   */}
-				{ this.annonces() }
+
+				<FixedLayout>
+					<div style={{display:"flex", flexDirection:"column", flex:1,
+						borderBottom: "1px solid rgba(150,150,150,0.5)",
+						boxShadow: "0 4px 2px -2px rgba(150,150,150,0.3)"}}> 
+						<div style={{display:"flex", flexDirection:"column"}}>
+							<Dropdown
+								label = "Categorie"
+								placeholder = "Categorie"
+								name = "categorie"
+								onChange = { this.change.bind ( this ) } 
+								options = { [...this.props.categories.reduce((total,cat)=>{return cat.publier==true?[...total,{value:cat._id,text:cat.titre}]:total;},[]),{value:"",text:"Pas de categorie"} ]}
+								value = { categorie?categorie:"" }
+							/>
+						</div>
+						<div style={{display:"flex", marginLeft:20}}>				
+							<SmartMenuAnnonce style= {{}}/>
+						</div>
+					</div>
+				</FixedLayout>
 				
+				
+				{/*	<Comp/>   [<Comps/>,...]  			[{},...]   */}
+				<div style={{display:"flex", flexDirection:"column", flex:1, marginTop:108 }}>
+					{ this.annonces() }
+				</div>
 			</div>
 		);
 		

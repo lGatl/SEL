@@ -6,19 +6,42 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
 
-class FormCategorie extends Component {
+import { throttle } from "../../8_libs/throttle";
 
+import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
+
+class FormCategorie extends Component {
+	constructor(){
+		super();
+		this.scroll = throttle(this.scroll.bind(this),40);
+		this.state = {
+			nbpp: 5,
+			nump: 0
+		};
+	}
 	componentWillMount(){
 		this.props.titrePage("Gérer les catégories");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les categories");
 		this.props.categorieControle(this.init());
-		this.props.categorieGet({},res=>{
-			res.map(categorie=>{
+		this.props.categorieGetSSL({},{sort:{date:-1},skip:0,limit:this.state.nbpp},categories=>{
+			this.setState({nump:1});
+			this.props.categorieControle({actions:categories.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})});
+			this.props.categorieCount({},(nb_categories)=>{
+				this.scroll(categories,nb_categories);
+			});
+			categories.map(categorie=>{
 				this.annonceCount(categorie._id);
 			});
-			this.props.categorieControle({actions:res.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})});
+			this.props.categorieControle({actions:categories.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})});
 		});
+	}
+	componentDidMount() {
+		document.addEventListener("scroll", this.scroll);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("scroll", this.scroll);
 	}
 	init(){
 		return{ 
@@ -40,6 +63,25 @@ class FormCategorie extends Component {
 		this.props.categorieControle({actions:[...actions]});
 	}
 	//==============ACTION====================
+
+	scroll(categories,nb_categories){
+		if(
+			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
+			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
+			&& ((this.props.categories.length < this.props.nb_categories)||(categories&&nb_categories&&categories.length < nb_categories))
+		){
+			this.props.categorieGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_categories)=>{
+				this.props.categorieControle({actions:[...this.props.categorie_controle.actions,...nv_categories.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})]});				
+				nv_categories.map(categorie=>{
+					this.annonceCount(categorie._id);
+				});
+				this.props.categorieCount({},(nb_categories)=>{
+					this.scroll(nv_categories,nb_categories);
+				});
+			});
+			this.setState({nump:this.state.nump+1});
+		}
+	}
 	annonceCount(categorie_id){
 		this.props.annonceCount_state({categorie:categorie_id, type: "offre"},{count: "offre"+categorie_id});
 		this.props.annonceCount_state({categorie:categorie_id, type: "demande"},{count: "demande"+categorie_id});
@@ -49,7 +91,7 @@ class FormCategorie extends Component {
 
 		this.props.categorieAdd(
 			{
-				titre, publier:false
+				titre, date:new Date(Date.now()), publier:false
 			},
 			(res)=>{
 				let Actions = this.props.categorie_controle.actions;
@@ -83,28 +125,43 @@ class FormCategorie extends Component {
 		let {titre, actions} = this.props.categorie_controle;
 		
 		return (
-			<div>
+			<div style = {{flex:1,display:"flex", flexDirection:"column"}}>
 				<form>
-					
-					<Input
-						label = 'Titre'
-						name = 'titre'
-						value = { titre||"" }
-						onChange = { this.change.bind( this ) } 
-					/>
+					<FixedLayoutMonCompte>
+						<div style = {{flex:1,display:"flex", flexDirection:"column"}}>
+							<Input
+								label = 'Titre'
+								name = 'titre'
+								value = { titre||"" }
+								onChange = { this.change.bind( this ) } 
+							/>
+						
+							<Button
+								onClick = { this.categorieAdd.bind( this ) }
+							>Ajouter la catégorie</Button>
+						
+							<Tableau
+								style={{ marginBottom:0, borderBottom:"none",borderBottomLeftRadius: "0px 0px",borderBottomRightRadius: "0px 0px",}}
+								ligne1sur2
+								border_line
+								border_table
+								s_col = {[{col:3,style:{flex:2}}]}
+								donnees={[
+									{thead:[["Catégorie","Offre","Demande",<Button onClick={this.categorieAppliquer.bind(this)}>Appliquer</Button>]]}]}/>
+						</div>
+					</FixedLayoutMonCompte>
 				
-					<Button
-						onClick = { this.categorieAdd.bind( this ) }
-					>Ajouter la catégorie</Button>
+					
+					
 					<Tableau
+						style={{marginTop:155,borderTopLeftRadius: "0px 0px",borderTopRightRadius: "0px 0px", }}
 						ligne1sur2
 						border_line
 						border_table
 						s_col = {[{col:3,style:{flex:2}}]}
 						donnees={[
-							{thead:[["Catégorie","Offre","Demande","Action"]]},
 							{tbody:this.props.categories.map((categorie)=>{
-								let value = actions?actions.find((act)=>act._id==categorie._id).action:"";
+								let value = actions&&actions.find((act)=>act._id==categorie._id)?actions.find((act)=>act._id==categorie._id).action:"";
 								let offres_count = annonces_count&&categorie?annonces_count["offre"+categorie._id]:"";
 								let demandes_count = annonces_count&&categorie?annonces_count["demande"+categorie._id]:"";
 								return[categorie.titre,offres_count,demandes_count,
@@ -121,9 +178,7 @@ class FormCategorie extends Component {
 										value = { categorie.publier&&value == "publier"?"publié":(!categorie.publier)&&value == "desactiver"?"desactivé":value||"" }
 									/>];})},
 						]}
-					/>
-					<Button onClick={this.categorieAppliquer.bind(this)}>Appliquer</Button>
-					
+					/>	
 				</form>
 			</div>
 		);
@@ -135,7 +190,8 @@ function mapStateToProps( state ){
 		{
 			categorie_controle: state.categorie.controle,
 			categories: state.categorie.all,
-			annonces_count: state.annonce.count
+			annonces_count: state.annonce.count,
+			nb_categories: state.categorie.count,
 		}
 	);
 }
@@ -145,11 +201,13 @@ function mapDispatchToProps( dispatch ){
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
-		categorieGet: ACTIONS.Categorie.get,
+		categorieGetSSL: ACTIONS.Categorie.get_SSL,
+		categorieGetAddSSL: ACTIONS.Categorie.getAdd_SSL,
 		categorieControle: 	ACTIONS.Categorie.controle,
 		categorieAdd:	ACTIONS.Categorie.add,
 		categorieRm: 	ACTIONS.Categorie.rm,
 		categorieUp: 	ACTIONS.Categorie.up,
+		categorieCount: ACTIONS.Categorie.count,
 
 		annonceCount_state: ACTIONS.Annonce.count_state,
 	}, dispatch );

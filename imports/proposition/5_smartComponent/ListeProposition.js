@@ -68,11 +68,10 @@ class ListeProposition extends Component {
 	// editer(_id){
 	// 	FlowRouter.go("/proposition/"+_id+"/Editer");
 	// }
-//========RENDU======================
+	//========RENDU======================
 	propositionsListe(){
 		let { propositions, annonces, active_user } = this.props;
-		console.log("propositions", propositions);
-		let user = active_user
+		let user = active_user;
 		return propositions.reduce((total,proposition,i)=>{
 			let annonce = annonces.find(annonce=>annonce._id==proposition.annonce_id)||{};
 			return (
@@ -102,7 +101,7 @@ class ListeProposition extends Component {
 	
 	render() {
 		return (
-			<div>{this.propositionsListe()}</div>
+			<div style={{display:"flex", flex:1, flexDirection:"column"}}>{this.propositionsListe()}</div>
 		);
 		
 	}
