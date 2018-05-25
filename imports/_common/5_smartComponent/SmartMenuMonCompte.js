@@ -165,7 +165,7 @@ class MenuMonCompte extends Component {
 				width:this.state.windowwidth<640?200:"17%",
 				transition:this.state.transition?this.state.transition:"0.1s"}}>
 				
-				<Menu style = {{margin:10, borderRadius:5,backgroundColor:"white"}}>
+				<Menu style = {{marginBottom:5, borderRadius:5,backgroundColor:"white"}}>
 					{this.items().map(({title, url, display},i)=>{
 						if(display){
 							return	<Item 
@@ -177,7 +177,7 @@ class MenuMonCompte extends Component {
 					})}
 				</Menu>
 				
-				<Menu style = {{margin:10, borderRadius:5,backgroundColor:"white"}}>
+				<Menu style = {{marginTop:5, borderRadius:5,backgroundColor:"white"}}>
 					{this.items_admin().map(({title, url, display},i)=>{
 						if(display){
 							return	<Item 

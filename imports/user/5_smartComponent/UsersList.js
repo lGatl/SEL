@@ -54,15 +54,18 @@ class UsersList extends Component{
 		</ul>;
 	}
 	scroll(users,nb_users){
+
 		if(
 			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
 			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
 			&& ((this.props.users.length < this.props.nb_users)||(users&&nb_users&&users.length < nb_users))
 		){
-			this.props.usersGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_users)=>{
+
+			this.props.usersGetAddSSL({},{sort:{createdAt:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_users)=>{
+				this.setState({nump:this.state.nump+1});
 				this.scroll(nv_users,this.props.nb_users);
 			});
-			this.setState({nump:this.state.nump+1});
+			
 		}
 	}
 	render(){

@@ -49,63 +49,9 @@ export default class FicheAnnonce extends Component {
 
 		};
 	}
-	propositionForm(){
-		let { s_colonne, s_ligne, s_cellule } = this.style();
-		let { proposition, commentaire } = this.props;
-		let s_border = "1px solid rgba(150,150,150,0.3)";
-		return <div style={{...s_ligne, flex:1, flexWrap:"wrap", borderBottom:s_border}}>
-			<div style={{...s_colonne, borderRight:s_border}}>
-				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
-					Faire une proposition
-				</div>
-				<div style={{...s_cellule, alignItems:"center", display:"flex"}}>
-					<Input
-						placeholder = "proposition"
-						name = "proposition"
-						value = { proposition||"" }
-						onChange = { this.props.change.bind( this ) } 
-					/>
-				</div>
-			</div>
-			<div style={{...s_colonne, borderRight:s_border}}>
-				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
-					Commentaire
-				</div>
-				<div style={{...s_cellule, alignItems:"center", display:"flex"}}>
-					<TextArea
-						placeholder = "commentaire"
-						name = "commentaire"
-						value = { commentaire||"" }
-						onChange = { this.props.change.bind( this ) } 
-					/>
-				</div>
-			</div>
-			<div style={{...s_colonne}}>
-				<div style={{padding:8, textAlign:"center", borderBottom:s_border}}>
-					Validation
-				</div>
-				<div style={{...s_cellule, alignItems:"center", display:"flex", justifyContent:"center"}}>
-					<Button
-						onClick = { this.props.propositionAdd.bind( this ) }
-					>
-					Proposer
-					</Button>
-				</div>
-			</div>
-		</div>;
-	}
+	
 	//================== + RENDU + ==================
-	proposition(){
-		if(this.props.actif){
-			return this.props.moi?
-				this.props.edit?<Button style = {{flex:1}} onClick={this.props.editer.bind(this)}>Editer</Button>:
-					this.props.editable?<Button style = {{flex:1}} onClick={this.props.reediter.bind(this)}>Rééditer</Button>:
-						this.props.propositionsListe: <div>{this.propositionForm()}{this.props.propositionsListe}</div>;
-
-		} else {
-			return <Button style = {{flex:1}} onClick={this.props.connexion.bind(this)}>Connectez vous pour faire une proposition</Button>;
-		}
-	}
+	
 	render(){
 		let { s_container, s_titre, s_colonne, s_ligne, s_cellule } = this.style();
 		let { moi, categorie, date, date_de_fin, identifiant,email_display, email, telephone_display, telephone,adresse_display, adresse, nbpropositions, type, statut, actif } = this.props;
@@ -202,7 +148,7 @@ export default class FicheAnnonce extends Component {
 					{ actif && moi ? statut != "en attente"?"Proposition acceptée" : nbpropositions + " Propositions":"Proposition"}
 				</div>
 				<div style = {{display:"flex",flexDirection: "column"}}>
-					{ this.proposition()}
+					{ this.props.form_proposition() }
 				</div>
 				
 			</div>

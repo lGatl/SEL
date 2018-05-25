@@ -53,7 +53,7 @@ class MesInformations extends Component{
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }
 						note = {5}
-						categories = {this.categories(profile.categories)}
+						categories = {this.categories(profile?profile.categories:"")}
 						email = {emails&&emails.length>0?emails[0].address:""}
 						telephone = {profile?profile.telephone:""}
 						adresse = { profile?profile.adresse:"" }

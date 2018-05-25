@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 import FicheAnnonce from "../4_dumbComponent/FicheAnnonce";
+import PropositionForm from "../4_dumbComponent/PropositionForm";
 import Proposition from "../../proposition/4_dumbComponent/Proposition";
+
+import {  Button, Popop, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { dateToFormat } from "../../8_libs/date";
 
@@ -13,7 +16,12 @@ import Alert from "react-s-alert";
 import { goAnnonceEdit, hrefUser } from "../../8_libs/go";
 
 class AnnonceDetaillee extends Component {
+	constructor(){
+		super();
+		this.state = {open:true};
+	}
 	componentWillMount(){
+		this.props.annonceControle({note:5});
 		this.props.titrePage("Annonce Detaillée");
 
 		this.props.annonceGet1({_id:this.props._id},annonce=>{
@@ -32,6 +40,9 @@ class AnnonceDetaillee extends Component {
 				}
 			}
 		});
+	}
+	closePopop(){
+		this.setState({open:false});
 	}
 	change(e,{ value, name, checked }){
 
@@ -86,11 +97,35 @@ class AnnonceDetaillee extends Component {
 		goAnnonceEdit(this.props.annonce._id);
 	}
 	//========RENDU======================
+	moi(){
+		return ((this.props.user && this.props.active_user && this.props.user._id == this.props.active_user._id))||false;
+	}
+	editable(){
+		return this.props.propositions.length == 0;
+	}
+	form_proposition(){
+		let { proposition, commentaire } = this.props.proposition_controle;
+		if(this.props.active_user){
+			if(this.props.user){
+				return this.moi()?
+					this.editable()?<Button style = {{flex:1}} onClick={this.reediter.bind(this)}>Rééditer</Button>:
+						this.propositionsListe(): <div><PropositionForm
+						change = { this.change.bind(this) }
+						proposition = { proposition }
+						commentaire = { commentaire }
+						propositionAdd = { this.propositionAdd.bind(this) }/>{this.propositionsListe()}</div>;
+			}else{
+				return(<div>l'utilisateur n'est plus inscrit cette annonce sera bientot supprimée</div>);
+			}
+		} else {
+			return <Button style = {{flex:1}} onClick={this.connexion.bind(this)}>Connectez vous pour faire une proposition</Button>;
+		}
+	}
 	propositionsListe(){
 		let { propositions, annonce, users, active_user } = this.props;
 		return <div style = {{display:"flex",flexDirection: "column", backgroundColor:"pink"}}>
 			{propositions.reduce((total,proposition,i)=>{
-				let user = users.find(user=>user._id==(annonce.type=="offre"?proposition.payeur:proposition.prestataire));
+				let user = users.find(user=>user._id==proposition.posteur);
 				return (this.props.annonce.statut != "en attente" && proposition.etat == "accepte")||this.props.annonce.statut == "en attente"? 
 					[...total,<Proposition 
 						key = {i}
@@ -115,39 +150,46 @@ class AnnonceDetaillee extends Component {
 	}
 
 	render(){
+		let { note } = this.props.annonce_controle;
 		let { propositions, annonce, user } = this.props;
-		let { proposition, commentaire } = this.props.proposition_controle;
 		
 		return (
+			<div style = {{display:"flex", flexDirection:"column", flex:1}}>
+				<Popop style={{flexDirection:"column"}} open = {this.state.open}>
+					<div style ={{display: "flex", alignItems:"center"}}>
+						<span style ={{margin:10}}>Salut !</span>
+						<Button onClick = {this.closePopop.bind(this)}>ok</Button>
+					</div>
+					
+					<Note note={this.state.note}/>
+				</Popop>
 
-			<FicheAnnonce 
-				categorie = { this.props.categorie.titre }
-				date = { annonce.date?dateToFormat( annonce.date ):"" }
-				date_de_fin = { annonce.date?dateToFormat( annonce.date_de_fin ):"" }
-				statut = { annonce.statut?annonce.statut:"" }
-				titre = { annonce.titre?annonce.titre:"" }
-				description = { annonce.description?annonce.description:"" }
-				email_display= { annonce.email }
-				email = { user&&user.emails&&user.emails.length>0?user.emails[0].address:"" }
-				telephone_display= { annonce.telephone }
-				telephone = { user&&user.profile&&user.profile.telephone?user.profile.telephone:"" }
-				adresse_display= { annonce.adresse }
-				adresse = { user&&user.profile&&user.profile.adresse?user.profile.adresse:"" }
-				proposition = { proposition }
-				nbpropositions = {propositions.length}
-				commentaire = { commentaire }
-				connexion = {this.connexion.bind(this)}
-				identifiant = {user&&user.username?user.username:""}
-				propositionAdd = { this.propositionAdd.bind(this) }
-				change = { this.change.bind(this) }
-				propositionsListe =  { this.propositionsListe() }
-				actif={ this.props.active_user }
-				moi = { ((this.props.user && this.props.active_user && this.props.user._id == this.props.active_user._id))||false }
-				editable = {this.props.propositions.length == 0}
-				reediter = {this.reediter.bind(this)}
-				type = {annonce.type?annonce.type:""}
-				href_annonceur = {user?hrefUser(user._id):"#"}
-			/>
+				<FicheAnnonce 
+					categorie = { this.props.categorie.titre }
+					date = { annonce.date?dateToFormat( annonce.date ):"" }
+					date_de_fin = { annonce.date?dateToFormat( annonce.date_de_fin ):"" }
+					statut = { annonce.statut?annonce.statut:"" }
+					titre = { annonce.titre?annonce.titre:"" }
+					description = { annonce.description?annonce.description:"" }
+					email_display= { annonce.email }
+					email = { user&&user.emails&&user.emails.length>0?user.emails[0].address:"" }
+					telephone_display= { annonce.telephone }
+					telephone = { user&&user.profile&&user.profile.telephone?user.profile.telephone:"" }
+					adresse_display= { annonce.adresse }
+					adresse = { user&&user.profile&&user.profile.adresse?user.profile.adresse:"" }
+					form_proposition = { this.form_proposition.bind(this) }
+					nbpropositions = {propositions.length}
+					connexion = {this.connexion.bind(this)}
+					identifiant = {user&&user.username?user.username:""}
+					propositionsListe =  { this.propositionsListe() }
+					actif={ this.props.active_user }
+					moi = { this.moi() }
+					type = {annonce.type?annonce.type:""}
+					href_annonceur = {user?hrefUser(user._id):"#"}
+				/>
+				
+			</div>
+			
 		);
 	}
 }
@@ -157,6 +199,7 @@ function mapStateToProps( state ){
 		{
 			active_user: state.users.active_user,
 			proposition_controle: state.proposition.controle,
+			annonce_controle: state.annonce.controle,
 			annonce: state.annonce.one,
 			categorie: state.categorie.one,
 			user: state.users.one,
@@ -173,6 +216,7 @@ function mapDispatchToProps( dispatch ){
 
 		annonceGet1: ACTIONS.Annonce.get1,
 		annonceUp: ACTIONS.Annonce.up,
+		annonceControle: ACTIONS.Annonce.controle,
 
 		propositionControle: 	ACTIONS.Proposition.controle,
 		propositionGet: ACTIONS.Proposition.get,

@@ -125,7 +125,7 @@ export const LayoutSA = ({ content }) => {
 							<div style={{
 								flex:1,
 								display: "flex",
-								maxWidth: 1025,
+								maxWidth: 1250,
 								minWidth:"40%",
 							}}>	
 								<IsLogged style={{flex:1,display:"flex"}}>{content}</IsLogged>
@@ -155,9 +155,12 @@ export const LayoutMonCompte = ({ content }) => {
 			
 					
 				<SmartMenuMonCompte style={{
-					position:"fixed", top:100,zIndex:998,
+					position:"fixed", top:100,
+					zIndex:998,
 					display: "flex",
 					flexDirection: "column",
+					backgroundColor:"rgba(250,250,250,0.7)",
+					borderRadius:5,
 				}}/>
 	
 				<div style={{display:"flex", flexDirection: "column", flex:1}}>
@@ -169,7 +172,8 @@ export const LayoutMonCompte = ({ content }) => {
 							
 							<div style={{display: "flex", justifyContent:"center", flex:1 }}>
 								
-								<IsLogged style={{flex:1,display:"flex", maxWidth: 800}}>{content}</IsLogged>
+								<IsLogged verouille style={{flex:1,display:"flex",maxWidth: 800,
+									minWidth:"40%"}}>{content}</IsLogged>
 							</div>	
 							
 						</div>

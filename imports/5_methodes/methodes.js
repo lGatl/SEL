@@ -49,11 +49,11 @@ COLLECTIONS.forEach((COLLECTION) =>{
 		},
 		[ "up" + COLLECTION ]:(reco,modif)=>{		
 			let succed = BD[COLLECTION].update(reco,{$set:modif}); //retourne l'id de l'objet updaté => res.insertedId
-			return succed == 1 ? BD[COLLECTION].findOne(reco)._id:false;
+			return succed == 1 ? BD[COLLECTION].findOne(reco)._id:null;
 		},
 		[ "upm" + COLLECTION ]:(reco,modif)=>{
 			let succed = BD[COLLECTION].update(reco,{$set:modif},{multi:true});
-			return succed != 0 ? BD[COLLECTION].find(reco).fetch().reduce((total,upd)=>[...total,upd._id],[]):false; //retourne l'id de l'objet updaté => res.insertedId
+			return succed != 0 ? BD[COLLECTION].find(reco).fetch().reduce((total,upd)=>[...total,upd._id],[]):[]; //retourne l'id de l'objet updaté => res.insertedId
 		},
 		[ "ups"+COLLECTION ]:(obj)=>{		
 			return BD[COLLECTION].upsert(obj); //retourne l'id de l'objet upserté => res.insertedId
