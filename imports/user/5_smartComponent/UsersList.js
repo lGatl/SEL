@@ -4,7 +4,7 @@ import React,{ Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Segment, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Button, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { ACTIONS } from "../../6_actions/actions";
 
@@ -75,7 +75,7 @@ class UsersList extends Component{
 				username = { user.username }
 				nom = { user.profile.nom }
 				prenom = { user.profile.prenom }
-				note = {5}
+				note = {<Note note={user.profile.note.reduce((total,note)=>total+note,0)/user.profile.note.length}/>}
 				categories = {this.categories(user.profile.categories)}
 				href_user = {hrefUser(user._id)}
 				editer = {goUserEdit.bind(this,user._id)}

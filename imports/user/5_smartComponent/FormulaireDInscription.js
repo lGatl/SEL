@@ -51,11 +51,12 @@ class FormulaireDInscription extends Component {
 				prenom,
 				telephone,
 				adresse,
-				date_val_resp
+				date_val_resp,
+				note:[]
 			}}, ()=>{
-				this.props.usersControle(this.init());
-		FlowRouter.go("/mon_compte/informations");
-			});
+			this.props.usersControle(this.init());
+			FlowRouter.go("/mon_compte/informations");
+		});
 		
 	}
 	//Preparation du rendu

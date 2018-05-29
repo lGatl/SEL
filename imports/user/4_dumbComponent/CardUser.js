@@ -15,14 +15,14 @@ export default class CardUser extends Component {
 
 		return (
 			<Segment style={{overflow:"hidden", ...this.props.style, height:edit?"":300}}>
-				<div style={{display:"flex"}}>
-					<div style={{width:80, height:80, background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover", margin:10}}></div>
-					<div style={{display:"flex", flex:1,flexDirection:"column"}}> 
+				<div style={{display:"flex",padding:10}}>
+					<div style={{width:80, height:80, background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover"}}></div>
+					<div style={{display:"flex", flex:1,flexDirection:"column",marginLeft:5}}> 
 						
 							
-						{edit?<A href={this.props.href_user}>{prenom}</A>:<span style={{margin:5}}>{prenom}</span>}
-						{edit?<A href={this.props.href_user}>{nom}</A>:<span style={{margin:5}}>{nom}</span>}
-						{edit?<A href={this.props.href_user}>{username}</A>:<span style={{margin:5}}>{username}</span>}
+						{edit?<A href={this.props.href_user}>{prenom}</A>:<span style={{margin:1}}>{prenom}</span>}
+						{edit?<A href={this.props.href_user}>{nom}</A>:<span style={{margin:1}}>{nom}</span>}
+						{edit?<A href={this.props.href_user}>{username}</A>:<span style={{margin:1}}>{username}</span>}
 							
 							
 					

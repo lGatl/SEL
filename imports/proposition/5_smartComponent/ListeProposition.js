@@ -6,6 +6,8 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { dateToFormat } from "../../8_libs/date";
 
+import { Popop, Note, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+
 import PropositionAnnonce from "../../proposition/4_dumbComponent/PropositionAnnonce";
 
 import { goAnnonce } from "../../8_libs/go";
@@ -17,6 +19,7 @@ class ListeProposition extends Component {
 		super();
 		this.scroll = throttle(this.scroll.bind(this),40);
 		this.state = {
+			open:false, annonce_id:"",proposition_id:"",
 			nbpp: 5,
 			nump: 0
 		};
@@ -25,6 +28,7 @@ class ListeProposition extends Component {
 		this.props.titrePage("Mes Propositions");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Mes propositions");
+		this.props.usersControle({note:5});
 		this.props.propositionGetSSL({posteur:this.props.active_user._id},{sort:{date:-1},skip:0,limit:this.state.nbpp},(propositions)=>{
 			this.setState({nump:1});
 			this.props.annonceGet({_id:{$in:propositions.map(proposition=>proposition.annonce_id)}},()=>{
@@ -43,8 +47,19 @@ class ListeProposition extends Component {
 	}
 
 	//=========ACTIONS
+	clickNote(e,a){
+
+		let { note } = this.props.user_controle;
+		this.props.usersControle({note:a==note?0:a});
+	}
 	effectue(annonce_id, proposition_id){
-		this.props.transactionCree(annonce_id,proposition_id);
+		this.setState({open:true,annonce_id,proposition_id});
+		
+	}
+	noter(){
+		this.setState({open:false});
+		let { note } = this.props.user_controle;
+		this.props.transactionCree(this.state.annonce_id,this.state.proposition_id,note);
 	}
 	supprimer(_id){
 		this.props.propositionRm({_id});
@@ -100,8 +115,20 @@ class ListeProposition extends Component {
 	}
 	
 	render() {
+		let { note } = this.props.user_controle;
+		let { open } = this.state;
 		return (
-			<div style={{display:"flex", flex:1, flexDirection:"column"}}>{this.propositionsListe()}</div>
+			<div style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<Popop style={{flexDirection:"column"}} open = {open}>
+					<div style ={{display: "flex", alignItems:"center"}}>
+						<span style ={{margin:10}}>Salut !</span>
+						<Button onClick = {this.noter.bind(this)}>noter</Button>
+					</div>
+					
+					<Note onClick = {this.clickNote.bind(this)} note={note}/>
+				</Popop>
+				{this.propositionsListe()}
+			</div>
 		);
 		
 	}
@@ -112,6 +139,7 @@ function mapStateToProps( state ){
 			active_user: state.users.active_user,
 			propositions: state.proposition.all,
 			nb_propositions: state.proposition.count,
+			user_controle: state.users.controle,
 			annonces: state.annonce.all,
 			categories: state.categorie.all,
 			
@@ -132,6 +160,7 @@ function mapDispatchToProps( dispatch ){
 		propositionGetAddSSL: ACTIONS.Proposition.getAdd_SSL,
 		annonceGet: ACTIONS.Annonce.get,
 		annonceGetAdd: ACTIONS.Annonce.getAdd,
+		usersControle: ACTIONS.Users.controle,
 
 		transactionCree: ACTIONS.Transaction.cree,
 	

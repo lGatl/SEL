@@ -16,6 +16,7 @@ import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
 import { throttle } from "../../8_libs/throttle";
 
 import FixedLayout from "../../_common/4_dumbComponent/FixedLayout";
+import FixedLayoutBottom from "../../_common/4_dumbComponent/FixedLayoutBottom";
 
 
 class ListeAnnonce extends Component {

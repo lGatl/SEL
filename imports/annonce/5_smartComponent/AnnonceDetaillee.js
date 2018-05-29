@@ -18,10 +18,10 @@ import { goAnnonceEdit, hrefUser } from "../../8_libs/go";
 class AnnonceDetaillee extends Component {
 	constructor(){
 		super();
-		this.state = {open:true};
+		this.state = {open:false, annonce_id:"",proposition_id:""};
 	}
 	componentWillMount(){
-		this.props.annonceControle({note:5});
+		this.props.usersControle({note:5});
 		this.props.titrePage("Annonce Detaillée");
 
 		this.props.annonceGet1({_id:this.props._id},annonce=>{
@@ -41,9 +41,7 @@ class AnnonceDetaillee extends Component {
 			}
 		});
 	}
-	closePopop(){
-		this.setState({open:false});
-	}
+	
 	change(e,{ value, name, checked }){
 
 		this.props.propositionControle({ [name]:value||checked });
@@ -81,8 +79,15 @@ class AnnonceDetaillee extends Component {
 	refuser(_id){
 		this.props.propositionUp({_id:_id}, {etat:"refuse"},()=>{});
 	}
+	
 	effectue(annonce_id, proposition_id){
-		this.props.transactionCree(annonce_id,proposition_id);
+		this.setState({open:true,annonce_id,proposition_id});
+		
+	}
+	noter(){
+		this.setState({open:false});
+		let { note } = this.props.user_controle;
+		this.props.transactionCree(this.state.annonce_id,this.state.proposition_id,note);
 	}
 	supprimer(_id){
 		this.props.propositionRm({_id});
@@ -95,6 +100,11 @@ class AnnonceDetaillee extends Component {
 	}
 	reediter(){
 		goAnnonceEdit(this.props.annonce._id);
+	}
+	clickNote(e,a){
+
+		let { note } = this.props.user_controle;
+		this.props.usersControle({note:a==note?0:a});
 	}
 	//========RENDU======================
 	moi(){
@@ -140,7 +150,7 @@ class AnnonceDetaillee extends Component {
 						accepter = { this.accepter.bind(this,proposition._id) }
 						refuser = { this.refuser.bind(this,proposition._id) }
 						supprimer = {this.supprimer.bind(this,proposition._id)}
-						effectue = { this. effectue.bind(this,this.props._id,proposition._id,user,this.props.user)}
+						effectue = { this.effectue.bind(this,this.props._id,proposition._id,user,this.props.user)}
 						moi = { annonce && active_user && (annonce.user_id == active_user._id) }
 						href_posteur = {user?hrefUser(user._id):active_user?hrefUser(active_user._id):"/#"}
 					/>]:total;},[])}
@@ -150,18 +160,19 @@ class AnnonceDetaillee extends Component {
 	}
 
 	render(){
-		let { note } = this.props.annonce_controle;
+		let { open } = this.state;
+		let { note } = this.props.user_controle;
 		let { propositions, annonce, user } = this.props;
 		
 		return (
 			<div style = {{display:"flex", flexDirection:"column", flex:1}}>
-				<Popop style={{flexDirection:"column"}} open = {this.state.open}>
+				<Popop style={{flexDirection:"column"}} open = {open}>
 					<div style ={{display: "flex", alignItems:"center"}}>
 						<span style ={{margin:10}}>Salut !</span>
-						<Button onClick = {this.closePopop.bind(this)}>ok</Button>
+						<Button onClick = {this.noter.bind(this)}>noter</Button>
 					</div>
 					
-					<Note note={this.state.note}/>
+					<Note onClick = {this.clickNote.bind(this)} note={note}/>
 				</Popop>
 
 				<FicheAnnonce 
@@ -203,6 +214,7 @@ function mapStateToProps( state ){
 			annonce: state.annonce.one,
 			categorie: state.categorie.one,
 			user: state.users.one,
+			user_controle: state.users.controle,
 			users: state.users.all,
 			propositions: state.proposition.all,
 			proposition: state.proposition.one,
@@ -230,6 +242,7 @@ function mapDispatchToProps( dispatch ){
 		usersGet1: ACTIONS.Users.get1,
 		usersGet1State: ACTIONS.Users.get1_state,
 		usersGet: ACTIONS.Users.get,
+		usersControle: ACTIONS.Users.controle,
 		transactionCree: ACTIONS.Transaction.cree,
 		
 

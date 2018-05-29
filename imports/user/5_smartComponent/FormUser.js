@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Input, TextArea, Button, Dropdown } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Input, TextArea, Button, Dropdown, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
@@ -41,6 +41,7 @@ class FormulaireDInscription extends Component {
 			this.props.usersControle({
 				username: username?username:"",
 				email: emails&&emails.length>0?emails[0].address:"",
+				note: profile?profile.note:[],
 				nom:profile?profile.nom:"",
 				prenom:profile?profile.prenom:"",
 				telephone:profile?profile.telephone:"",
@@ -188,7 +189,7 @@ class FormulaireDInscription extends Component {
 	}
 	render() {
 
-		let {username,email,password,nom,prenom,telephone,adresse,date_val_resp,categories} = this.props.controle;
+		let {username,email,password,nom,prenom,telephone,adresse,date_val_resp,categories, note} = this.props.controle;
 		return (
 			<div>
 				<CardUser
@@ -196,7 +197,7 @@ class FormulaireDInscription extends Component {
 					username = {this.username(username)}
 					nom = { this.nom(nom) }
 					prenom = { this.prenom(prenom) }
-					note = {5}
+					note = {note?<Note note={note.reduce((total,note)=>total+note,0)/note.length}/>:<Note note={[].reduce((total,note)=>total+note,0)/[].length}/>}
 					categories = {this.categories(categories)}
 					email = {this.email(email)}
 					telephone = {this.telephone(telephone)}

@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Segment, Titre, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Titre, Button, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
@@ -52,7 +52,7 @@ class MesInformations extends Component{
 					<CardUser
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }
-						note = {5}
+						note = {profile?<Note note={profile.note.reduce((total,note)=>total+note,0)/profile.note.length}/>:[]}
 						categories = {this.categories(profile?profile.categories:"")}
 						email = {emails&&emails.length>0?emails[0].address:""}
 						telephone = {profile?profile.telephone:""}

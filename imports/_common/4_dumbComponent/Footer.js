@@ -21,7 +21,7 @@ export default class Footer extends Component {
 		return (
 
 
-			<footer>
+			<footer style={{...this.props.style}}>
 				<Segment inverted color='red' basic >
 					<p>
 							Footer

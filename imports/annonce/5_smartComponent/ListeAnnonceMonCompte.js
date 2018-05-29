@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { ACTIONS } from "../../6_actions/actions";
 import { dateToFormat } from "../../8_libs/date";
 
-import { Menu } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Popop, Note, Button } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import SmartMenuAnnonce from "../../_common/5_smartComponent/SmartMenuAnnonce";
 
@@ -21,6 +21,7 @@ class ListeAnnonce extends Component {
 		super();
 		this.scroll = throttle(this.scroll.bind(this),40);
 		this.state = {
+			open:false, annonce_id:"",proposition_id:"",
 			nbpp: 5,
 			nump: 0
 		};
@@ -28,6 +29,7 @@ class ListeAnnonce extends Component {
 	componentWillMount(){
 		
 		this.props.activeMenu("Mon Compte");
+		this.props.usersControle({note:5});
 		this.init(this.props);
 	}
 	componentWillReceiveProps(nextp){
@@ -104,8 +106,19 @@ class ListeAnnonce extends Component {
 	refuser(_id){
 		this.props.propositionUp({_id:_id}, {etat:"refuse"},()=>{});
 	}
+	clickNote(e,a){
+
+		let { note } = this.props.user_controle;
+		this.props.usersControle({note:a==note?0:a});
+	}
 	effectue(annonce_id, proposition_id){
-		this.props.transactionCree(annonce_id,proposition_id);
+		this.setState({open:true,annonce_id,proposition_id});
+		
+	}
+	noter(){
+		this.setState({open:false});
+		let { note } = this.props.user_controle;
+		this.props.transactionCree(this.state.annonce_id,this.state.proposition_id,note);
 	}
 	montrerPropositions(_id){
 		this.setState({[_id]:!this.state[_id]});
@@ -161,10 +174,19 @@ class ListeAnnonce extends Component {
 	}
 	
 	render() {
+		let { open } = this.state;
+		let { note } = this.props.user_controle;
 		let { annonces, categories} = this.props;
 		return (
 			<div style={{display:"flex", flex:1, flexDirection:"column"}}>
-				
+				<Popop style={{flexDirection:"column"}} open = {open}>
+					<div style ={{display: "flex", alignItems:"center"}}>
+						<span style ={{margin:10}}>Salut !</span>
+						<Button onClick = {this.noter.bind(this)}>noter</Button>
+					</div>
+					
+					<Note onClick = {this.clickNote.bind(this)} note={note}/>
+				</Popop>
 				{/*	<Comp/>   [<Comps/>,...]  			[{},...]   */}
 				{ this.annonces(annonces, categories) }
 				
@@ -182,6 +204,7 @@ function mapStateToProps( state ){
 			nb_annonces: state.annonce.count,
 			categories: state.categorie.all,
 			active_menu_annonce: state.menu.active_menu_annonce,
+			user_controle: state.users.controle,
 			propositions: state.proposition.all,
 			proposition: state.proposition.one,
 
@@ -212,6 +235,7 @@ function mapDispatchToProps( dispatch ){
 		categorieGet: ACTIONS.Categorie.get,
 
 		usersGet: ACTIONS.Users.get,
+		usersControle: ACTIONS.Users.controle,
 
 		transactionCree: ACTIONS.Transaction.cree,
 

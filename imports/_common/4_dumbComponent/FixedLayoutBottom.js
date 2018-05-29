@@ -3,7 +3,7 @@ import React, {Component} from "react";
 export default class FixedLayout extends Component {
 	render(){
 		return (
-			<div style = {{ display:"flex", position:"fixed", zIndex:980, width:"100%", left:0, top:0, backgroundColor:"white", paddingTop:106, ...this.props.style}}>
+			<div style = {{ display:"flex", position:"fixed", zIndex:980, width:"100%", left:0, bottom:0, backgroundColor:"white", ...this.props.style}}>
 
 				<div style={{
 					flex:4,

@@ -23,6 +23,7 @@ export const REDUCER_users_add = ( state , action ) =>{
 		break;
 	
 	case CONSTANTES.Transaction.CREE:
+
 		prestataire_index = all.findIndex(allu=>allu._id==action.payload.prestataire._id);
 		payeur_index = all.findIndex(allu=>allu._id==action.payload.prestataire._id);
 		if(prestataire_index>=0){all.splice(prestataire_index,1,{...all.find(allu=>allu._id==action.payload.prestataire._id),...action.payload.prestataire});}
