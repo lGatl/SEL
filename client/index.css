@@ -4,8 +4,27 @@ html, body,#react-root{
 height: 100%!important;
 }
 
-@media all and (max-width: 640px) {
+@media all and (max-width: 700px) {
   .supprmobile {
+	display:none !important;
+	}
+	.supprsmallmenu {
+	display:none !important;
+	}
+}
+@media all and (max-width: 700px) {
+	.supprsmallmenu {
+	display:none !important;
+	}
+}
+
+@media all and (min-width: 701px) {
+	.supprbigmenu {
+	display:none !important;
+	}
+}
+@media all and (min-width: 701px) {
+	.supprbig {
 	display:none !important;
 	}
 }

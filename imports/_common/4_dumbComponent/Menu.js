@@ -25,7 +25,7 @@ export default class Menu extends Component {
 	render(){
 		let {s_container} = this.style();
 		return (
-			<div style={{...s_container, ...this.props.style}}>
+			<div className = {this.props.className} style={{...s_container, ...this.props.style}}>
 
 				{this.props.children}
 				

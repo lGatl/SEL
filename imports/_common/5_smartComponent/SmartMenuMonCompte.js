@@ -21,7 +21,7 @@ class MenuMonCompte extends Component {
 			windowwidth:window.innerWidth,
 			transition:false,
 			down:0,
-			left:-200,
+			right:-200,
 			nbpp: 10,
 			nump: 0
 		};
@@ -50,28 +50,26 @@ class MenuMonCompte extends Component {
 		this.setState({windowwidth:window.innerWidth});
 	}
 	mousedown(event){
-		if(window.innerWidth<640){
+		if(window.innerWidth<=700){
 			event.preventDefault();
 		}
 		
-		if(this.state.left!=0){
+		if(this.state.right!=0){
 			this.setState({down:(event.clientX||event.touches[0].clientX),transition:false});
 		}
 		
 	}
 	mouseup(event){
-		if((this.state.down>0)&&(this.state.left)>-20){
-			this.setState({down:0,left:0,transition:"1s"});
+		if((this.state.down>0)&&(this.state.right)>-20){
+			this.setState({down:0,right:0,transition:"1s"});
 		}else{
-			this.setState({down:0,left:-200,transition:"1s"});
+			this.setState({down:0,right:-200,transition:"1s"});
 		}
-	
 	}
 	mousemove(event){
 
 		if(this.state.down>0){
-			this.setState({left:(-200+(event.clientX||event.touches[0].clientX)-this.state.down)>0?0:(-200+(event.clientX||event.touches[0].clientX)-this.state.down)});
-
+			this.setState({right:(-200+this.state.down-(event.clientX||event.touches[0].clientX))>0?0:(-200+this.state.down-(event.clientX||event.touches[0].clientX))});
 		}
 	}
 	
@@ -161,8 +159,8 @@ class MenuMonCompte extends Component {
 		let { Item } =  Menu;
 		return (
 			<div style = {{display:"flex", flexDirection:"column", flex:1,...this.props.style,
-				left:this.state.windowwidth<640?this.state.left:0, 
-				width:this.state.windowwidth<640?200:"17%",
+				right:this.state.windowwidth<=700?this.state.right:0, 
+				width:this.state.windowwidth<=700?200:"17%",
 				transition:this.state.transition?this.state.transition:"0.1s"}}>
 				
 				<Menu style = {{marginBottom:5, borderRadius:5,backgroundColor:"white"}}>

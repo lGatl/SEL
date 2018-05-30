@@ -8,43 +8,69 @@ import { ACTIONS } from "../../6_actions/actions";
 import { Menu } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 class SmartMenu extends Component {
+	constructor(){
+		super();
+		this.state={
+			open:false
+		};
+	}
 
+	open(){
+		this.setState({open:true});
+	}
+	close(){
+		this.setState({open:false});
+	}
 	menusL(){return[
+		{
+			title: "Menu",
+			action:this.open.bind(this),
+			display:true
+			
+		},
+	]}
+	menusD(){return[
 		{
 			title: "Accueil",
 			url: "/",
-			display:true
-			
+			display:true,
+			style: {justifyContent:"center"},
+			action:this.close.bind(this)
 		},
 		{
 			title: "Actualité",
 			url: "/actualite",
-			display:true
+			display:true,
+			style: {justifyContent:"center"},
+			action:this.close.bind(this)
 		},
 		{
 			title: "Annonce",
 			url: "/annonce",
-			display:true
-		},
-		{
-			title: "Connexion",
-			url: "/connexion",
-			display:!(this.props.active_user&&this.props.active_user._id)
+			display:true,
+			style: {justifyContent:"center"},
+			action:this.close.bind(this)
 		},
 		{
 			title: "Contact",
 			url: "/contact",
-			display:true
+			display:true,
+			style: {justifyContent:"center"},
+			action:this.close.bind(this)
 		},
 		{
 			title: "Kesako",
 			url: "/kesako",
-			display:true
+			display:true,
+			style: {justifyContent:"center"},
+			action:this.close.bind(this)
 		},	
 		{
 			title: "Les Selistes",
 			url: "/les_selistes",
-			display:true
+			display:true,
+			style: {justifyContent:"center"},
+			action:this.close.bind(this)
 		},
 	]}
 	menusM(){return[	
@@ -62,7 +88,6 @@ class SmartMenu extends Component {
 			url: "/connexion",
 			display:!(this.props.active_user)
 		},
-
 		{
 			title: "Mon Compte",
 			text: this.props.active_user?this.props.active_user.username:"",
@@ -76,14 +101,14 @@ class SmartMenu extends Component {
 			url: "/logout",
 			img: "/images/logout.png",
 			src: "logout",
-			display:this.props.active_user,
-			style: {padding:0}
+			display:this.props.active_user
 		}
 	
 	]}
 	
-	activeMenu( title, url, e ){
+	activeMenu( title, url, action, e ){
 		e.preventDefault();
+
 		if(title == "Logout"){
 			this.props.logOut(()=>{FlowRouter.go("/");});
 			
@@ -91,15 +116,18 @@ class SmartMenu extends Component {
 			this.props.activeMenu(title);
 			FlowRouter.go(url);
 		}
+		if(action){
+			action();
+		}
 	}
-items(tab){
+	items(tab){
 		return tab.map(({title, text, url, display, img, src, action, style}, i)=> {
 			if(display){
 				return	<Menu.Item
 					img = {img?img:""}
 					src = {src?src:""}
 					active={this.props.active_menu == title }
-					onClick={this.activeMenu.bind(this,title,url)}
+					onClick={this.activeMenu.bind(this,title,url, action)}
 					key = { i }
 					style = {style?style:""}>
 					{ text?text:title }
@@ -110,25 +138,44 @@ items(tab){
 	render() {
 		/*La constante prepare le style des items (de types meteo ou non)*/
 		return (
-			
-			<Menu row className = {this.props.className} style = {{color:"white", backgroundColor:"red", flexWrap: "wrap", justifyContent:"space-between", ...this.props.style }}>
-				<div style = {{display:"flex"}}>
+			<div>
+				<Menu className = {this.props.className} style = {{
+					position:"fixed", 
+					flexDirection:"column",
+					color:"white", 
+					top:this.state.open?40:-200,
+					backgroundColor:"red",
+					zIndex:998,
+					left:10,
+					right:10,
+					borderBottomLeftRadius: "10px",
+					borderBottomRightRadius: "10px",
+					transition:"1s"
+				}}>
 					{ 
-						this.items(this.menusL())
+						this.items(this.menusD())
 					}
-				</div>
-				<div style = {{display:"flex", flex:1, justifyContent: "center"}}>
-					{ 
-						this.items(this.menusM())
-					}
-				</div>
-				<div style = {{display:"flex"}}>
-					{ 
-						this.items(this.menusR())
-					}
-				</div>
-				
-			</Menu>
+				</Menu>
+				<Menu row className = {this.props.className} style = {{color:"white", backgroundColor:"red", flexWrap: "wrap", justifyContent:"space-between", ...this.props.style }}>
+					
+					<div style = {{display:"flex"}}>
+						{ 
+							this.items(this.menusL())
+						}
+					</div>
+					<div style = {{display:"flex", flex:1, justifyContent: "center"}}>
+						{ 
+							this.items(this.menusM())
+						}
+					</div>
+					<div style = {{display:"flex"}}>
+						{ 
+							this.items(this.menusR())
+						}
+					</div>
+					
+				</Menu>
+			</div>
 		);
 	}
 }

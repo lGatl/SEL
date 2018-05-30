@@ -38,8 +38,8 @@ export default class Item extends Component {
 		let {style} = this.props;
 		return (
 			
-			<a style={{...s_item, ...style}} href="#" onMouseOver = { this.onMouseOver.bind(this) } onMouseOut={ this.onMouseOut.bind(this) } onClick = {this.props.onClick?this.props.onClick.bind(this):()=>{}} >
-				{this.props.children}
+			<a style={{...s_item, ...style, ...this.props.style}} href="#" onMouseOver = { this.onMouseOver.bind(this) } onMouseOut={ this.onMouseOut.bind(this) } onClick = {this.props.onClick?this.props.onClick.bind(this):()=>{}} >
+				{this.props.img?<img src={this.props.img} alt="profile" />:this.props.children}
 			</a>
 
 		);

@@ -19,6 +19,7 @@ import "react-s-alert/dist/s-alert-css-effects/stackslide.css";
 import Alert from "react-s-alert";
 
 import SmartMenu from "../_common/5_smartComponent/SmartMenu";
+import SmartMenuSmall from "../_common/5_smartComponent/SmartMenuSmall";
 import SmartMenuMonCompte from "../_common/5_smartComponent/SmartMenuMonCompte";
 import TitrePage from "../_common/5_smartComponent/TitrePage";
 
@@ -48,8 +49,11 @@ export const Layout = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
-				<SmartMenu style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-				<TitrePage style = {{position:"fixed",left:0,width:"80%",top:40,zIndex:990}} />
+				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+
+				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"80%",top:40,zIndex:990}} />
+				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
 				<div className = "supprmobile" 
 					style={{
 						position:"fixed",right:0, top:100,zIndex:997,
@@ -105,7 +109,8 @@ export const LayoutSA = ({ content }) => {
 			}}>
 				<InitState/>
 				<div style={{display:"flex", flexDirection:"column", flex:1, position:"fixed",right: 0, left: 0,zIndex:998}}>
-					<SmartMenu/>
+					<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+					<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
 					<TitrePage style = {{flex:1}} />
 				</div>
 
@@ -150,10 +155,10 @@ export const LayoutMonCompte = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
-				<SmartMenu style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-				<TitrePage style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
-			
-					
+				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"83%",top:40,zIndex:990}} />
+				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
 				<SmartMenuMonCompte style={{
 					position:"fixed", top:100,
 					zIndex:998,
@@ -164,20 +169,17 @@ export const LayoutMonCompte = ({ content }) => {
 				}}/>
 	
 				<div style={{display:"flex", flexDirection: "column", flex:1}}>
-					<div style={{display:"flex", flexWrap:"wrap", flex:1,marginTop:100}}>		
-						<div className = "supprmobile"  style={{display: "flex", flex:1}}>
-							
-						</div>
+					<div style={{display:"flex", flexWrap:"wrap", flex:1,marginTop:100}}>
+
 						<div style={{display: "flex", flexDirection: "column", flex:5, marginTop:0}}>
-							
 							<div style={{display: "flex", justifyContent:"center", flex:1 }}>
-								
 								<IsLogged verouille style={{flex:1,display:"flex",maxWidth: 800,
 									minWidth:"40%"}}>{content}</IsLogged>
 							</div>	
-							
 						</div>
 							
+						<div className = "supprmobile"  style={{display: "flex", flex:1}}>	</div>
+
 					</div>
 				</div>
 				<Footer style = {{flex:"none"}}/>
