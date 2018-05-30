@@ -92,7 +92,7 @@ class SmartMenu extends Component {
 			FlowRouter.go(url);
 		}
 	}
-items(tab){
+	items(tab){
 		return tab.map(({title, text, url, display, img, src, action, style}, i)=> {
 			if(display){
 				return	<Menu.Item

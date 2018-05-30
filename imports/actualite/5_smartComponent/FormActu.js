@@ -90,6 +90,7 @@ class FormActu extends Component {
 				titre, description, date: new Date(Date.now()), publier:false
 			},
 			(res)=>{
+				//document.getElementById("form").reset();
 				let Actions = this.props.actualite_controle.actions;
 				let actions=[...Actions];
 				actions.push({_id:res,titre,description,action:"publier"});
@@ -121,7 +122,7 @@ class FormActu extends Component {
 		
 		return (
 	
-			<form style={{display:"flex", flex:1, flexDirection:"column"}}>
+			<form id="form" style={{display:"flex", flex:1, flexDirection:"column"}}>
 				<FixedLayoutMonCompte>
 					<div style={{display:"flex", flex:1, flexDirection:"column"}}>
 						<Input
@@ -131,6 +132,7 @@ class FormActu extends Component {
 							onChange = { this.change.bind( this ) } 
 						/>
 						<TextArea
+							style = {{resize:"vertical", minHeight:46}}
 							label = 'Description'
 							name = 'description'
 							value = { description||"" }
@@ -138,6 +140,7 @@ class FormActu extends Component {
 						/>
 					
 						<Button
+							style = {{marginLeft:8,marginRight:8}}
 							onClick = { this.actualiteAdd.bind( this ) }
 						>Ajouter l'actualité</Button>
 						<Tableau
@@ -150,8 +153,6 @@ class FormActu extends Component {
 								{thead:[["Date","Titre",<Button onClick={this.actualiteAppliquer.bind(this)}>Appliquer</Button>]]},]}/>
 					</div>
 				</FixedLayoutMonCompte>
-				
-
 				
 				<Tableau
 					style={{marginTop:245,borderTopLeftRadius: "0px 0px",borderTopRightRadius: "0px 0px", }}

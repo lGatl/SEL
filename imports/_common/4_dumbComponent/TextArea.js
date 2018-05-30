@@ -37,7 +37,7 @@ export default class TextArea extends Component {
 					name={name}
 					value={value}
 					onChange={this.change.bind(this)}
-					style={s_textarea}
+					style={{...s_textarea, ...this.props.style}}
 				/>
 				
 			</div>

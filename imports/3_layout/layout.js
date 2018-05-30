@@ -159,14 +159,6 @@ export const LayoutMonCompte = ({ content }) => {
 				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
 				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"83%",top:40,zIndex:990}} />
 				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
-				<SmartMenuMonCompte style={{
-					position:"fixed", top:100,
-					zIndex:998,
-					display: "flex",
-					flexDirection: "column",
-					backgroundColor:"rgba(250,250,250,0.7)",
-					borderRadius:5,
-				}}/>
 	
 				<div style={{display:"flex", flexDirection: "column", flex:1}}>
 					<div style={{display:"flex", flexWrap:"wrap", flex:1,marginTop:100}}>
@@ -188,3 +180,12 @@ export const LayoutMonCompte = ({ content }) => {
 		</Provider>
 	);
 };
+
+//<SmartMenuMonCompte style={{
+///					position:"fixed", top:100,
+//					zIndex:998,
+//					display: "flex",
+//					flexDirection: "column",
+//					backgroundColor:"rgba(250,250,250,0.7)",
+//					borderRadius:5,
+//				}}/>
