@@ -19,8 +19,10 @@ class ListeAnnonce extends Component {
 	//=========INITIALISATION
 	constructor(){
 		super();
+		this.resize = throttle(this.resize.bind(this),40);
 		this.scroll = throttle(this.scroll.bind(this),40);
 		this.state = {
+			windowwidth:window.innerWidth,
 			open:false, annonce_id:"",proposition_id:"",
 			nbpp: 5,
 			nump: 0
@@ -40,16 +42,22 @@ class ListeAnnonce extends Component {
 	}
 	componentDidMount() {
 		document.addEventListener("scroll", this.scroll);
+		window.addEventListener("resize", this.resize);
 	}
 
 	componentWillUnmount() {
 		document.removeEventListener("scroll", this.scroll);
+		window.removeEventListener("resize", this.resize);
+
 	}	
 	condition(props){
 		let CONDITION = {etat:"valider"};
 		CONDITION = {...CONDITION,user_id:props.active_user._id};
 		CONDITION = props.type?{...CONDITION,type:props.type}:CONDITION;
 		return CONDITION;
+	}
+	resize(){
+		this.setState({windowwidth:window.innerWidth});
 	}
 	init(props){
 		this.props.titrePage(props.type=="offre"?"Mes offres":"Mes demandes");
@@ -144,6 +152,7 @@ class ListeAnnonce extends Component {
 					effectue = { this.effectue.bind(this,annonce._id,proposition._id)}
 					moi = { annonce && active_user && (annonce.user_id == active_user._id) }
 					href_posteur = { user?hrefUser(user._id):"#"}
+					small = {this.state.windowwidth<700}
 
 				/>]:total;},[]);
 	}
@@ -168,7 +177,8 @@ class ListeAnnonce extends Component {
 				goAnnonce = { goAnnonce.bind(this,ann._id) }
 				statut = { ann.statut }
 				href = {hrefAnnonce(ann._id)}
-			/><div style = {{backgroundColor:"pink",paddingTop:this.state[ann._id]?10:0,paddingBottom:this.state[ann._id]?10:0}}>{this.propositions(ann, propositions)}</div></div>];}
+			/><div style = {{backgroundColor:"pink",paddingTop:this.state[ann._id]?10:0,paddingBottom:this.state[ann._id]?10:0}}>{this.propositions(ann, propositions)}</div></div>
+			];}
 			,[]):"";
 		// return [<Comps/>,...]
 	}
@@ -185,7 +195,7 @@ class ListeAnnonce extends Component {
 						<Button onClick = {this.noter.bind(this)}>noter</Button>
 					</div>
 					
-					<Note onClick = {this.clickNote.bind(this)} note={note}/>
+					<Note onClick = {this.clickNote.bind(this)} note={note} style ={{fontSize:20}}/>
 				</Popop>
 				{/*	<Comp/>   [<Comps/>,...]  			[{},...]   */}
 				{ this.annonces(annonces, categories) }

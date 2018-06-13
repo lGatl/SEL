@@ -27,11 +27,6 @@ class SmartMenu extends Component {
 			display:true
 		},
 		{
-			title: "Connexion",
-			url: "/connexion",
-			display:!(this.props.active_user&&this.props.active_user._id)
-		},
-		{
 			title: "Contact",
 			url: "/contact",
 			display:true
@@ -44,7 +39,7 @@ class SmartMenu extends Component {
 		{
 			title: "Les Selistes",
 			url: "/les_selistes",
-			display:true
+			display:this.props.active_user
 		},
 	]}
 	menusM(){return[	

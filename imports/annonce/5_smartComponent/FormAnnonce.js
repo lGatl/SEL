@@ -104,7 +104,7 @@ class FormAnnone extends Component {
 	//Preparation du rendu
 	render() {
 		let { active_user } = this.props;
-		let { titre, description, categorie, date_de_fin, email, adresse, telephone } = this.props.annonce_controle;
+		let { titre, description, categorie, date_de_fin, image } = this.props.annonce_controle;
 		return (
 			
 			<form style={{display:"flex", flex:1, flexDirection:"column"}}>
@@ -117,6 +117,17 @@ class FormAnnone extends Component {
 					options = { this.props.categories.map(cat=>{return{value:cat._id,text:cat.titre};}) }
 					value = { categorie?categorie:"" }
 				/>
+				<Button
+					onChange = { ()=>{} } 
+				>Inserer une Image</Button>
+				<Input
+					label = "Image"
+					placeholder = "Image"
+					name = "image"
+					value = { image||"" }
+					onChange = { this.change.bind( this ) } 
+				/>
+				<div style={{width:80, height:80, background:"url('/images/1.jpg') no-repeat center", backgroundSize: "cover"}}></div>
 				<Input
 					label = "Titre"
 					placeholder = "Titre"
@@ -131,25 +142,7 @@ class FormAnnone extends Component {
 					value = { description||"" }
 					onChange = { this.change.bind( this ) }
 				/>
-				<div>Informations de contact</div>
-				<Checkbox
-					label = "email"
-					name = "email"
-					checked = { email||"" }
-					onChange = { this.change.bind( this ) }
-				/>
-				<Checkbox
-					label = "Téléphone"
-					name = "telephone"
-					checked = { telephone||"" }
-					onChange = { this.change.bind( this ) }
-				/>
-				<Checkbox
-					label = "Adresse"
-					name = "adresse"
-					checked = { adresse||"" }
-					onChange = { this.change.bind( this ) }
-				/>
+			
 				<Calendrier
 					label='Date de fin'
 					name = 'date_de_fin'

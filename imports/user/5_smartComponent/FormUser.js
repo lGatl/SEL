@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Input, TextArea, Button, Dropdown, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Input, TextArea, Button, Dropdown, Note, Checkbox } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
@@ -18,10 +18,10 @@ class FormulaireDInscription extends Component {
 	constructor(){
 		super();
 		this.roles=[
-			{ key: 'in', value: 'in', text: 'inscrit' },
-			{ key: 'se', value: 'se', text: 'seliste' },
-			{ key: 'mo', value: 'mo', text: 'moderateur' },
-			{ key: 'ad', value: 'ad', text: 'admin' }
+			{ key: "in", value: "in", text: "inscrit" },
+			{ key: "se", value: "se", text: "seliste" },
+			{ key: "mo", value: "mo", text: "moderateur" },
+			{ key: "ad", value: "ad", text: "admin" }
 		];
 	}
 	componentWillMount(){
@@ -122,21 +122,29 @@ class FormulaireDInscription extends Component {
 			onChange = { this.change.bind( this ) } 
 		/>:username;
 	}
-	telephone(telephone){
+	telephone(telephone, show_telephone){
 		let { edit } = this.props;
-		return edit?<Input style={{flex:1}}
+		return edit?<div style = {{display:"flex", flex:1}}><Input style={{flex:1}}
 			name = 'telephone'
 			value = { telephone || "" }
 			onChange = { this.change.bind( this ) } 
-		/>:telephone;
+		/><Checkbox
+			name = "show_telephone"
+			checked = { show_telephone||"" }
+			onChange = { this.change.bind( this ) }
+		/></div>:show_telephone?telephone:"";
 	}
-	adresse(adresse){
+	adresse(adresse,show_adresse){
 		let { edit } = this.props;
-		return edit?<TextArea style={{flex:1}}
+		return edit?<div style = {{display:"flex", flex:1}}><TextArea style={{flex:1}}
 			name = 'adresse'
 			value = { adresse || "" }
 			onChange = { this.change.bind( this ) } 
-		/>:adresse;
+		/><Checkbox
+			name = "show_adresse"
+			checked = { show_adresse||"" }
+			onChange = { this.change.bind( this ) }
+		/></div>:show_adresse?adresse:"";
 	}
 	email(email){
 		let { edit } = this.props;
@@ -156,7 +164,7 @@ class FormulaireDInscription extends Component {
 	}
 	categories(categories){
 		let { edit } = this.props;
-		return edit?<div>
+		return edit?<div style = {{}}>
 			<Dropdown
 				placeholder = 'Categories'
 				name = 'categories'
@@ -189,9 +197,9 @@ class FormulaireDInscription extends Component {
 	}
 	render() {
 
-		let {username,email,password,nom,prenom,telephone,adresse,date_val_resp,categories, note} = this.props.controle;
+		let {username,email,password,nom,prenom,telephone,adresse,show_adresse,date_val_resp,categories, note} = this.props.controle;
 		return (
-			<div>
+			<div style = {{flex:1}}>
 				<CardUser
 					edit
 					username = {this.username(username)}
@@ -201,7 +209,7 @@ class FormulaireDInscription extends Component {
 					categories = {this.categories(categories)}
 					email = {this.email(email)}
 					telephone = {this.telephone(telephone)}
-					adresse = {this.adresse(adresse)}
+					adresse = {this.adresse(adresse, show_adresse)}
 					date_val_resp={this.dateValResp(date_val_resp)}
 				/>
 					

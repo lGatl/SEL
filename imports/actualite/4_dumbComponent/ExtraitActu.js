@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import { Segment, Button, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 export default class ExtraitAnn extends Component {
@@ -10,8 +10,8 @@ export default class ExtraitAnn extends Component {
 
 		return(
 
-			<Segment row style={{minHeight:100, marginBottom:20}}> 
-				<img src="/images/1.jpg" alt="photo annonce" style={{
+			<Segment row onClick={this.props.goActualite.bind(this)} style={{minHeight:100, marginBottom:20, cursor:"pointer"}}> 
+				<img src="/images/1.jpg" alt="photo actualite" style={{
 					width: 133,
 					maxHeight:"100%" 
 				}}/>

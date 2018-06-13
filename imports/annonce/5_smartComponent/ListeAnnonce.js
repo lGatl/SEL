@@ -16,8 +16,6 @@ import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
 import { throttle } from "../../8_libs/throttle";
 
 import FixedLayout from "../../_common/4_dumbComponent/FixedLayout";
-import FixedLayoutBottom from "../../_common/4_dumbComponent/FixedLayoutBottom";
-
 
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
@@ -43,12 +41,12 @@ class ListeAnnonce extends Component {
 	}
 	componentDidMount() {
 		document.addEventListener("scroll", this.scroll);
-		this.props.annonceControle({ categorie:"" });
+		this.props.annonceControle({ categorie:"", distance:null });
 	}
 
 	componentWillUnmount() {
 		document.removeEventListener("scroll", this.scroll);
-		this.props.annonceControle({ categorie:"" });
+		this.props.annonceControle({ categorie:"", distance:null });
 	}
 
 	init(props){
@@ -120,7 +118,7 @@ class ListeAnnonce extends Component {
 	}
 	
 	render() {
-		let { categorie } = this.props.annonce_controle;
+		let { categorie, distance } = this.props.annonce_controle;
 
 		return (
 			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
@@ -129,7 +127,7 @@ class ListeAnnonce extends Component {
 					<div style={{display:"flex", flexDirection:"column", flex:1,
 						borderBottom: "1px solid rgba(150,150,150,0.5)",
 						boxShadow: "0 4px 2px -2px rgba(150,150,150,0.3)"}}> 
-						<div style={{display:"flex", flexDirection:"column"}}>
+						<div style={{display:"flex", }}>
 							<Dropdown
 								label = "Categorie"
 								placeholder = "Categorie"
@@ -137,6 +135,14 @@ class ListeAnnonce extends Component {
 								onChange = { this.change.bind ( this ) } 
 								options = { [...this.props.categories.reduce((total,cat)=>{return cat.publier==true?[...total,{value:cat._id,text:cat.titre}]:total;},[]),{value:"",text:"Pas de categorie"} ]}
 								value = { categorie?categorie:"" }
+							/>
+							<Dropdown
+								label = "Distance"
+								placeholder = "Distance"
+								name = "distance"
+								onChange = { this.change.bind ( this ) } 
+								options = {[ {value:5,text:"0-5km"},{value:10,text:"5-10km"},{value:15,text:"10-15km"},{value:20,text:"15-20km"} ]}
+								value = { distance?distance:"" }
 							/>
 						</div>
 						<div style={{display:"flex", marginLeft:20}}>				

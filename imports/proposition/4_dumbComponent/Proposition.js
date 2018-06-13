@@ -8,21 +8,21 @@ export default class Proposition extends Component {
 		return(
 
 			<Segment column style ={{ minHeight:150, margin:10, backgroundColor: "white"}}> 
-				<div style={{flex:1, display:"flex"}}>
-					<div style = {{flex:2, display:"flex", flexDirection: "column", justifyContent:"center", alignItems:"center", padding:10}}>
-						<span>{user_prenom + " " + user_nom}</span>
-						<A href={this.props.href_posteur}>{user_username}</A>
-					
+				<div style={{flex:1, display:"flex", flexDirection:this.props.small?"column":"row"}}>
+					<div style = {{minWidth:0,flex:this.props.small?3:"1 1 0", display:"flex", flexDirection: "column", justifyContent:"center", alignItems:"center", padding:5}}>
+						<span >{user_prenom + " " + user_nom}</span>
+						<A style = {{display: "inline-block", wordBreak: "break-word"}} href={this.props.href_posteur}>{user_username}</A>
 					</div>
-					<div style= {{flex:2, display:"flex", flexDirection: "column"}}>
-						<span>etat : {etat}</span>
-						<span>date : {date}</span>
-						<span>prix : {prix}</span>
-					</div>	
-					<div style= {{flex:5}}>
-							commentaire : {commentaire}	
-							
-					</div>	
+					<div style = {{flex:3, display:"flex"}}>
+						<div style= {{flex:3, display:"flex", flexDirection: "column"}}>
+							<span>etat : {etat}</span>
+							<span>date : {date}</span>
+							<span>prix : {prix}</span>
+						</div>	
+						<div style= {{flex:4, backgroundColor:"rgba(200,200,200,0.4)"}}>
+							{commentaire}	
+						</div>	
+					</div>
 				</div>
 				<div style={{display:"flex"}}>
 					<div style={{flex:1}}>

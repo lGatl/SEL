@@ -62,7 +62,7 @@ export const Layout = ({ content }) => {
 						flexDirection: "column",
 						
 					}}>		
-					<LastArticles actualite/>
+					<LastArticles/>
 				</div>
 
 				<div style={{display: "flex", flex:1, flexWrap:"wrap",marginTop:105}}>
@@ -111,7 +111,7 @@ export const LayoutSA = ({ content }) => {
 				<div style={{display:"flex", flexDirection:"column", flex:1, position:"fixed",right: 0, left: 0,zIndex:998}}>
 					<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
 					<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-					<TitrePage style = {{flex:1}} />
+					<TitrePage style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
 				</div>
 
 				<div style={{display: "flex", flex:1, flexWrap:"wrap",marginTop:105}}>

@@ -32,8 +32,8 @@ export default class CardUser extends Component {
 				<div style={{display:"flex",flex:1, alignItems:"flex-start"}}><span> Categories :</span> {categories}</div>
 				<div style={{display:"flex",flexDirection:"column", padding:10, borderTop:"1px solid rgba(150,150,150,0.5)"}}>
 					<div style={{...champs}}><span style={{...s_span}}> courriel :</span> {email}</div>
-					<div style={{...champs}}><span style={{...s_span}}> telephone :</span> {telephone}</div>
-					<div style={{...champs}}><span style={{...s_span}}> adresse : </span>{adresse}</div>
+					{telephone?<div style={{...champs}}><span style={{...s_span}}> telephone :</span> {telephone}</div>:""}
+					{adresse?<div style={{...champs}}><span style={{...s_span}}> adresse : </span>{adresse}</div>:""}
 				</div>
 				<div style={{display:"flex",flexDirection:"column", padding:10}}>
 					

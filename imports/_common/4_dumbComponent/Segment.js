@@ -5,6 +5,7 @@ export default class Segment extends Component {
 		return{
 
 			s_segment:{
+				overflow:"hidden",
 				display:"flex",
 				flexDirection:this.props.row?"row":"column",
 				borderRadius:5,

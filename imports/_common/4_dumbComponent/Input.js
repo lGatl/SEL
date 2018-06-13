@@ -35,6 +35,7 @@ export default class Input extends Component {
 			<div style={{...s_container,...this.props.style}}>
 				<label style={s_label}>{label}</label>
 				<input 
+					autoComplete={this.props.autoComplete}
 					placeholder={placeholder}
 					name={name}
 					value={value}

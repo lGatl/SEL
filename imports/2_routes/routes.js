@@ -78,7 +78,7 @@ FlowRouter.route( "/annonce/:_id/edit", {
 FlowRouter.route( "/connexion", {
 	name: "connexion",
 	action: function() {
-		mount(Layout, { content: <Connexion /> });
+		mount(LayoutSA, { content: <Connexion /> });
 		window.scrollTo(0, 0);
 	}
 });

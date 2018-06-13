@@ -25,8 +25,8 @@ export default class Segment extends Component {
 		let {s_container, s_label} = this.style();
 		let {style} = this.props;
 		return (
-			<div style={{...s_container}}>
-				<input type="checkbox" name={this.props.name} checked={this.props.checked} onChange={this.change.bind(this)}/>
+			<div style={{...s_container, ...style}}>
+				<input type="checkbox" disabled={this.props.disabled} name={this.props.name} checked={this.props.checked} onChange={this.change.bind(this)}/>
 				<label style={{...s_label}}>{this.props.label}</label>
 			</div>
 		);

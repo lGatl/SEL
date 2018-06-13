@@ -12,6 +12,7 @@
     "eslinter": "^3.2.1",
     "faker": "^4.1.0",
     "future": "^2.3.1",
+    "google-map-react": "^1.0.3",
     "meteor-node-stubs": "~0.2.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

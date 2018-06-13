@@ -9,7 +9,7 @@ import { Menu } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { throttle } from "../../8_libs/throttle";
 
-class SmartMenu extends Component {
+class SmartMenuSmall extends Component {
 	constructor(){
 		super();
 		this.mousedown = this.mousedown.bind(this);
@@ -34,7 +34,6 @@ class SmartMenu extends Component {
 		document.addEventListener("touchend", this.mouseup);
 		document.addEventListener("touchmove", this.mousemove);
 		window.addEventListener("resize", this.resize);
-
 	}
 
 	componentWillUnmount() {
@@ -58,7 +57,9 @@ class SmartMenu extends Component {
 	mouseup(event){
 		if((this.state.down>0)&&this.state.right>-20){
 			this.setState({down:0,right:0,transition:"1s"});
+			
 		}else if((this.state.down>0)&&this.state.left>-20){
+			
 			this.setState({down:0,left:0,transition:"1s"});
 		}else{
 			this.setState({down:0,right:-200,left:-200,transition:"1s"});
@@ -69,7 +70,6 @@ class SmartMenu extends Component {
 		if(this.state.down>0){
 			this.setState({right:(-200+this.state.down-(event.clientX||event.touches[0].clientX))>0?0:(-200+this.state.down-(event.clientX||event.touches[0].clientX))});
 			this.setState({left:(-200+(event.clientX||event.touches[0].clientX)-this.state.down)>0?0:(-200+(event.clientX||event.touches[0].clientX)-this.state.down)});
-
 		}
 	}
 	//MENU TOP
@@ -190,7 +190,7 @@ class SmartMenu extends Component {
 		{
 			title: "Les Selistes",
 			url: "/les_selistes",
-			display:true,
+			display:this.props.active_user,
 			style: {justifyContent:"center"},
 		},
 	]}
@@ -252,13 +252,13 @@ class SmartMenu extends Component {
 		}
 	}
 
-	items(tab){
+	items(tab,active){
 		return tab.map(({title, text, url, display, img, src, action, style}, i)=> {
 			if(display){
 				return	<Menu.Item
 					img = {img?img:""}
 					src = {src?src:""}
-					active={this.props.active_menu == title }
+					active={ active == title }
 					onClick={this.activeMenu.bind(this,title,url, action)}
 					key = { i }
 					style = {style?style:""}>
@@ -267,24 +267,29 @@ class SmartMenu extends Component {
 			}
 		})
 	}
+	prevclick(event){
+		event.preventDefault()
+	}
 	render() {
 
-console.log("this.props.active_menu", this.props.active_menu);
 		/*La constante prepare le style des items (de types meteo ou non)*/
 		return (
-			<div>
-				<div style = {{position:"fixed",display:"flex", flexDirection:"column", flex:1, zIndex:998,top:40,
+			<div style ={{userSelect:"none"}}>
+				<div onTouchEnd={this.prevclick.bind(this)} style ={{
+					display:(this.state.right>-20||this.state.left>-20)&&(this.props.active_menu=="Mon Compte")?"flex":"none", 
+					position:"fixed", 
+					left:0, top:0,right:0,bottom:0,zIndex:997 }}></div>
+				<div style = {{position:"fixed",display:this.props.active_menu=="Mon Compte"?"flex":"none", flexDirection:"column", flex:1, zIndex:998,top:40,
 					right:this.props.active_menu=="Mon Compte"&&this.state.windowwidth>700?0:this.state.right, 
 					width:this.state.windowwidth>700?"16%":200,
 					maxWidth:200,
 					transition:this.state.transition?this.state.transition:"0.1s"}}>
-					
 					<Menu style = {{marginBottom:5, borderRadius:5,backgroundColor:"white"}}>
-						{this.items(this.menusMC())}
+						{this.items(this.menusMC(),this.props.active_menu_mon_compte)}
 					</Menu>
 					
 					<Menu style = {{marginTop:5, borderRadius:5,backgroundColor:"white"}}>
-						{this.items(this.menusAD())}
+						{this.items(this.menusAD(),this.props.active_menu_mon_compte)}
 					</Menu>
 				</div>				
 				<Menu className = {this.props.className} style = {{
@@ -301,24 +306,24 @@ console.log("this.props.active_menu", this.props.active_menu);
 					transition:this.state.transition?this.state.transition:"0.1s"
 				}}>
 					{ 
-						this.items(this.menusD())
+						this.items(this.menusD(),this.props.active_menu)
 					}
 				</Menu>
 				<Menu row className = {this.props.className} style = {{color:"white", backgroundColor:"red", flexWrap: "wrap", justifyContent:"space-between", ...this.props.style }}>
 					
 					<div style = {{display:"flex"}}>
 						{ 
-							this.items(this.menusL())
+							this.items(this.menusL(),this.props.active_menu)
 						}
 					</div>
 					<div style = {{display:"flex", flex:1, justifyContent: "center"}}>
 						{ 
-							this.items(this.menusM())
+							this.items(this.menusM(),this.props.active_menu)
 						}
 					</div>
 					<div style = {{display:"flex"}}>
 						{ 
-							this.items(this.menusR())
+							this.items(this.menusR(),this.props.active_menu)
 						}
 					</div>
 					
@@ -332,6 +337,7 @@ function mapStateToProps(state){
 	return (
 		{
 			active_menu: state.menu.active_menu,
+			active_menu_mon_compte: state.menu.active_menu_mon_compte,
 			active_user: state.users.active_user
 		}
 	);
@@ -346,4 +352,4 @@ function mapDispatchToProps( dispatch ){
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( SmartMenu );
+export default connect( mapStateToProps, mapDispatchToProps )( SmartMenuSmall );

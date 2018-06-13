@@ -8,7 +8,7 @@ import { ACTIONS } from "../6_actions/actions";
 import { Segment, Button } from "../_common/4_dumbComponent/_gat_ui_react";
 
 import FormulaireConnexion from "../user/5_smartComponent/FormulaireConnexion";
-import FormulaireDInscription from '../user/5_smartComponent/FormulaireDInscription';
+import FormulaireDInscription from "../user/5_smartComponent/FormulaireDInscription";
 
 
 class Connexion extends Component {
@@ -16,12 +16,13 @@ class Connexion extends Component {
 	constructor(){
 		super();
 		this.state = {
-			cree:false
+			cree:true
 		};
 	}
 
 	componentWillMount(){
 		this.props.activeMenu("Connexion");
+		this.props.titrePage("Connexion");
 	}
 	//action
 	cree(val){
@@ -35,16 +36,19 @@ class Connexion extends Component {
 	render(){
 
 		return (
-			<div>
-				<div style = {{display:"flex"}}>
-					<Button onClick = {this.cree.bind(this, false)}>Connexion</Button>
-					<Button onClick = {this.cree.bind(this, true)}>Creer un compte</Button>
-				</div>
+			<div style = {{display:"flex",flex:1, justifyContent:"center"}}>
+				<div style = {{display:"flex",width:"60%",minWidth:320, flexDirection:"column", alignItems:"stretch"}}>
+					<div style = {{display:"flex"}}>
+						<Button onClick = {this.cree.bind(this, false)}>Connexion</Button>
+						<Button onClick = {this.cree.bind(this, true)}>Creer un compte</Button>
+					</div>
 
-		
-				{this.aAfficher()}
-				
+			
+					{this.aAfficher()}
+					
+				</div>
 			</div>
+
 			
 		);
 	}
@@ -60,6 +64,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 	}, dispatch );
 }

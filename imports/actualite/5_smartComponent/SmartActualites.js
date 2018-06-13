@@ -7,7 +7,7 @@ import { ACTIONS } from "../../6_actions/actions";
 import { Segment} from "../../_common/4_dumbComponent/_gat_ui_react";
 import ExtraitActu from "../4_dumbComponent/ExtraitActu";
 
-import { hrefActualite } from "../../8_libs/go";
+import { hrefActualite, goActualite } from "../../8_libs/go";
 
 import { throttle } from "../../8_libs/throttle";
 
@@ -28,9 +28,6 @@ class SmartActualites extends Component {
 				this.scroll(actualites,nb_actualites);
 			});
 		});
-		
-		
-
 	}
 	componentDidMount() {
 		document.addEventListener("scroll", this.scroll);
@@ -64,6 +61,7 @@ class SmartActualites extends Component {
 			href = {hrefActualite(actu._id)}
 			description = { actu.description }
 			onClick = { this.actualiteRm.bind(this) }
+			goActualite = { goActualite.bind(this,actu._id) }
 		/>):"";
 	}
 	

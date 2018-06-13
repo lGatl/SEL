@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { ACTIONS } from "../6_actions/actions";
 
-import { Segment } from "../_common/4_dumbComponent/_gat_ui_react";
+import { Segment,} from "../_common/4_dumbComponent/_gat_ui_react";
 
 import UsersList from "../user/5_smartComponent/UsersList";
 
@@ -15,9 +15,7 @@ class LesSelistes extends Component {
 		this.props.titrePage("Les Selistes");
 		this.props.activeMenu("Les Selistes");
 	}
-
 	render(){
-
 		return <UsersList/>;
 	}
 }
@@ -25,7 +23,7 @@ class LesSelistes extends Component {
 
 function mapStateToProps(state){
 	return ({
-
+		categories: state.categorie.all,
 	});
 }
 

@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Segment, Titre, Button, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Titre, Button, Note,Checkbox } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
@@ -39,7 +39,28 @@ class MesInformations extends Component{
 			}
 		</ul>;
 	}
-	
+	telephone(telephone, show_telephone){
+
+		return <div style = {{display:"flex", flex:1}}><div style={{flex:1}}>
+			{telephone}
+		</div><Checkbox
+			style = {{margin:0}}		
+			name = "show_telephone"
+			checked = { show_telephone||"" }
+			onChange = { ()=>{} }
+		/></div>;
+	}
+	adresse(adresse,show_adresse){
+		
+		return <div style = {{display:"flex", flex:1}}><div style={{flex:1}}>
+			{adresse}
+		</div><Checkbox
+			style = {{margin:0}}							
+			name = "show_adresse"
+			checked = { show_adresse||"" }
+			onChange = { ()=>{} }
+		/></div>;
+	}
 	render(){
 		let { transactions } = this.props;
 		if(this.props.active_user){
@@ -55,8 +76,8 @@ class MesInformations extends Component{
 						note = {profile?<Note note={profile.note.reduce((total,note)=>total+note,0)/profile.note.length}/>:[]}
 						categories = {this.categories(profile?profile.categories:"")}
 						email = {emails&&emails.length>0?emails[0].address:""}
-						telephone = {profile?profile.telephone:""}
-						adresse = { profile?profile.adresse:"" }
+						telephone = {profile?this.telephone(profile.telephone,profile.show_telephone):""}
+						adresse = { profile?this.adresse(profile.adresse,profile.show_adresse):"" }
 						date_val_resp={ profile?profile.date_val_resp:"" }
 						editer = {goUserEdit.bind(this,_id)}
 					/>

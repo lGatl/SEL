@@ -4,11 +4,13 @@ import React,{ Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Segment, Button, Note } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Segment, Button, Note, Dropdown } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { ACTIONS } from "../../6_actions/actions";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
+
+import FixedLayoutSA from "../../_common/4_dumbComponent/FixedLayoutSA";
 
 import { hrefUser, goUserEdit } from "../../8_libs/go";
 import { throttle } from "../../8_libs/throttle";
@@ -29,10 +31,10 @@ class UsersList extends Component{
 			this.props.usersCount({},(nb_users)=>{
 				this.scroll(users,nb_users);
 			});
-		})
+		});
 		this.props.categorieGet({publier:true});
 	}
-		componentDidMount() {
+	componentDidMount() {
 		document.addEventListener("scroll", this.scroll);
 	}
 
@@ -65,26 +67,53 @@ class UsersList extends Component{
 				this.setState({nump:this.state.nump+1});
 				this.scroll(nv_users,this.props.nb_users);
 			});
-			
 		}
 	}
+	change(e,{ value, name, checked }){
+
+		this.props.usersControle({ [name]:value||checked });
+	}
 	render(){
-		return <div style = {{display:"flex", flex:1, justifyContent:"space-around", flexWrap: "wrap", alignItems:"flex-start", alignContent:"flex-start"}}> {
-			this.props.users.map((user,i)=><div key = {i} style = {{padding:5}}><CardUser
-				style = {{maxWidth: 300}}
-				username = { user.username }
-				nom = { user.profile.nom }
-				prenom = { user.profile.prenom }
-				note = {<Note note={user.profile.note.reduce((total,note)=>total+note,0)/user.profile.note.length}/>}
-				categories = {this.categories(user.profile.categories)}
-				href_user = {hrefUser(user._id)}
-				editer = {goUserEdit.bind(this,user._id)}
-				email = {user.emails[0].address}
-				telephone = {user.profile.telephone}
-				adresse = {user.profile.adresse}
-				date_val_resp={user.profile.date_val_resp}
-			/></div>)
-		} </div>;
+		let { distance, categorie } = this.props.controle;
+		
+		return <div style = {{display:"flex", flex:1, flexDirection:"column", marginTop:60}}>
+			<FixedLayoutSA>
+				<Dropdown
+					label = "Categorie"
+					placeholder = "Categorie"
+					name = "categorie"
+					onChange = { this.change.bind ( this ) } 
+					options = { [...this.props.categories.reduce((total,cat)=>{return cat.publier==true?[...total,{value:cat._id,text:cat.titre}]:total;},[]),{value:"",text:"Pas de categorie"} ]}
+					value = { categorie?categorie:"" }
+				/>
+				<Dropdown
+					label = "Distance"
+					placeholder = "Distance"
+					name = "distance"
+					onChange = { this.change.bind ( this ) } 
+					options = {[ {value:5,text:"0-5km"},{value:10,text:"5-10km"},{value:15,text:"10-15km"},{value:20,text:"15-20km"} ]}
+					value = { distance?distance:"" }
+				/>
+			</FixedLayoutSA>
+					
+			<div style = {{display:"flex", flex:1, justifyContent:"space-around", flexWrap: "wrap", alignItems:"flex-start", alignContent:"flex-start"}}>
+				{
+					this.props.users.map((user,i)=><div key = {i} style = {{padding:5}}><CardUser
+						style = {{maxWidth: 300}}
+						username = { user.username }
+						nom = { user.profile.nom }
+						prenom = { user.profile.prenom }
+						note = {<Note note={user.profile.note.reduce((total,note)=>total+note,0)/user.profile.note.length}/>}
+						categories = {this.categories(user.profile.categories)}
+						href_user = {hrefUser(user._id)}
+						editer = {goUserEdit.bind(this,user._id)}
+						email = {user.emails[0].address}
+						telephone = {user.profile.telephone}
+						adresse = {user.profile.adresse}
+						date_val_resp={user.profile.date_val_resp}
+					/></div>)
+				} </div>;
+		</div>;
 	}
 }
 
@@ -93,6 +122,7 @@ function mapStateToProps( state ){
 		{
 			users: state.users.all,
 			nb_users: state.users.count,
+			controle: state.users.controle,
 			categories: state.categorie.all
 
 		}
@@ -106,6 +136,7 @@ function mapDispatchToProps(dispatch){
 		usersGetAddSSL: ACTIONS.Users.getAdd_SSL,
 		usersCount: ACTIONS.Users.count,
 		categorieGet: ACTIONS.Categorie.get,
+		usersControle: ACTIONS.Users.controle,
 
 	}, dispatch );
 }

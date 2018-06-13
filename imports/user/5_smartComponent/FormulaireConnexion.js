@@ -41,7 +41,7 @@ class FormulaireConnexion extends Component {
 		let {email, password} = this.props.users_controle;
 		
 		return (
-			<form>
+			<form style={{flex:1}}>
 				<Input
 					label = 'E mail'
 					name = 'email'
