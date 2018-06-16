@@ -22,30 +22,36 @@ export default class Tableau extends Component {
 				flexDirection:"column",
 			},
 			s_trh:{
+				
 				height:45,
 				display:"flex",
 				alignItems:"strech",
 				borderBottom:this.props.border_line?"1px solid rgba(150,150,150,0.5)": "none",
 			},
 			s_trb:{
+				
 				height:45,
 				display:"flex",
 				alignItems:"strech",
 				borderBottom:this.props.border_line?"1px solid rgba(150,150,150,0.5)": "none",
 			},
 			s_th:{
+				justifyContent:"space-around",
 				padding:1,
 				display:"flex",
 				flex:1,
 				border:this.props.border_cell?"1px solid rgba(150,150,150,0.5)": "none",
 				alignItems:"center",
+				textOverflow: "ellipsis" 
 			},
 			s_td:{
+				justifyContent:"space-around",
 				padding:1,
 				display:"flex",
 				alignItems:"center",
 				border:this.props.border_cell?"1px solid rgba(150,150,150,0.5)": "none",
 				flex:1,
+				textOverflow: "ellipsis" 
 			}
 		};
 	}

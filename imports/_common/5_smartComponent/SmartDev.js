@@ -27,7 +27,7 @@ class Dev extends Component {
 			url: "/mon_compte/annonce/offre/edition",
 			display:true,
 		},
-			{
+		{
 			title: "Deposer une demande",
 			url: "/mon_compte/annonce/demande/edition",
 			display:true,
@@ -98,25 +98,25 @@ class Dev extends Component {
 				<Menu style = {{color:"white", backgroundColor:"red", width: "15%"}}>
 					{this.items().map(({title, url, display},i)=>{
 						if(display){
-						return	<Item 
-						active = { true }  
-						key = {i} 
-						onClick={this.activeMenu.bind(this,title,url)}
-						>{title}</Item>;
-					}
-				})}
+							return	<Item 
+								active = { true }  
+								key = {i} 
+								onClick={this.activeMenu.bind(this,title,url)}
+							>{title}</Item>;
+						}
+					})}
 				</Menu>
 				<br/>
 				<Menu style = {{color:"white", backgroundColor:"red", width: "15%"}}>
 					{this.items_admin().map(({title, url, display},i)=>{
 						if(display){
-						return	<Item 
-						active = { true }  
-						key = {i} 
-						onClick={this.activeMenu.bind(this,title,url)}
-						>{title}</Item>;
-					}
-				})}
+							return	<Item 
+								active = { true }  
+								key = {i} 
+								onClick={this.activeMenu.bind(this,title,url)}
+							>{title}</Item>;
+						}
+					})}
 				</Menu>
 			</div>				
 		);

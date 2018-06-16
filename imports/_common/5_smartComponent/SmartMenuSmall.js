@@ -39,11 +39,11 @@ class SmartMenuSmall extends Component {
 	componentWillUnmount() {
 		document.removeEventListener("mousedown", this.mousedown);
 		document.removeEventListener("mouseup", this.mouseup);
-		document.addEventListener("mousemove", this.mousemove);
+		document.removeEventListener("mousemove", this.mousemove);
 		document.removeEventListener("touchstart", this.mousedown);
 		document.removeEventListener("touchend", this.mouseup);
-		document.addEventListener("touchmove", this.mousemove);
-		window.addEventListener("resize", this.resize);
+		document.removeEventListener("touchmove", this.mousemove);
+		window.removeEventListener("resize", this.resize);
 	}
 	resize(){
 		this.setState({windowwidth:window.innerWidth});
@@ -284,6 +284,7 @@ class SmartMenuSmall extends Component {
 					width:this.state.windowwidth>700?"16%":200,
 					maxWidth:200,
 					transition:this.state.transition?this.state.transition:"0.1s"}}>
+					<div className = "supprmobile" style = {{height:40,width:"100%"}}></div>
 					<Menu style = {{marginBottom:5, borderRadius:5,backgroundColor:"white"}}>
 						{this.items(this.menusMC(),this.props.active_menu_mon_compte)}
 					</Menu>

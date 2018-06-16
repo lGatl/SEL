@@ -25,7 +25,7 @@ class ActualiteDetaillee extends Component {
 					width: 400,
 					maxHeight:"100%" 
 				}}/>
-				<div style={{display:"flex", marginLeft:"10%", flexDirection:"column", flex:1}}>
+				<div style={{display:"flex", marginLeft:"10%", flexDirection:"column", flex:1, width:"100%"}}>
 					
 					<div style={{
 						fontSize:22, 
@@ -35,9 +35,7 @@ class ActualiteDetaillee extends Component {
 					}}>
 						{ actualite.titre }
 					</div>
-					<div style={{fontSize:18, color:"grey", flex:1}}>
-						{ actualite.description }
-					</div>
+					<div dangerouslySetInnerHTML={{__html:actualite.description}} style={{fontSize:18, color:"grey", flex:1}}/>
 					<div style={{
 						fontSize:16,
 						marginBottom:10

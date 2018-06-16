@@ -104,11 +104,10 @@ class FormAnnone extends Component {
 	//Preparation du rendu
 	render() {
 		let { active_user } = this.props;
-		let { titre, description, categorie, date_de_fin, image } = this.props.annonce_controle;
+		let { titre, description, categorie, date_de_fin, image} = this.props.annonce_controle;
 		return (
 			
 			<form style={{display:"flex", flex:1, flexDirection:"column"}}>
-				
 				<Dropdown
 					label = "Categorie"
 					placeholder = "Categorie"

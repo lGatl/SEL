@@ -16,7 +16,7 @@ class FormulaireConnexion extends Component {
 		};
 	}
 	componentWillMount(){
-		
+		this.props.titrePage("Connexion");
 		this.props.usersControle(this.init());
 	}
 	//Controle
@@ -74,6 +74,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		usersControle: 	ACTIONS.Users.controle,
 		usersLogIn: 		ACTIONS.Users.logIn,
 		usersGetActiveUser:	ACTIONS.Users.getActiveUser,

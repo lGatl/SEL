@@ -10,7 +10,7 @@ export default class FixedLayoutSA extends Component {
 					justifyContent:"center",
 					flexDirection: "column",
 				}}>
-					
+					<div className = "supprmobile" style = {{width:"100%", height:40}}></div>
 					<div style={{
 						flex:1,
 						display: "flex",

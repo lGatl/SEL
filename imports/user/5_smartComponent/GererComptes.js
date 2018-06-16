@@ -116,7 +116,11 @@ class FormUsers extends Component {
 								ligne1sur2
 								border_line
 								border_table
-								s_col = {[{col:3,style:{flex:2}}]}
+								s_col = {[
+									{col:0,style:{overflow:"hidden"}},
+									{col:1,style:{overflow:"hidden"}},
+									{col:2,style:{overflow:"hidden"}}
+								]}
 								donnees={[
 									{thead:[["Login","ID","Action"]]}]}/>
 						</div>
@@ -128,7 +132,12 @@ class FormUsers extends Component {
 						ligne1sur2
 						border_line
 						border_table
-						s_col = {[{col:3,style:{flex:2}}]}
+						s_col = {[
+							
+							{col:0,style:{overflow:"hidden"}},
+							{col:1,style:{overflow:"hidden"}},
+							{col:2,style:{overflow:"hidden"}}
+						]}
 						donnees={[
 							{tbody:this.props.users.reduce((total,user)=>{
 								return user.username.indexOf(filtre)>=0?

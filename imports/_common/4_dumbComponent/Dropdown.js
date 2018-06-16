@@ -31,7 +31,7 @@ export default class Dropdown extends Component {
 				position:"relative",
 				cursor:"pointer",
 				margin:5,
-				minWidth:150,
+				minWidth:100,
 				background:"rgba(250,250,250,1)",
 			},
 			s_choice:{

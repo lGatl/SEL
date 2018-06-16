@@ -11,7 +11,7 @@ import { hrefActualite, goActualite } from "../../8_libs/go";
 
 import { throttle } from "../../8_libs/throttle";
 
-class SmartActualites extends Component {
+class ListeActualites extends Component {
 	//=========INITIALISATION
 	constructor(){
 		super();
@@ -95,4 +95,4 @@ function mapDispatchToProps( dispatch ){
 	}, dispatch );
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( SmartActualites );
+export default connect( mapStateToProps, mapDispatchToProps )( ListeActualites );

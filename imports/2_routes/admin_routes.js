@@ -5,6 +5,7 @@ import {Layout, LayoutMonCompte} from "../3_layout/layout";
 
 import MonCompte from "../4_pages/MonCompte";
 import FormCategorie from "../categorie/5_smartComponent/FormCategorie";
+import GererActu from "../actualite/5_smartComponent/GererActu";
 import FormActu from "../actualite/5_smartComponent/FormActu";
 import GererAnnonces from "../annonce/5_smartComponent/GererAnnonces";
 import GererComptes from "../user/5_smartComponent/GererComptes";
@@ -36,6 +37,13 @@ adminRoutes.route("/annonce", {
 	},
 });
 adminRoutes.route("/actualite", {
+	name: "admin",
+	action(){
+		mount(LayoutMonCompte, {content: <GererActu />});
+		window.scrollTo(0, 0);
+	},
+});
+adminRoutes.route("/actualite/creer", {
 	name: "admin",
 	action(){
 		mount(LayoutMonCompte, {content: <FormActu />});

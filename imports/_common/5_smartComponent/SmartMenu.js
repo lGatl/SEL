@@ -42,14 +42,14 @@ class SmartMenu extends Component {
 			display:this.props.active_user
 		},
 	]}
-	menusM(){return[	
-		{
-			title: <span>SEL</span>,
-			display:true,
-			style: {backgroundColor:"none", cursor:"default", flex:1,fontSize:25, textAlign:"center", justifyContent:"center"}
+	// menusM(){return[	
+	// 	{
+	// 		title: <span>SEL</span>,
+	// 		display:true,
+	// 		style: {backgroundColor:"none", cursor:"default", flex:1,fontSize:25, textAlign:"center", justifyContent:"center"}
 
-		},
-	]}
+	// 	},
+	// ]}
 	menusR(){return[
 		
 		{
@@ -106,17 +106,13 @@ class SmartMenu extends Component {
 		/*La constante prepare le style des items (de types meteo ou non)*/
 		return (
 			
-			<Menu row className = {this.props.className} style = {{color:"white", backgroundColor:"red", flexWrap: "wrap", justifyContent:"space-between", ...this.props.style }}>
+			<Menu row className = {this.props.className} style = {{color:"white", borderTop:"none", backgroundColor:"red", flexWrap: "wrap", justifyContent:"space-between", ...this.props.style }}>
 				<div style = {{display:"flex"}}>
 					{ 
 						this.items(this.menusL())
 					}
 				</div>
-				<div style = {{display:"flex", flex:1, justifyContent: "center"}}>
-					{ 
-						this.items(this.menusM())
-					}
-				</div>
+				
 				<div style = {{display:"flex"}}>
 					{ 
 						this.items(this.menusR())

@@ -18,6 +18,7 @@ import "react-s-alert/dist/s-alert-css-effects/jelly.css";
 import "react-s-alert/dist/s-alert-css-effects/stackslide.css";
 import Alert from "react-s-alert";
 
+import Banderole from "../_common/4_dumbComponent/Banderole";
 import SmartMenu from "../_common/5_smartComponent/SmartMenu";
 import SmartMenuSmall from "../_common/5_smartComponent/SmartMenuSmall";
 import SmartMenuMonCompte from "../_common/5_smartComponent/SmartMenuMonCompte";
@@ -49,10 +50,10 @@ export const Layout = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
-				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-
-				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"80%",top:40,zIndex:990}} />
+				<Banderole className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:0,height:40,zIndex:1000}}/>
+				<SmartMenu className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:40, zIndex:999}}/>
+				<SmartMenuSmall className = "supprbig" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"80%",top:80,zIndex:990}} />
 				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
 				<div className = "supprmobile" 
 					style={{
@@ -64,7 +65,7 @@ export const Layout = ({ content }) => {
 					}}>		
 					<LastArticles/>
 				</div>
-
+				<div className = "supprmobile" style = {{height:40,width:"100%"}}></div>
 				<div style={{display: "flex", flex:1, flexWrap:"wrap",marginTop:105}}>
 					<div style={{
 						flex:4,
@@ -108,12 +109,14 @@ export const LayoutSA = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
-				<div style={{display:"flex", flexDirection:"column", flex:1, position:"fixed",right: 0, left: 0,zIndex:998}}>
-					<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-					<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-					<TitrePage style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
-				</div>
-
+				
+				<Banderole className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:0,height:40,zIndex:1000}}/>
+				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:40, zIndex:999}}/>
+				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:80,zIndex:997}} />
+				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:997}} />
+				
+				<div className = "supprmobile" style = {{height:40,width:"100%"}}></div>
 				<div style={{display: "flex", flex:1, flexWrap:"wrap",marginTop:105}}>
 					<div style={{
 						flex:4,
@@ -155,12 +158,14 @@ export const LayoutMonCompte = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
-				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
+				<Banderole className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:0,height:40,zIndex:1000}}/>
+				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:40, zIndex:999}}/>
 				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
-				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"83%",top:40,zIndex:990}} />
-				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:990}} />
+				<TitrePage className = "supprmobile" style = {{position:"fixed",left:0,width:"83%",top:80,zIndex:997}} />
+				<TitrePage className = "supprbig" style = {{position:"fixed",left:0,right:0,top:40,zIndex:997}} />
 	
 				<div style={{display:"flex", flexDirection: "column", flex:1}}>
+					<div className = "supprmobile" style = {{height:40,width:"100%"}}></div>
 					<div style={{display:"flex", flexWrap:"wrap", flex:1,marginTop:100}}>
 
 						<div style={{display: "flex", flexDirection: "column", flex:5, marginTop:0}}>

@@ -18,12 +18,15 @@ import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCo
 class GererAnnonces extends Component {
 	constructor(){
 		super();
+		this.resize = throttle(this.resize.bind(this),40);
 		this.scroll = throttle(this.scroll.bind(this),40);
 		this.state = {
+			windowwidth:window.innerWidth,
 			nbpp: 10,
 			nump: 0
 		};
 	}
+
 	componentWillMount(){
 		this.props.titrePage("Gerer les annonces");
 		this.props.activeMenu("Mon Compte");
@@ -42,12 +45,17 @@ class GererAnnonces extends Component {
 	}
 	componentDidMount() {
 		document.addEventListener("scroll", this.scroll);
+		window.addEventListener("resize", this.resize);
 	}
 
 	componentWillUnmount() {
 		document.removeEventListener("scroll", this.scroll);
+		window.removeEventListener("resize", this.resize);
 	}
 	//==============CONTROLE====================
+	resize(){
+		this.setState({windowwidth:window.innerWidth});
+	}
 	changeAction(e,{ value, name }){
 		let Actions = this.props.annonce_controle.actions;
 		let actions=[...Actions];
@@ -129,9 +137,23 @@ class GererAnnonces extends Component {
 							ligne1sur2
 							border_line
 							border_table
-							s_col = {[]}
+							s_col = {[
+								{col:0,style:{flex:1}},
+								{col:1,style:{flex:1}},
+								{col:2,style:{flex:this.state.windowwidth<700?"none":1,width:this.state.windowwidth<700?30:"auto"}},
+								{col:3,style:{flex:1}},
+								{col:4,style:{flex:1}},
+								{col:5,style:{flex:"none"}},
+
+							]}
 							donnees={[
-								{thead:[["Date","Seliste","Type","Categorie","Titre de l'annonce",<Button onClick={this.annonceAppliquer.bind(this)}>Appliquer</Button>]]} ]}/>
+								{thead:[[
+									"Date",
+									"Seliste",
+									this.state.windowwidth<700?"Type".substr(0, 1):"Type", 
+									this.state.windowwidth<700?"Categorie".substr(0, 3)+"...":"Categorie",
+									this.state.windowwidth<700?"Titre":"Titre de l'annonce",
+									<Button style = {{minWidth:100}}onClick={this.annonceAppliquer.bind(this)}>Appliquer</Button>]]} ]}/>
 					</div>
 					
 				</FixedLayoutMonCompte>
@@ -142,15 +164,26 @@ class GererAnnonces extends Component {
 					ligne1sur2
 					border_line
 					border_table
-					s_col = {[]}
+					s_col = {[
+						{col:0,style:{flex:1}},
+						{col:1,style:{flex:1}},
+						{col:2,style:{flex:this.state.windowwidth<700?"none":1,width:this.state.windowwidth<700?30:"auto"}},
+						{col:3,style:{flex:1}},
+						{col:4,style:{flex:1}},
+						{col:5,style:{flex:"none"}},
+
+					]}
 					donnees={[
 						{tbody:this.props.annonces?this.props.annonces.map((annonce)=>{
 							let value = actions&&actions.find((act)=>act._id==annonce._id)?actions.find((act)=>act._id==annonce._id).action:"";
 							let user = this.props.users.find(luser=>luser._id==annonce.user_id);
 							let categorie = this.props.categories.find(luser=>luser._id==annonce.categorie);
 							let date = new Date(annonce.date);
-							return[dateToFormat(date),user?<A href = {hrefUser(user._id)}>{user.username}</A>:"",
-								annonce.type,categorie?categorie.titre:"",
+							return[
+								this.state.windowwidth<700?dateToFormat(date).substr(0, dateToFormat(date).length-5):dateToFormat(date),
+								user?<A href = {hrefUser(user._id)}>{this.state.windowwidth<700?user.username.substr(0, 5)+"...":user.username}</A>:"",
+								this.state.windowwidth<700?annonce.type.substr(0, 1).toUpperCase():annonce.type,
+								categorie?this.state.windowwidth<700?categorie.titre.substr(0, 3)+"...":categorie.titre:"",
 								<A href = {hrefAnnonce(annonce._id)}>{annonce.titre}</A>,
 								<Dropdown
 									placeholder = 'Action'

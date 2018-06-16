@@ -27,7 +27,6 @@ class LastArticle extends Component{
 	}
 
 	render(){
-		console.log(this.props.actu_last)
 		let {actu_last, ann_last, active_menu} = this.props;
 		actu_last = active_menu == "Annonce" ? actu_last : 
 			active_menu == "Accueil" || 

@@ -38,6 +38,8 @@ class FormulaireDInscription extends Component {
 	}
 	
 	componentWillMount(){
+		this.props.titrePage("Inscription");
+
 		this.props.usersControle(this.init());
 	}
 	//Controle
@@ -173,6 +175,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		titrePage: ACTIONS.Titre.titrePage,
 		usersControle: 			ACTIONS.Users.controle,
 		usersCreeCompte: 		ACTIONS.Users.creeCompte
 	}, dispatch );

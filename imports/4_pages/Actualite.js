@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { ACTIONS } from "../6_actions/actions";
 
-import SmartActualites from "../actualite/5_smartComponent/SmartActualites";
+import ListeActualites from "../actualite/5_smartComponent/ListeActualites";
 
 class Actualite extends Component {
 
@@ -17,7 +17,7 @@ class Actualite extends Component {
 	render(){
 
 		return (		
-			<SmartActualites/>
+			<ListeActualites/>
 		);
 	}
 }
