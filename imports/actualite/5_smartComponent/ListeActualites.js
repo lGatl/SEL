@@ -9,46 +9,13 @@ import ExtraitActu from "../4_dumbComponent/ExtraitActu";
 
 import { hrefActualite, goActualite } from "../../8_libs/go";
 
-import { throttle } from "../../8_libs/throttle";
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
+
+
 
 class ListeActualites extends Component {
-	//=========INITIALISATION
-	constructor(){
-		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			nbpp: 5,
-			nump: 0
-		};
-	}
-	componentWillMount(){
-		this.props.actualiteGetSSL({publier:true},{sort:{date:-1},skip:0,limit:this.state.nbpp},(actualites)=>{
-			this.setState({nump:1});
-			this.props.actualiteCount({publier:true},(nb_actualites)=>{
-				this.scroll(actualites,nb_actualites);
-			});
-		});
-	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-	}
+	
 	//=========ACTIONS
-	scroll(actualites,nb_actualites){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.actualites.length < this.props.nb_actualites)||(actualites&&nb_actualites&&actualites.length < nb_actualites))
-		){
-			this.props.actualiteGetAddSSL({publier:true},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_actualites)=>{
-				this.scroll(nv_actualites,nb_actualites);
-			});
-			this.setState({nump:this.state.nump+1});
-		}
-	}
 	actualiteRm( id ){
 		this.props.actualiteRm({ _id: id });
 	}
@@ -66,9 +33,20 @@ class ListeActualites extends Component {
 	}
 	
 	render() {
+
 		return (
 			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
-				
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"actualiteListe"}
+					nb_charge={this.props.actualites.length}
+					nb_total={this.props.nb_actualites}
+					initFnt = {this.props.actualiteGetSSL.bind(this)}
+					addFnt = {this.props.actualiteGetAddSSL.bind(this)}
+					countFnt = {this.props.actualiteCount.bind(this)}
+					condition = {{publier:true}}
+				/>
+
 				{ this.actualites(this.props.actualites) }
 				
 			</div>
@@ -91,7 +69,7 @@ function mapDispatchToProps( dispatch ){
 		actualiteGetSSL: ACTIONS.Actualite.get_SSL,
 		actualiteGetAddSSL: ACTIONS.Actualite.getAdd_SSL,
 		actualiteCount: ACTIONS.Actualite.count,
-		actualiteRm: 	ACTIONS.Actualite.rm
+		actualiteRm: 	ACTIONS.Actualite.rm,
 	}, dispatch );
 }
 

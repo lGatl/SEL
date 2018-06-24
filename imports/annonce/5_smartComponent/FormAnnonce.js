@@ -98,8 +98,9 @@ class FormAnnone extends Component {
 			);
 			this.props.annonceControle(this.init());
 		}
-		
-
+	}
+	annonceSupprimer(){
+		this.props.annonceRm({_id:this.props._id});
 	}
 	//Preparation du rendu
 	render() {
@@ -154,7 +155,15 @@ class FormAnnone extends Component {
 				>
 				Sauvegarder {this.props.type=="offre"?"l'offre":"la demande"}
 				</Button>
+				{this.props.creer?"":
+					<Button
+						onClick = { this.annonceSupprimer.bind( this ) }
+					>
+					Supprimer {this.props.type=="offre"?"l'offre":"la demande"}
+					</Button>
+				}
 			</form>
+
 				
 		);
 	}
@@ -178,6 +187,7 @@ function mapDispatchToProps( dispatch ){
 	
 		annonceControle: 	ACTIONS.Annonce.controle,
 		annonceAdd: 			ACTIONS.Annonce.add,
+		annonceRm: 			ACTIONS.Annonce.rm,
 		annonceUp: 			ACTIONS.Annonce.up,
 		annonceGet1: 			ACTIONS.Annonce.get1,
 		categorieGet: 			ACTIONS.Categorie.get,

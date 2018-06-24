@@ -13,6 +13,12 @@ class ActualiteDetaillee extends Component {
 	componentWillMount(){
 		this.props.actualiteGet1({_id:this.props._id});
 	}
+	componentWillReceiveProps(news){
+		
+		if(news._id != this.props._id){
+			this.props.actualiteGet1({_id:news._id});
+		}
+	}
 	//=========ACTIONS
 	
 	//==========PREPARATION RENDU

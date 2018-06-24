@@ -1,8 +1,8 @@
 import { CONSTANTES } from "../6_actions/actions";
 const DEFAULTS = {
-	active_menu:'Accueil',
-	active_menu_mon_compte:'MesInformations',
-	active_menu_annonce:'Toutes'
+	active_menu:"Accueil",
+	active_menu_mon_compte:"MesInformations",
+	active_menu_annonce:"Toutes"
 };
 
 export default function (  state = DEFAULTS, action ) {

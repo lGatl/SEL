@@ -6,13 +6,14 @@ import { bindActionCreators } from "redux";
 
 import { ACTIONS } from "../../6_actions/actions";
 
-import { Tableau, Titre, Button, Segment } from "../../_common/4_dumbComponent/_gat_ui_react";
+import { Tableau, Titre, Button, Segment,A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import CardUser from "../../user/4_dumbComponent/CardUser";
 
 import { goUserEdit } from "../../8_libs/go";
 
 import { dateToFormat } from "../../8_libs/date";
+import { hrefUser, hrefAnnonce } from "../../8_libs/go";
 
 
 
@@ -49,12 +50,20 @@ class MonReleveDeCompte extends Component{
 						border_table
 						s_col = {[]}
 						donnees={[
-							{thead:[["Date", "Prestataire", "Catégorie","Titre de l'annonce", "Prix"]]},
+							{thead:[[
+								"Date", 
+								"Prestataire", 
+								this.props.resize.windowwidth<700?"Categorie".substr(0, 3)+"...":"Categorie",
+								"Titre de l'annonce", 
+								"Prix"]]},
 							{tbody:this.props.transactions.reduce((total,transaction)=>{
+								let categorie = categories.find(categorie=>categorie._id == transaction.annonce.categorie)
+								let user = transaction.prestataire
 								return transaction.proposition.payeur==_id?
-									[...total, [dateToFormat(transaction.date),
-										transaction.prestataire.username,
-										categories&&categories.find(categorie=>categorie._id == transaction.annonce.categorie)?categories.find(categorie=>categorie._id == transaction.annonce.categorie).titre:"",
+									[...total, [
+										this.props.resize.windowwidth<700?dateToFormat(transaction.date).substr(0, dateToFormat(transaction.date).length-5):dateToFormat(transaction.date),
+										user?<A href = {hrefUser(user._id)}>{this.props.resize.windowwidth<700?user.username.substr(0, 5)+"...":user.username}</A>:"",
+										categories&&categories.find(categorie=>categorie._id == transaction.annonce.categorie)?categorie?this.props.resize.windowwidth<700?categorie.titre.substr(0, 3)+"...":categorie.titre:"":"",
 										transaction.annonce.titre,
 										transaction.proposition.prix
 									]]:total;
@@ -69,15 +78,18 @@ class MonReleveDeCompte extends Component{
 						border_table
 						s_col = {[]}
 						donnees={[
-							{thead:[["Date", "Payeur", "Catégorie","Titre de l'annonce", "Prix"]]},
+							{thead:[["Date", "Payeur",this.props.resize.windowwidth<700?"Categorie".substr(0, 3)+"...":"Categorie","Titre de l'annonce", "Prix"]]},
 							{tbody:this.props.transactions.reduce((total,transaction)=>{
+								let categorie = categories.find(categorie=>categorie._id == transaction.annonce.categorie)
+								let user = transaction.payeur
 								return transaction.proposition.prestataire==_id?
-									[...total, [dateToFormat(transaction.date),
-										transaction.payeur.username,
-										categories&&categories.find(categorie=>categorie._id == transaction.annonce.categorie)?categories.find(categorie=>categorie._id == transaction.annonce.categorie).titre:"",
-										transaction.annonce.titre,
-										transaction.proposition.prix
-									]]:total;
+									[...total, 
+										[this.props.resize.windowwidth<700?dateToFormat(transaction.date).substr(0, dateToFormat(transaction.date).length-5):dateToFormat(transaction.date),
+											user?<A href = {hrefUser(user._id)}>{this.props.resize.windowwidth<700?user.username.substr(0, 5)+"...":user.username}</A>:"",
+											categories&&categories.find(categorie=>categorie._id == transaction.annonce.categorie)?categorie?this.props.resize.windowwidth<700?categorie.titre.substr(0, 3)+"...":categorie.titre:"":"",
+											transaction.annonce.titre,
+											transaction.proposition.prix
+										]]:total;
 							},[])
 							},
 						]}
@@ -91,6 +103,7 @@ class MonReleveDeCompte extends Component{
 function mapStateToProps( state ){
 	return (
 		{
+			resize: state.controle.resize,
 			active_user: 	state.users.active_user,
 			transactions: state.transaction.all,
 			categories: state.categorie.all,

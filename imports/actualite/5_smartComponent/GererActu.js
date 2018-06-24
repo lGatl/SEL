@@ -8,41 +8,25 @@ import { dateToFormat } from "../../8_libs/date";
 import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { hrefActualite } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
 
 import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
+
 
 class GererActu extends Component {
 
 	constructor(){
 		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			nbpp: 10,
-			nump: 0
-		};
+		this.state={suppr:0};
 	}
-
 	componentWillMount(){
 		this.props.titrePage("Gerer les actualités");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les actualites");
 		this.props.actualiteControle(this.init());
-		this.props.actualiteGetSSL({},{sort:{date:-1},skip:0,limit:this.state.nbpp},actualites=>{
-			this.setState({nump:1});
-			this.props.actualiteControle({actions:actualites.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})});
-			this.props.actualiteCount({},(nb_actualites)=>{
-				this.scroll(actualites,nb_actualites);
-			});
-		});
+		
 	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-	}
+	
 	init(){
 		return{ 
 			titre: "",
@@ -66,21 +50,14 @@ class GererActu extends Component {
 	}
 	//==============ACTION====================
 
-	scroll(actualites,nb_actualites){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.actualites.length < this.props.nb_actualites)||(actualites&&nb_actualites&&actualites.length < nb_actualites))
-		){
-			this.props.actualiteGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_actualites)=>{
-				this.props.actualiteControle({actions:[...this.props.actualite_controle.actions,...nv_actualites.map((actualite)=>{return{...actualite,action:actualite.publier?"publié":"desactivé"};})]});				
-
-				this.props.actualiteCount({},(nb_actualites)=>{
-					this.scroll(actualites,nb_actualites);
-				});
-			});
-			this.setState({nump:this.state.nump+1});
-		}
+	fnt(nv_elts){
+		this.props.actualiteControle(
+			{actions:[
+				...this.props.actualite_controle.actions||[], ...nv_elts.reduce((total,actualite)=>{
+					return this.props.actualite_controle.actions&&this.props.actualite_controle.actions.findIndex(act=>act._id==actualite._id)>=0? total :
+						[...total,{_id:actualite._id,action:actualite.publier?"publié":"desactivé"}];	
+				},[])
+			]});
 	}
 	creeActu(){
 		FlowRouter.go("/admin/actualite/creer");
@@ -92,6 +69,7 @@ class GererActu extends Component {
 		this.actualitesUp(actions.filter(action=>action.action=="desactiver"||action.action=="publier"));
 	}
 	actualitesSupprimer(ids){
+		this.setState({suppr:this.state.suppr+1});
 		ids.length>0?this.props.actualiteRm({_id:{$in:ids}}):"";
 	}
 	actualitesUp(actions){
@@ -110,6 +88,17 @@ class GererActu extends Component {
 		return (
 	
 			<form id="form" style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"gererActualites"+this.state.suppr}
+					nb_charge={this.props.actualites.length}
+					nb_total={this.props.nb_actualites}
+					initFnt = {this.props.actualiteGetSSL.bind(this)}
+					addFnt = {this.props.actualiteGetAddSSL.bind(this)}
+					countFnt = {this.props.actualiteCount.bind(this)}
+					condition = {{}}
+					fnt = {this.fnt.bind(this)}
+				/>
 				<FixedLayoutMonCompte>
 					<div style={{display:"flex", flex:1, flexDirection:"column"}}>
 						<Button
@@ -138,7 +127,9 @@ class GererActu extends Component {
 							let value = actions&&actions.find((act)=>act._id==actualite._id)?actions.find((act)=>act._id==actualite._id).action:"";
 							let date = new Date(actualite.date);
 
-							return[dateToFormat(date),<A href = {hrefActualite(actualite._id)}>{actualite.titre}</A>,
+							return[
+								this.props.resize.windowwidth<700?dateToFormat(date).substr(0, dateToFormat(date).length-5):dateToFormat(date),
+								<A href = {hrefActualite(actualite._id)}>{actualite.titre}</A>,
 								<Dropdown
 									placeholder = 'Action'
 									name = {actualite._id}
@@ -162,6 +153,7 @@ class GererActu extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			resize: state.controle.resize,
 			actualite_controle: state.actualite.controle,
 			actualites: state.actualite.all,
 			nb_actualites: state.actualite.count,

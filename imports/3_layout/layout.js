@@ -27,6 +27,8 @@ import TitrePage from "../_common/5_smartComponent/TitrePage";
 import Footer from "../_common/4_dumbComponent/Footer";
 import InitState from "../_common/5_smartComponent/InitState";
 import LastArticles from "../_common/5_smartComponent/LastArticles";
+import Resize from "../_common/5_smartComponent/Resize";
+
 import IsLogged from "../user/5_smartComponent/IsLogged";
 
 /*import Alert from 'react-s-alert';*/
@@ -50,6 +52,7 @@ export const Layout = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
+				<Resize/>
 				<Banderole className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:0,height:40,zIndex:1000}}/>
 				<SmartMenu className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:40, zIndex:999}}/>
 				<SmartMenuSmall className = "supprbig" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>
@@ -109,6 +112,7 @@ export const LayoutSA = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
+				<Resize/>
 				
 				<Banderole className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:0,height:40,zIndex:1000}}/>
 				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:40, zIndex:999}}/>
@@ -134,7 +138,6 @@ export const LayoutSA = ({ content }) => {
 								flex:1,
 								display: "flex",
 								maxWidth: 1250,
-								minWidth:"40%",
 							}}>	
 								<IsLogged style={{flex:1,display:"flex"}}>{content}</IsLogged>
 							</div>
@@ -158,6 +161,7 @@ export const LayoutMonCompte = ({ content }) => {
 				flexDirection: "column"
 			}}>
 				<InitState/>
+				<Resize/>
 				<Banderole className = "supprmobile" style = {{position:"fixed",left:0,right:0,top:0,height:40,zIndex:1000}}/>
 				<SmartMenu className = "supprsmallmenu" style = {{position:"fixed",left:0,right:0,top:40, zIndex:999}}/>
 				<SmartMenuSmall className = "supprbigmenu" style = {{position:"fixed",left:0,right:0,top:0, zIndex:999}}/>

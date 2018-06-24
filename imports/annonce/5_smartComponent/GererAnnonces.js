@@ -7,55 +7,23 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { dateToFormat } from "../../8_libs/date";
 import { hrefUser, hrefAnnonce } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
 
 import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
-
-
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
+import Resize from "../../_common/5_smartComponent/Resize";
 
 class GererAnnonces extends Component {
-	constructor(){
-		super();
-		this.resize = throttle(this.resize.bind(this),40);
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			windowwidth:window.innerWidth,
-			nbpp: 10,
-			nump: 0
-		};
-	}
 
 	componentWillMount(){
 		this.props.titrePage("Gerer les annonces");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les annonces");
 		this.props.categorieGet({});
-		this.props.annonceGetSSL({},{sort:{date:-1},skip:0,limit:this.state.nbpp},annonces=>{
-			this.setState({nump:1});
-			this.props.usersGet({_id:{$in:annonces.map(annonce=>annonce.user_id)}},()=>{
-				this.props.annonceCount({},(nb_annonces)=>{
-					this.scroll(annonces,nb_annonces);
-				});
-			});
-			
-			this.props.annonceControle({actions:annonces.map((annonce)=>{return{_id:annonce._id,action:annonce.etat};})});
-		});
 	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-		window.addEventListener("resize", this.resize);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-		window.removeEventListener("resize", this.resize);
-	}
+	
 	//==============CONTROLE====================
-	resize(){
-		this.setState({windowwidth:window.innerWidth});
-	}
 	changeAction(e,{ value, name }){
 		let Actions = this.props.annonce_controle.actions;
 		let actions=[...Actions];
@@ -66,52 +34,35 @@ class GererAnnonces extends Component {
 		this.props.annonceControle({actions:[...actions]});
 	}
 	//==============ACTION====================
-	scroll(annonces,nb_annonces){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.annonces.length < this.props.nb_annonces)||(annonces&&nb_annonces&&annonces.length < nb_annonces))
-		){
-			this.props.annonceGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_annonces)=>{
-				this.props.usersGetAdd({_id:{$in:nv_annonces.map(annonce=>annonce.user_id)}},()=>{
-					this.props.annonceCount({},(nb_annonces)=>{
-						this.scroll(annonces,nb_annonces);
-					});
-					this.props.annonceControle({actions:[...this.props.annonce_controle.actions, ...nv_annonces.map((annonce)=>{return{_id:annonce._id,action:annonce.etat};})]});
-				});
-				
-			});
-			this.setState({nump:this.state.nump+1});
-		}
-	}
-	annonceAdd(){
-		let {titre} = this.props.annonce_controle;
-
-		this.props.annonceAdd(
-			{
-				titre, publier:true
-			},
-			(res)=>{
-				let Actions = this.props.annonce_controle.actions;
-				let actions=[...Actions];
-				actions.push({_id:res,titre,action:"publier"});
-				this.props.annonceControle({...this.init(),actions:[...actions]});
-				this.annonceCount(res);
-			});
+	
+	fnt(nv_elts){	
+		let { actions } = this.props.annonce_controle;
+		let { annonces } = this.props;
 		
+		this.props.annonceControle(
+			{actions:[
+				...this.props.annonce_controle.actions||[], ...nv_elts.reduce((total,annonce)=>{
+					return this.props.annonce_controle.actions&&this.props.annonce_controle.actions.findIndex(act=>act._id==annonce._id)>=0? total :
+						[...total,{_id:annonce._id,action:annonce.etat}];	
+				},[])
+			]});
+		this.props.usersGetAdd({_id:{$in:nv_elts.map(annonce=>annonce.user_id)}},()=>{});		
 	}
 	annonceAppliquer(){
 		let { actions } = this.props.annonce_controle;
 		let { annonces } = this.props;
 
+
 		this.annoncesSupprimer(actions.reduce((total, action)=>action.action=="supprimer"?[...total,action._id]:total,[]));
-		this.annoncesUp(actions.filter((action,i)=>
-			(action.action == "en_attente" && annonces[i].etat != "en attente")||
+		this.annoncesUp(actions.filter((action,i)=>{
+			return(action.action == "en_attente" && annonces[i].etat != "en attente")||
 			(action.action == "valider" && annonces[i].etat != "valider")||
-			(action.action == "refuser" && annonces[i].etat != "refuser")));
+			(action.action == "refuser" && annonces[i].etat != "refuser")
+
+		}));
 	}
 	annoncesSupprimer(ids){
-		this.props.annonceRm({_id:{$in:ids}});
+		this.props.annonceRm({_id:{$in:ids}},this.props.annonceCount.bind(this,{}));
 	}
 	annoncesUp(actions){
 		if(actions&&actions.length>0){
@@ -126,10 +77,20 @@ class GererAnnonces extends Component {
 	render(){
 		let { annonces_count } = this.props;
 		let {titre, des, actions} = this.props.annonce_controle;
-		
+	
 		return (
 			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
-				
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"gererAnnonces"+this.props.nb_annonces}
+					nb_charge={this.props.annonces.length}
+					nb_total={this.props.nb_annonces}
+					initFnt = {this.props.annonceGetSSL.bind(this)}
+					addFnt = {this.props.annonceGetAddSSL.bind(this)}
+					countFnt = {this.props.annonceCount.bind(this)}
+					condition = {{}}
+					fnt = {this.fnt.bind(this)}
+				/>
 				<FixedLayoutMonCompte>
 					<div style={{display:"flex", flexDirection:"column", flex:1 }}>
 						<Tableau
@@ -140,7 +101,7 @@ class GererAnnonces extends Component {
 							s_col = {[
 								{col:0,style:{flex:1}},
 								{col:1,style:{flex:1}},
-								{col:2,style:{flex:this.state.windowwidth<700?"none":1,width:this.state.windowwidth<700?30:"auto"}},
+								{col:2,style:{flex:Resize.comp(700,"none",1),width:Resize.comp(700,30,"auto")}},
 								{col:3,style:{flex:1}},
 								{col:4,style:{flex:1}},
 								{col:5,style:{flex:"none"}},
@@ -150,9 +111,9 @@ class GererAnnonces extends Component {
 								{thead:[[
 									"Date",
 									"Seliste",
-									this.state.windowwidth<700?"Type".substr(0, 1):"Type", 
-									this.state.windowwidth<700?"Categorie".substr(0, 3)+"...":"Categorie",
-									this.state.windowwidth<700?"Titre":"Titre de l'annonce",
+									Resize.ellipsis("Type",700,1) ,
+									Resize.ellipsis("Categorie",700,3),
+									Resize.ellipsis("Titre de l'annonce",700,5),
 									<Button style = {{minWidth:100}}onClick={this.annonceAppliquer.bind(this)}>Appliquer</Button>]]} ]}/>
 					</div>
 					
@@ -167,7 +128,7 @@ class GererAnnonces extends Component {
 					s_col = {[
 						{col:0,style:{flex:1}},
 						{col:1,style:{flex:1}},
-						{col:2,style:{flex:this.state.windowwidth<700?"none":1,width:this.state.windowwidth<700?30:"auto"}},
+						{col:2,style:{flex:Resize.comp(700,"none",1),width:Resize.comp(700,30,"auto")}},
 						{col:3,style:{flex:1}},
 						{col:4,style:{flex:1}},
 						{col:5,style:{flex:"none"}},
@@ -180,11 +141,11 @@ class GererAnnonces extends Component {
 							let categorie = this.props.categories.find(luser=>luser._id==annonce.categorie);
 							let date = new Date(annonce.date);
 							return[
-								this.state.windowwidth<700?dateToFormat(date).substr(0, dateToFormat(date).length-5):dateToFormat(date),
-								user?<A href = {hrefUser(user._id)}>{this.state.windowwidth<700?user.username.substr(0, 5)+"...":user.username}</A>:"",
-								this.state.windowwidth<700?annonce.type.substr(0, 1).toUpperCase():annonce.type,
-								categorie?this.state.windowwidth<700?categorie.titre.substr(0, 3)+"...":categorie.titre:"",
-								<A href = {hrefAnnonce(annonce._id)}>{annonce.titre}</A>,
+								Resize.ellipsis(dateToFormat(date),700,5,"",true),
+								user?<A href = {hrefUser(user._id)}>{Resize.ellipsis(user.username,700,5,"...")}</A>:"",
+								Resize.comp(700,annonce.type.substr(0, 1).toUpperCase(),annonce.type),
+								categorie?Resize.ellipsis(categorie.titre,700,5,"..."):"",
+								<A href = {hrefAnnonce(annonce._id)}>{Resize.ellipsis(annonce.titre.length>20?annonce.titre.substr(0, 20)+"...":annonce.titre,700,7,"...")}</A>,
 								<Dropdown
 									placeholder = 'Action'
 									name = {annonce._id}
@@ -218,6 +179,7 @@ class GererAnnonces extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			resize: state.controle.resize,
 			annonce_controle: state.annonce.controle,
 			annonces: state.annonce.all,
 			nb_annonces: state.annonce.count,
@@ -237,7 +199,6 @@ function mapDispatchToProps( dispatch ){
 		annonceCount: ACTIONS.Annonce.count,
 
 		annonceControle: 	ACTIONS.Annonce.controle,
-		annonceAdd:	ACTIONS.Annonce.add,
 		annonceRm: 	ACTIONS.Annonce.rm,
 		annonceUp: 	ACTIONS.Annonce.up,
 

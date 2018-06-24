@@ -54,7 +54,7 @@ export default class Dropdown extends Component {
 			},
 			s_lignes:{
 				position:"absolute",
-				zIndex:98,
+				zIndex:9999,
 				left:0,
 				width:"100%",
 				top:"100%",

@@ -11,17 +11,17 @@ import { Popop, Note, Button } from "../../_common/4_dumbComponent/_gat_ui_react
 import PropositionAnnonce from "../../proposition/4_dumbComponent/PropositionAnnonce";
 
 import { goAnnonce } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
+
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
+
+let nbpp = 5;
 
 class ListeProposition extends Component {
 	//=========INITIALISATION
 	constructor(){
 		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
 		this.state = {
 			open:false, annonce_id:"",proposition_id:"",
-			nbpp: 5,
-			nump: 0
 		};
 	}
 	componentWillMount(){
@@ -29,21 +29,7 @@ class ListeProposition extends Component {
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Mes propositions");
 		this.props.usersControle({note:5});
-		this.props.propositionGetSSL({posteur:this.props.active_user._id},{sort:{date:-1},skip:0,limit:this.state.nbpp},(propositions)=>{
-			this.setState({nump:1});
-			this.props.annonceGet({_id:{$in:propositions.map(proposition=>proposition.annonce_id)}},()=>{
-				this.props.propositionCount({posteur:this.props.active_user._id},(nb_propositions)=>{
-					this.scroll(propositions,nb_propositions);
-				});
-			});
-		});
-	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
+		
 	}
 
 	//=========ACTIONS
@@ -64,22 +50,11 @@ class ListeProposition extends Component {
 	supprimer(_id){
 		this.props.propositionRm({_id});
 	}
-	scroll(propositions,nb_propositions){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.propositions.length < this.props.nb_propositions)||(propositions&&nb_propositions&&propositions.length < nb_propositions))
-		){
-			this.props.propositionGetAddSSL({posteur:this.props.active_user._id},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_propositions)=>{
-				this.props.annonceGetAdd({_id:{$in:nv_propositions.map(proposition=>proposition.annonce_id)}},()=>{
-					this.props.propositionCount({posteur:this.props.active_user._id},(nb_propositions)=>{
-						this.scroll(nv_propositions,nb_propositions);
-					});
-				});
-				this.setState({nump:this.state.nump+1});
-			});
-		}
+	fnt(nv_elts){	
+		this.props.annonceGetAdd({_id:{$in:nv_elts.map(proposition=>proposition.annonce_id)}},()=>{});
 	}
+
+	
 	// editer(_id){
 	// 	FlowRouter.go("/proposition/"+_id+"/Editer");
 	// }
@@ -119,6 +94,17 @@ class ListeProposition extends Component {
 		let { open } = this.state;
 		return (
 			<div style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"propositionListe"}
+					nb_charge={this.props.propositions.length}
+					nb_total={this.props.nb_propositions}
+					fnt = {this.fnt.bind(this)}
+					initFnt = {this.props.propositionGetSSL.bind(this)}
+					addFnt = {this.props.propositionGetAddSSL.bind(this)}
+					countFnt = {this.props.propositionCount.bind(this)}
+					condition = {{posteur:this.props.active_user._id}}
+				/>
 				<Popop style={{flexDirection:"column"}} open = {open}>
 					<div style ={{display: "flex", alignItems:"center"}}>
 						<span style ={{margin:10}}>Salut !</span>
@@ -136,6 +122,7 @@ class ListeProposition extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			page: state.controle.page,
 			active_user: state.users.active_user,
 			propositions: state.proposition.all,
 			nb_propositions: state.proposition.count,
@@ -152,6 +139,7 @@ function mapDispatchToProps( dispatch ){
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,
+		changePage: ACTIONS.Controle.changePage,
 
 		propositionGet: ACTIONS.Proposition.get,
 		propositionCount: ACTIONS.Proposition.count,

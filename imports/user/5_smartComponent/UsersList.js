@@ -13,34 +13,18 @@ import CardUser from "../../user/4_dumbComponent/CardUser";
 import FixedLayoutSA from "../../_common/4_dumbComponent/FixedLayoutSA";
 
 import { hrefUser, goUserEdit } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
+
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
+
+let nbpp = 4;
 
 class UsersList extends Component{
 
-	constructor(){
-		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			nbpp: 4,
-			nump: 0
-		};
-	}
+
 	componentWillMount(){
-		this.props.usersGetSSL({},{sort:{createdAt:-1},skip:0,limit:this.state.nbpp},(users)=>{
-			this.setState({nump:1});
-			this.props.usersCount({},(nb_users)=>{
-				this.scroll(users,nb_users);
-			});
-		});
 		this.props.categorieGet({publier:true});
 	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-	}
+	
 	categories(categories){
 		let { edit } = this.props;
 		return <ul>
@@ -55,20 +39,6 @@ class UsersList extends Component{
 			}
 		</ul>;
 	}
-	scroll(users,nb_users){
-
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.users.length < this.props.nb_users)||(users&&nb_users&&users.length < nb_users))
-		){
-
-			this.props.usersGetAddSSL({},{sort:{createdAt:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_users)=>{
-				this.setState({nump:this.state.nump+1});
-				this.scroll(nv_users,this.props.nb_users);
-			});
-		}
-	}
 	change(e,{ value, name, checked }){
 
 		this.props.usersControle({ [name]:value||checked });
@@ -77,6 +47,16 @@ class UsersList extends Component{
 		let { distance, categorie } = this.props.controle;
 		
 		return <div style = {{display:"flex", flex:1, flexDirection:"column", marginTop:60}}>
+			<ScrollInfini 
+				nbpp = {4}
+				reload={"usersListe"}
+				nb_charge={this.props.users.length}
+				nb_total={this.props.nb_users}
+				initFnt = {this.props.usersGetSSL.bind(this)}
+				addFnt = {this.props.usersGetAddSSL.bind(this)}
+				countFnt = {this.props.usersCount.bind(this)}
+				condition = {{}}
+			/>
 			<FixedLayoutSA>
 				<Dropdown
 					label = "Categorie"
@@ -120,6 +100,7 @@ class UsersList extends Component{
 function mapStateToProps( state ){
 	return (
 		{
+			page: state.controle.page,
 			users: state.users.all,
 			nb_users: state.users.count,
 			controle: state.users.controle,
@@ -132,6 +113,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps(dispatch){
 	return bindActionCreators({
+		changePage: ACTIONS.Controle.changePage,
 		usersGetSSL: ACTIONS.Users.get_SSL,
 		usersGetAddSSL: ACTIONS.Users.getAdd_SSL,
 		usersCount: ACTIONS.Users.count,

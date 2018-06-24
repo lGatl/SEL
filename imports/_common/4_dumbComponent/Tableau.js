@@ -36,6 +36,7 @@ export default class Tableau extends Component {
 				borderBottom:this.props.border_line?"1px solid rgba(150,150,150,0.5)": "none",
 			},
 			s_th:{
+				
 				justifyContent:"space-around",
 				padding:1,
 				display:"flex",
@@ -45,6 +46,7 @@ export default class Tableau extends Component {
 				textOverflow: "ellipsis" 
 			},
 			s_td:{
+				
 				justifyContent:"space-around",
 				padding:1,
 				display:"flex",

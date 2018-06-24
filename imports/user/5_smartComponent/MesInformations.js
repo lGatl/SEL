@@ -69,7 +69,7 @@ class MesInformations extends Component{
 			let credit = transactions.reduce((total,transaction)=>transaction.proposition.prestataire==_id?transaction.proposition.prix+total:total,0)
 			return(	
 				
-				<div style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<div style={{display:"flex", flex:1, flexDirection:"column",padding:10}}>
 					<CardUser
 						nom = { profile?profile.nom:"" }
 						prenom = { profile?profile.prenom:"" }
@@ -80,8 +80,10 @@ class MesInformations extends Component{
 						adresse = { profile?this.adresse(profile.adresse,profile.show_adresse):"" }
 						date_val_resp={ profile?profile.date_val_resp:"" }
 						editer = {goUserEdit.bind(this,_id)}
+						style = {{width:"100%"}}
 					/>
-					<Titre>Mes Seugnettes</Titre>
+					<Titre style = {{marginBottom:10}}>Mes Seugnettes</Titre>
+
 					<Segment style ={{padding: 20}}>
 						<span>Mon solde : { profile?profile.solde:"" }</span> 
 						<span>Total crédit : {credit} </span>

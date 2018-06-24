@@ -29,7 +29,7 @@ export default class ExtraitAnn extends Component {
 
 		return(
 
-			<Segment row onClick={this.props.goActualite.bind(this)} style={{minHeight:100, marginBottom:20, cursor:"pointer"}}> 
+			<Segment row onClick={this.props.goActualite.bind(this)} style={{height:133, marginBottom:20, cursor:"pointer"}}> 
 				<img src="/images/1.jpg" alt="photo actualite" style={{
 					width: 133,
 					maxHeight:"100%" 
@@ -44,7 +44,7 @@ export default class ExtraitAnn extends Component {
 					}}>
 						<A href = { this.props.href }>{ titre }</A>
 					</div>
-					<div style={{fontSize:18, color:"grey", flex:1}}>
+					<div style={{fontSize:18, color:"grey", flex:1, overflow:"hidden" }}>
 						{ this.strip_tags(description) }
 					</div>
 					<div style={{

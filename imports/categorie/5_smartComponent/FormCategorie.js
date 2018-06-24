@@ -6,43 +6,22 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import { Input, TextArea, Button, Tableau, Dropdown, Titre } from "../../_common/4_dumbComponent/_gat_ui_react";
 
-import { throttle } from "../../8_libs/throttle";
-
 import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
 
 class FormCategorie extends Component {
+	
 	constructor(){
 		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			nbpp: 5,
-			nump: 0
-		};
+		this.state={suppr:0};
 	}
 	componentWillMount(){
 		this.props.titrePage("Gérer les catégories");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les categories");
 		this.props.categorieControle(this.init());
-		this.props.categorieGetSSL({},{sort:{date:-1},skip:0,limit:this.state.nbpp},categories=>{
-			this.setState({nump:1});
-			this.props.categorieControle({actions:categories.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})});
-			this.props.categorieCount({},(nb_categories)=>{
-				this.scroll(categories,nb_categories);
-			});
-			categories.map(categorie=>{
-				this.annonceCount(categorie._id);
-			});
-			this.props.categorieControle({actions:categories.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})});
-		});
-	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
 	}
 
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-	}
 	init(){
 		return{ 
 			titre: "",	
@@ -64,23 +43,12 @@ class FormCategorie extends Component {
 	}
 	//==============ACTION====================
 
-	scroll(categories,nb_categories){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.categories.length < this.props.nb_categories)||(categories&&nb_categories&&categories.length < nb_categories))
-		){
-			this.props.categorieGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_categories)=>{
-				this.props.categorieControle({actions:[...this.props.categorie_controle.actions,...nv_categories.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})]});				
-				nv_categories.map(categorie=>{
-					this.annonceCount(categorie._id);
-				});
-				this.props.categorieCount({},(nb_categories)=>{
-					this.scroll(nv_categories,nb_categories);
-				});
-			});
-			this.setState({nump:this.state.nump+1});
-		}
+	fnt(nv_elts){	
+		
+		this.props.categorieControle({actions:[...this.props.categorie_controle.actions||[],...nv_elts.map((categorie)=>{return{...categorie,action:categorie.publier?"publié":"desactivé"};})]});				
+		nv_elts.map(categorie=>{
+			this.annonceCount(categorie._id);
+		});
 	}
 	annonceCount(categorie_id){
 		this.props.annonceCount_state({categorie:categorie_id, type: "offre"},{count: "offre"+categorie_id});
@@ -109,6 +77,7 @@ class FormCategorie extends Component {
 		this.categoriesUp(actions.filter(action=>action.action=="desactiver"||action.action=="publier"));
 	}
 	categoriesSupprimer(ids){
+		this.setState({suppr:this.state.suppr+1});
 		this.props.categorieRm({_id:{$in:ids}});
 	}
 	categoriesUp(actions){
@@ -126,6 +95,17 @@ class FormCategorie extends Component {
 		
 		return (
 			<div style = {{flex:1,display:"flex", flexDirection:"column"}}>
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"categorieListe"+this.state.suppr}
+					nb_charge={this.props.categories.length}
+					nb_total={this.props.nb_categories}
+					initFnt = {this.props.categorieGetSSL.bind(this)}
+					addFnt = {this.props.categorieGetAddSSL.bind(this)}
+					countFnt = {this.props.categorieCount.bind(this)}
+					fnt={this.fnt.bind(this)}
+					condition = {{}}
+				/>
 				<form>
 					<FixedLayoutMonCompte>
 						<div style = {{flex:1,display:"flex", flexDirection:"column"}}>
@@ -147,7 +127,7 @@ class FormCategorie extends Component {
 								border_table
 								s_col = {[{col:3,style:{flex:2}}]}
 								donnees={[
-									{thead:[["Catégorie","Offre","Demande",<Button onClick={this.categorieAppliquer.bind(this)}>Appliquer</Button>]]}]}/>
+									{thead:[[this.props.resize.windowwidth<700?"Categorie".substr(0, 3)+"...":"Categorie","Offre","Demande",<Button onClick={this.categorieAppliquer.bind(this)}>Appliquer</Button>]]}]}/>
 						</div>
 					</FixedLayoutMonCompte>
 				
@@ -164,7 +144,9 @@ class FormCategorie extends Component {
 								let value = actions&&actions.find((act)=>act._id==categorie._id)?actions.find((act)=>act._id==categorie._id).action:"";
 								let offres_count = annonces_count&&categorie?annonces_count["offre"+categorie._id]:"";
 								let demandes_count = annonces_count&&categorie?annonces_count["demande"+categorie._id]:"";
-								return[categorie.titre,offres_count,demandes_count,
+								return[
+									categorie?this.props.resize.windowwidth<700&&categorie.titre.length>7?categorie.titre.substr(0, 7)+"...":categorie.titre:"",
+									offres_count,demandes_count,
 									<Dropdown
 										placeholder = 'Action'
 										name = {categorie._id}
@@ -188,6 +170,8 @@ class FormCategorie extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			page: state.controle.page,
+			resize: state.controle.resize,
 			categorie_controle: state.categorie.controle,
 			categories: state.categorie.all,
 			annonces_count: state.annonce.count,
@@ -198,6 +182,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		changePage: ACTIONS.Controle.changePage,
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,

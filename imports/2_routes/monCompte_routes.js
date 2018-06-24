@@ -38,14 +38,14 @@ mon_compteRoutes.route( "/releve", {
 mon_compteRoutes.route( "/annonce/offre/creer", {
 	name: "mon_compte",
 	action: function() {
-		mount(LayoutMonCompte, { content: <FormAnnonce type="offre" /> });
+		mount(LayoutMonCompte, { content: <FormAnnonce type="offre" creer /> });
 		window.scrollTo(0, 0);
 	}
 });
 mon_compteRoutes.route( "/annonce/demande/creer", {
 	name: "mon_compte",
 	action: function() {
-		mount(LayoutMonCompte, { content: <FormAnnonce type="demande" /> });
+		mount(LayoutMonCompte, { content: <FormAnnonce type="demande" creer /> });
 		window.scrollTo(0, 0);
 	}
 });

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Input, TextArea, Button, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 export default class FicheAnnonce extends Component {
+	
 	style(){
 		return{
 			s_container:{

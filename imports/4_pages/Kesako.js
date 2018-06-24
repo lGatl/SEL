@@ -16,11 +16,7 @@ class Kesako extends Component {
 
 	render(){
 		return (
-
-			<div className="">
-				<ContenuKesako style = {{marginTop:15}}/>
-
-			</div>
+				<ContenuKesako style = {{marginTop:15, flex:1, display:"flex", flexDirection:"column"}}/>
 		);
 	}
 }

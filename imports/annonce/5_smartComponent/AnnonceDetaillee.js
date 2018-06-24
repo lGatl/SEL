@@ -20,28 +20,35 @@ class AnnonceDetaillee extends Component {
 		super();
 		this.state = {open:false, annonce_id:"",proposition_id:""};
 	}
+	componentWillReceiveProps(news){
+		if(news._id != this.props._id){
+			this.init(news);
+		}
+	}
 	componentWillMount(){
 		this.props.usersControle({note:5});
 		this.props.titrePage("Annonce Detaillée");
 
-		this.props.annonceGet1({_id:this.props._id},annonce=>{
+		this.init(this.props);
+	}
+	init(props){
+		this.props.annonceGet1({_id:props._id},annonce=>{
 			if(annonce ){
-				this.props.usersGet1({_id:annonce.user_id});
-				this.props.categorieGet1({_id:annonce.categorie});
+				props.usersGet1({_id:annonce.user_id});
+				props.categorieGet1({_id:annonce.categorie});
 				if(this.props.active_user){
-					if(annonce.user_id == this.props.active_user._id){
-						this.props.propositionGet({annonce_id:annonce._id},(propositions)=>{
-							this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}});
+					if(annonce.user_id == props.active_user._id){
+						props.propositionGet({annonce_id:annonce._id},(propositions)=>{
+							props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}});
 						});
 						
-					}else if(annonce.user_id!=this.props.active_user._id){
-						this.props.propositionGet({annonce_id:annonce._id,posteur:this.props.active_user._id});
+					}else if(annonce.user_id!= props.active_user._id){
+						props.propositionGet({annonce_id:annonce._id,posteur:props.active_user._id});
 					}
 				}
 			}
 		});
 	}
-	
 	change(e,{ value, name, checked }){
 
 		this.props.propositionControle({ [name]:value||checked });

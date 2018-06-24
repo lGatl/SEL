@@ -8,7 +8,7 @@ import { ACTIONS } from "../../6_actions/actions";
 
 import MiniArticle from "../4_dumbComponent/MiniArticle";
 
-import {  goAnnonce } from "../../8_libs/go";
+import {  goAnnonce, goActualite } from "../../8_libs/go";
 
 
 class LastArticle extends Component{
@@ -21,7 +21,7 @@ class LastArticle extends Component{
 		return <MiniArticle
 			key= {i}
 			image = { "/images/1.jpg" }
-			lien = {type=="actu"?()=>{}:goAnnonce.bind(this,article._id)}
+			lien = {type=="actu"?goActualite.bind(this,article._id):goAnnonce.bind(this,article._id)}
 			titre = { article.titre }
 		/>;
 	}

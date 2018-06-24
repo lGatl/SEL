@@ -199,7 +199,7 @@ class FormulaireDInscription extends Component {
 
 		let {username,email,password,nom,prenom,telephone,adresse,show_adresse,date_val_resp,categories, note} = this.props.controle;
 		return (
-			<div style = {{flex:1}}>
+			<div style = {{flex:1, padding:10}}>
 				<CardUser
 					edit
 					username = {this.username(username)}
@@ -211,6 +211,7 @@ class FormulaireDInscription extends Component {
 					telephone = {this.telephone(telephone)}
 					adresse = {this.adresse(adresse, show_adresse)}
 					date_val_resp={this.dateValResp(date_val_resp)}
+					style = {{width:"100%"}}
 				/>
 					
 				<Button

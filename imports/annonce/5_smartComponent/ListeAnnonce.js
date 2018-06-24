@@ -13,63 +13,22 @@ import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 import Proposition from "../../proposition/4_dumbComponent/Proposition";
 
 import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
 
 import FixedLayout from "../../_common/4_dumbComponent/FixedLayout";
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
 
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
-	constructor(){
-		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			nbpp: 5,
-			nump: 0
-		};
-	}
+	
 	componentWillMount(){
 		this.props.titrePage("Annonces");
 		this.props.activeMenu("Annonce");
-		this.init(this.props);
 		this.props.categorieGet({});
 	}
-	componentWillReceiveProps(nextp){
-		
-		if((nextp.type!=this.props.type)||(this.props.active_user != nextp.active_user)){
-			this.init(nextp);
-		}
-	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-		this.props.annonceControle({ categorie:"", distance:null });
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-		this.props.annonceControle({ categorie:"", distance:null });
-	}
-
-	init(props){
-		
-		this.props.activeMenuAnnonce(props.type=="offre"?"Offres":props.type=="demande"? "Demandes": "Toutes");	
-		
-		this.props.annonceGetSSL(this.condition(props),{sort:{date:-1},skip:0,limit:this.state.nbpp},(annonces)=>{
-			this.props.annonceCount(this.condition(props),(nb_annonces)=>{
-				this.scroll(annonces,nb_annonces);
-			});
-		});
-		
-		this.setState({nump:1});
-
-		
-
-	}
-
 	//Controle
 	change(e,{ value, name, checked }){
 
 		this.props.annonceControle({ [name]:value||checked });
-		this.init({...this.props,annonce_controle:{...this.props.annonce_controle, [name]:value||checked }});
 	}
 	//=========ACTIONS
 	condition(props){
@@ -78,20 +37,6 @@ class ListeAnnonce extends Component {
 		CONDITION = props.annonce_controle.categorie?{...CONDITION,categorie:props.annonce_controle.categorie}:CONDITION;
 		return CONDITION;
 	}
-
-	scroll(annonces,nb_annonces){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.annonces.length < this.props.nb_annonces)||(annonces&&nb_annonces&&annonces.length < nb_annonces))
-		){
-			this.props.annonceGetAddSSL(this.condition(this.props),{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_annonces)=>{
-				this.scroll(nv_annonces,nb_annonces);
-			});
-			this.setState({nump:this.state.nump+1});
-		}
-	}
-	
 	//==========PREPARATION RENDU
 	
 	annonces(){//annonces = [{},...] => [<Comps/>,...]
@@ -118,11 +63,21 @@ class ListeAnnonce extends Component {
 	}
 	
 	render() {
+
 		let { categorie, distance } = this.props.annonce_controle;
 
 		return (
 			<div style={{display:"flex", flexDirection:"column", flex:1 }}>
-
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"annonceListe"}
+					nb_charge={this.props.annonces.length}
+					nb_total={this.props.nb_annonces}
+					initFnt = {this.props.annonceGetSSL.bind(this)}
+					addFnt = {this.props.annonceGetAddSSL.bind(this)}
+					countFnt = {this.props.annonceCount.bind(this)}
+					condition = {this.condition(this.props)}
+				/>
 				<FixedLayout>
 					<div style={{display:"flex", flexDirection:"column", flex:1,
 						borderBottom: "1px solid rgba(150,150,150,0.5)",

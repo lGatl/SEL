@@ -7,37 +7,16 @@ import { ACTIONS } from "../../6_actions/actions";
 import { Input, TextArea, Button, Tableau, Dropdown, Titre, A } from "../../_common/4_dumbComponent/_gat_ui_react";
 
 import { hrefUser, goUserEdit } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
-
 import FixedLayoutMonCompte from "../../_common/4_dumbComponent/FixedLayoutMonCompte";
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
 
 class FormUsers extends Component {
-	constructor(){
-		super();
-		this.scroll = throttle(this.scroll.bind(this),40);
-		this.state = {
-			nbpp: 10,
-			nump: 0
-		};
-	}
+
 	componentWillMount(){
 		this.props.titrePage("Gerer les comptes");
 		this.props.activeMenu("Mon Compte");
 		this.props.activeMenuMonCompte("Gerer les comptes");
 		this.props.usersControle(this.init());
-		this.props.usersGetSSL({},{sort:{createdAt:-1},skip:0,limit:this.state.nbpp},(users)=>{
-			this.setState({nump:1});
-			this.props.usersCount({},(nb_users)=>{
-				this.scroll(users,nb_users);
-			});
-		})
-	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
 	}
 	init(){
 		return{ 
@@ -51,18 +30,6 @@ class FormUsers extends Component {
 	}
 	
 	//==============ACTION====================
-	scroll(users,nb_users){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.users.length < this.props.nb_users)||(users&&nb_users&&users.length < nb_users))
-		){
-			this.props.usersGetAddSSL({},{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_users)=>{
-				this.scroll(nv_users,this.props.nb_users);
-			});
-			this.setState({nump:this.state.nump+1});
-		}
-	}
 	usersAdd(){
 		let {titre} = this.props.users_controle;
 
@@ -102,6 +69,16 @@ class FormUsers extends Component {
 		
 		return (
 			<div style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"comptesListe"}
+					nb_charge={this.props.users.length}
+					nb_total={this.props.nb_users}
+					initFnt = {this.props.usersGetSSL.bind(this)}
+					addFnt = {this.props.usersGetAddSSL.bind(this)}
+					countFnt = {this.props.usersCount.bind(this)}
+					condition = {filtre?{ username: { $regex: filtre } }:{}}//VOIR INDEXATION !!!!!!!!!!!!!!!
+				/>
 				<form>
 					<FixedLayoutMonCompte>
 						<div style={{display:"flex", flexDirection:"column", flex:1 }}>
@@ -140,8 +117,11 @@ class FormUsers extends Component {
 						]}
 						donnees={[
 							{tbody:this.props.users.reduce((total,user)=>{
-								return user.username.indexOf(filtre)>=0?
-									[...total,[<A href={hrefUser(user._id)}>{user.username}</A>, user._id,<Button onClick={goUserEdit.bind(this, user._id)}>Editer</Button>]]:total;
+								return [...total,[
+									user?<A href = {hrefUser(user._id)}>{this.props.resize.windowwidth<700&&user.username.length>10?user.username.substr(0, 10)+"...":user.username}</A>:"",
+									user?<A href = {hrefUser(user._id)}>{this.props.resize.windowwidth<700?user._id.substr(0, 8)+"...":user._id}</A>:"",
+									<Button onClick={goUserEdit.bind(this, user._id)}>Editer</Button>
+								]];
 							},[])
 							},
 						]}
@@ -156,6 +136,8 @@ class FormUsers extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			page: state.controle.page,
+			resize: state.controle.resize,
 			users_controle: state.users.controle,
 			nb_users: state.users.count,
 			users: state.users.all,
@@ -166,6 +148,7 @@ function mapStateToProps( state ){
 
 function mapDispatchToProps( dispatch ){
 	return bindActionCreators({
+		changePage: ACTIONS.Controle.changePage,
 		titrePage: ACTIONS.Titre.titrePage,
 		activeMenu: ACTIONS.Menu.activeMenu,
 		activeMenuMonCompte: ACTIONS.Menu.activeMenuMonCompte,

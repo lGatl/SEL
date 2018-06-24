@@ -13,16 +13,14 @@ import ExtraitAnn from "../4_dumbComponent/ExtraitAnn";
 import Proposition from "../../proposition/4_dumbComponent/Proposition";
 
 import { hrefUser, hrefAnnonce, goAnnonce } from "../../8_libs/go";
-import { throttle } from "../../8_libs/throttle";
+
+import ScrollInfini from "../../_common/5_smartComponent/ScrollInfini";
 
 class ListeAnnonce extends Component {
 	//=========INITIALISATION
 	constructor(){
 		super();
-		this.resize = throttle(this.resize.bind(this),40);
-		this.scroll = throttle(this.scroll.bind(this),40);
 		this.state = {
-			windowwidth:window.innerWidth,
 			open:false, annonce_id:"",proposition_id:"",
 			nbpp: 5,
 			nump: 0
@@ -40,63 +38,26 @@ class ListeAnnonce extends Component {
 			this.init(nextp);
 		}
 	}
-	componentDidMount() {
-		document.addEventListener("scroll", this.scroll);
-		window.addEventListener("resize", this.resize);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener("scroll", this.scroll);
-		window.removeEventListener("resize", this.resize);
-
-	}	
+	
 	condition(props){
 		let CONDITION = {etat:"valider"};
 		CONDITION = {...CONDITION,user_id:props.active_user._id};
 		CONDITION = props.type?{...CONDITION,type:props.type}:CONDITION;
 		return CONDITION;
 	}
-	resize(){
-		this.setState({windowwidth:window.innerWidth});
-	}
 	init(props){
 		this.props.titrePage(props.type=="offre"?"Mes offres":"Mes demandes");
 		this.props.activeMenuMonCompte(props.type=="offre"?"Mes offres":"Mes demandes");
 		
-		this.props.annonceGetSSL(this.condition(props),{sort:{date:-1},skip:0,limit:this.state.nbpp},(annonces)=>{
-			this.setState({nump:1});
-			annonces.forEach(annc=>this.setState({[annc._id]:false}));
-			
-			this.props.propositionGet({annonce_id:{$in:annonces.map(annonce=>annonce._id)}},(propositions=>
-				this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}},()=>{
-					this.props.annonceCount(this.condition(props),(nb_annonces)=>{
-						this.scroll(annonces,nb_annonces);
-					});
-				})
-			));
-		});
 		this.props.categorieGet({});
 	}
 
 	//=========ACTIONS
-	scroll(annonces,nb_annonces){
-		if(
-			((window.scrollY >= (document.documentElement.scrollHeight - document.documentElement.clientHeight)*0.95)||
-			(document.documentElement.scrollHeight - document.documentElement.clientHeight)==0)
-			&& ((this.props.annonces.length < this.props.nb_annonces)||(annonces&&nb_annonces&&annonces.length < nb_annonces))
-		){
-			this.props.annonceGetAddSSL(this.condition(this.props),{sort:{date:-1},skip:((this.state.nump)*this.state.nbpp),limit:this.state.nbpp},(nv_annonces)=>{
-				nv_annonces.forEach(annc=>this.setState({[annc._id]:false}));
-				this.props.propositionGetAdd({annonce_id:{$in:nv_annonces.map(annonce=>annonce._id)}},(propositions=>
-					this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}},()=>{
-						this.props.annonceCount(this.condition(this.props),(nb_annonces)=>{
-							this.scroll(annonces,nb_annonces);
-						});
-					})
-				));
-			});
-			this.setState({nump:this.state.nump+1});
-		}
+	fnt(nv_elts){	
+		nv_elts.forEach(annc=>this.setState({[annc._id]:false}));
+		this.props.propositionGetAdd({annonce_id:{$in:nv_elts.map(annonce=>annonce._id)}},(propositions=>
+			this.props.usersGet({_id:{$in:propositions.map(prop=>prop.posteur)}},()=>{
+			})));
 	}
 	annonceRm( id ){
 		this.props.annonceRm({ _id: id });
@@ -152,7 +113,7 @@ class ListeAnnonce extends Component {
 					effectue = { this.effectue.bind(this,annonce._id,proposition._id)}
 					moi = { annonce && active_user && (annonce.user_id == active_user._id) }
 					href_posteur = { user?hrefUser(user._id):"#"}
-					small = {this.state.windowwidth<700}
+					small = {this.props.resize.windowwidth<700}
 
 				/>]:total;},[]);
 	}
@@ -189,6 +150,17 @@ class ListeAnnonce extends Component {
 		let { annonces, categories} = this.props;
 		return (
 			<div style={{display:"flex", flex:1, flexDirection:"column"}}>
+				<ScrollInfini 
+					nbpp = {4}
+					reload={"annonceListemonCompte"}
+					fnt = {this.fnt.bind(this)}
+					nb_charge={this.props.annonces.length}
+					nb_total={this.props.nb_annonces}
+					initFnt = {this.props.annonceGetSSL.bind(this)}
+					addFnt = {this.props.annonceGetAddSSL.bind(this)}
+					countFnt = {this.props.annonceCount.bind(this)}
+					condition = {this.condition(this.props)}
+				/>
 				<Popop style={{flexDirection:"column"}} open = {open}>
 					<div style ={{display: "flex", alignItems:"center"}}>
 						<span style ={{margin:10}}>Salut !</span>
@@ -208,6 +180,8 @@ class ListeAnnonce extends Component {
 function mapStateToProps( state ){
 	return (
 		{
+			page: state.controle.page,
+			resize: state.controle.resize,
 			active_user: state.users.active_user,
 			users: state.users.all,
 			annonces: state.annonce.all,
@@ -248,6 +222,8 @@ function mapDispatchToProps( dispatch ){
 		usersControle: ACTIONS.Users.controle,
 
 		transactionCree: ACTIONS.Transaction.cree,
+
+		changePage: ACTIONS.Controle.changePage,
 
 	}, dispatch );
 }
